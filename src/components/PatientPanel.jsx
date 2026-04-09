@@ -1,13 +1,21 @@
 import React from 'react'
 import { Icons } from './icons'
 
-export default function PatientPanel({ patient }) {
+const STATE_CONFIG = {
+  stable:    { label: 'Stable',    cls: 'state-stable',    icon: '◉' },
+  worsening: { label: 'Worsening', cls: 'state-worsening', icon: '▼' },
+  improving: { label: 'Improving', cls: 'state-improving', icon: '▲' },
+}
+
+export default function PatientPanel({ patient, patientState = 'stable', patientStateMsg = null }) {
   const flagCls = s => {
     if (s === 'abnormal') return 'abnormal'
     if (s === 'borderline') return 'borderline'
     if (s === 'normal') return 'normal'
     return ''
   }
+
+  const stateInfo = STATE_CONFIG[patientState] ?? STATE_CONFIG.stable
 
   return (
     <div className="patient-panel">
@@ -17,6 +25,17 @@ export default function PatientPanel({ patient }) {
         <div>
           <div className="patient-name">{patient.name}</div>
           <div className="patient-meta">{patient.age} y/o {patient.sex} &nbsp;·&nbsp; Triage</div>
+        </div>
+      </div>
+
+      {/* Patient State Indicator */}
+      <div className={`patient-state-bar ${stateInfo.cls}`}>
+        <span className="patient-state-icon">{stateInfo.icon}</span>
+        <div className="patient-state-body">
+          <span className="patient-state-label">Patient Condition: <strong>{stateInfo.label}</strong></span>
+          {patientStateMsg && (
+            <span className="patient-state-msg">{patientStateMsg}</span>
+          )}
         </div>
       </div>
 

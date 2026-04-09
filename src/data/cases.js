@@ -1,8 +1,9 @@
 export const SPECIALTIES = [
-  { id: 'er',    label: 'Emergency Room',  desc: 'High-acuity, time-critical presentations', color: '#ef4444', bg: 'rgba(239,68,68,.12)',   border: 'rgba(239,68,68,.3)'   },
-  { id: 'rheum', label: 'Rheumatology',    desc: 'Autoimmune & inflammatory conditions',     color: '#8b5cf6', bg: 'rgba(139,92,246,.12)',  border: 'rgba(139,92,246,.3)'  },
-  { id: 'onc',   label: 'Oncology',        desc: 'Malignancy diagnosis & management',         color: '#f59e0b', bg: 'rgba(245,158,11,.12)',  border: 'rgba(245,158,11,.3)'  },
-  { id: 'ortho', label: 'Orthopedics',     desc: 'Bone, joint & musculoskeletal injury',      color: '#10b981', bg: 'rgba(16,185,129,.12)',  border: 'rgba(16,185,129,.3)'  },
+  { id: 'er',    label: 'Emergency Room',       desc: 'High-acuity, time-critical presentations',          color: '#ef4444', bg: 'rgba(239,68,68,.12)',   border: 'rgba(239,68,68,.3)'   },
+  { id: 'rheum', label: 'Rheumatology',         desc: 'Autoimmune & inflammatory conditions',              color: '#8b5cf6', bg: 'rgba(139,92,246,.12)',  border: 'rgba(139,92,246,.3)'  },
+  { id: 'onc',   label: 'Oncology',             desc: 'Malignancy diagnosis & management',                 color: '#f59e0b', bg: 'rgba(245,158,11,.12)',  border: 'rgba(245,158,11,.3)'  },
+  { id: 'ortho', label: 'Orthopedics',          desc: 'Bone, joint & musculoskeletal injury',              color: '#10b981', bg: 'rgba(16,185,129,.12)',  border: 'rgba(16,185,129,.3)'  },
+  { id: 'id',    label: 'Infectious Disease',   desc: 'Travel medicine, tropical & rare pathogens',        color: '#0891b2', bg: 'rgba(8,145,178,.12)',   border: 'rgba(8,145,178,.3)'   },
 ]
 
 export const CASES = [
@@ -1860,4 +1861,2422 @@ export const CASES = [
     correctDisposition: 'disp_vcf_correct',
     criticalActions: ['img_xray_spine', 'lab_bone_metab', 'consult_spine'],
   },
+
+  // ══════════════════════════════════════════════════════
+  //  EMERGENCY ROOM — ULTRA-RARE PRESENTATIONS
+  // ══════════════════════════════════════════════════════
+
+  // ─── ER Case 7: Naegleria fowleri ────────────────────
+  {
+    id: 19, specialty: 'er',
+    meta: { title: 'Rapidly Progressive Meningoencephalitis', tagLabels: [{ t: 'CRITICAL', cls: 'urgent' }, { t: 'Infectious Disease', cls: '' }] },
+    patient: {
+      name: 'Tyler W.', age: 14, sex: 'Male', avatar: 'male', emoji: '👦',
+      chiefComplaint: 'Sudden severe headache, fever, confusion — 18 hours, recent freshwater swimming',
+      vitals: [
+        { label: 'BP',     value: '118/72',  status: 'normal'     },
+        { label: 'HR',     value: '126 bpm', status: 'abnormal'   },
+        { label: 'RR',     value: '24 /min', status: 'abnormal'   },
+        { label: 'Temp',   value: '40.2 °C', status: 'abnormal'   },
+        { label: 'O₂ Sat', value: '97%',     status: 'normal'     },
+        { label: 'GCS',    value: '10 / 15', status: 'abnormal'   },
+      ],
+      history: '14-year-old male who went wakeboarding at a warm freshwater lake in Louisiana 5 days ago. Parents report he complained of headache and loss of smell 3 days ago. Today he developed severe bifrontal headache, high-grade fever, and is now confused and combative. He vomited twice en route. Neck is stiff. He has not responded to the ibuprofen given at home.',
+      pmh: 'No significant past medical history. All vaccinations up to date.',
+      medications: 'None',
+      allergies: 'NKDA',
+      social: 'Healthy active teenager. Non-smoker. 8th grade student.',
+      family: 'Non-contributory',
+    },
+    actions: [
+      { group: 'Physical Exam', items: [
+        { id: 'pe_pam_neuro', label: 'Complete Neurological Exam', icon: 'exam', cost: null, points: 40,
+          finding: { type: 'exam', title: 'Neurological Examination', subtitle: 'Detailed',
+            results: [
+              { name: 'Mental status',       val: 'GCS 10 — confused, agitated, combative',        flag: 'critical' },
+              { name: 'Nuchal rigidity',     val: 'Severe — cannot flex chin to chest',             flag: 'critical' },
+              { name: "Kernig's sign",       val: 'POSITIVE',                                        flag: 'critical' },
+              { name: 'Olfaction',           val: 'Bilateral anosmia — cannot smell coffee sample', flag: 'critical' },
+              { name: 'Photophobia',         val: 'Marked',                                          flag: 'abnormal' },
+              { name: 'Papilledema',         val: 'Early bilateral papilledema',                    flag: 'critical' },
+            ],
+            note: { type: 'alert', text: 'Bilateral anosmia + meningismus in a freshwater swimmer = Naegleria fowleri PAM until proven otherwise. N. fowleri enters through the olfactory nerve. This is nearly universally fatal — act in minutes.' } } },
+      ] },
+      { group: 'Labs', items: [
+        { id: 'lab_pam_csf', label: 'Lumbar Puncture & CSF Analysis (Urgent)', icon: 'lab', cost: 'stat', points: 50,
+          finding: { type: 'labs', title: 'CSF Analysis', subtitle: 'Urgent — Lumbar Puncture',
+            results: [
+              { name: 'Appearance',      val: 'Bloody/xanthochromic — turbid, purulent',        flag: 'critical' },
+              { name: 'Opening pressure',val: '380 mmH₂O (elevated > 200)',                    flag: 'critical' },
+              { name: 'WBC',             val: '6,800 cells/µL — predominantly neutrophils',    flag: 'critical' },
+              { name: 'RBC',             val: '12,000 cells/µL — not tap artifact',             flag: 'critical' },
+              { name: 'Protein',         val: '410 mg/dL (ref < 45)',                            flag: 'critical' },
+              { name: 'Glucose',         val: '18 mg/dL (serum 96) — very low ratio',           flag: 'critical' },
+              { name: 'Gram stain',      val: 'No bacteria identified',                          flag: 'normal'   },
+              { name: 'Wet prep',        val: 'MOTILE TROPHOZOITES IDENTIFIED',                 flag: 'critical' },
+            ],
+            note: { type: 'alert', text: 'Motile amoebic trophozoites on CSF wet preparation = PAM. Gram-negative CSF with purulent pleocytosis and RBCs is characteristic. Do NOT wait for culture — begin treatment NOW.' } } },
+        { id: 'lab_pam_basic', label: 'CBC / BMP / Blood Cultures', icon: 'lab', cost: 'stat', points: 20,
+          finding: { type: 'labs', title: 'Basic Lab Panel', subtitle: 'Stat',
+            results: [
+              { name: 'WBC',         val: '22.1 × 10³/µL', ref: '(4.5–11)',  flag: 'critical' },
+              { name: 'Na',          val: '130 mEq/L',       ref: '(136–145)', flag: 'critical' },
+              { name: 'Blood culture',val: 'Negative (amoeba is not bacteremia)', flag: 'normal' },
+            ],
+            note: { type: 'warn', text: 'Hyponatremia likely from SIADH secondary to severe CNS infection. Negative blood cultures help distinguish from bacterial meningitis.' } } },
+      ] },
+      { group: 'Imaging', items: [
+        { id: 'img_pam_mri', label: 'MRI Brain (with contrast)', icon: 'imaging', cost: 'stat', points: 30,
+          finding: { type: 'imaging', title: 'MRI Brain — Contrast-Enhanced', subtitle: 'Stat',
+            results: [
+              { name: 'Meningeal enhancement', val: 'Diffuse leptomeningeal enhancement',             flag: 'critical' },
+              { name: 'Olfactory bulbs',        val: 'Bilateral olfactory bulb necrosis and edema',  flag: 'critical' },
+              { name: 'Cerebral edema',         val: 'Diffuse — sulcal effacement, loss of cisterns', flag: 'critical' },
+              { name: 'Hemorrhage',             val: 'Multifocal cortical hemorrhages',               flag: 'critical' },
+            ],
+            note: { type: 'alert', text: 'Olfactory bulb necrosis is pathognomonic of PAM. Diffuse hemorrhagic meningoencephalitis — brain herniation imminent without aggressive treatment.' } } },
+      ] },
+      { group: 'Consults', items: [
+        { id: 'consult_pam_id', label: 'Infectious Disease + CDC Emergency Consult', icon: 'consult', cost: 'stat', points: 40,
+          finding: { type: 'consult', title: 'Infectious Disease & CDC Emergency Consult', subtitle: 'Dr. Reyes, ID / CDC Emergency Operations',
+            results: [
+              { name: 'Diagnosis',      val: 'Primary Amoebic Meningoencephalitis — Naegleria fowleri', flag: 'critical' },
+              { name: 'Amphotericin B', val: '1.5 mg/kg/day IV (liposomal) + intrathecal AmphoB',      flag: 'critical' },
+              { name: 'Miltefosine',    val: '50 mg PO TID × 28 days (obtain via CDC)',                flag: 'critical' },
+              { name: 'Rifampin',       val: '10 mg/kg/day IV + Azithromycin IV',                       flag: 'abnormal' },
+              { name: 'ICP management', val: 'Hypothermia protocol, osmotic therapy, neuro-ICU',        flag: 'critical' },
+            ],
+            note: { type: 'alert', text: 'Only ~5 survivors documented worldwide. CDC must be contacted immediately for miltefosine access. The "Milwaukee Protocol" (therapeutic hypothermia) has been associated with rare survival. Begin all agents simultaneously.' } } },
+      ] },
+    ],
+    dispositions: [
+      { id: 'disp_pam_correct', label: 'Neuro-ICU + Amphotericin B + Miltefosine + CDC', icon: 'er', outcome: 'correct', points: 200,
+        feedback: { title: 'Correct — Only Known Chance of Survival', grade: 'Excellent',
+          body: 'Tyler has Primary Amoebic Meningoencephalitis caused by Naegleria fowleri. With >97% fatality, immediate multi-drug therapy (IV + intrathecal Amphotericin B, Miltefosine via CDC, Rifampin, Azithromycin), therapeutic hypothermia, and ICP management in neuro-ICU represents the only documented survival path. Every minute of delay worsens outcome.' } },
+      { id: 'disp_pam_bacterial', label: 'Standard Bacterial Meningitis Protocol (Ceftriaxone + Vanc)', icon: 'rx', outcome: 'incorrect', points: -150,
+        feedback: { title: 'Incorrect Pathogen — Fatal Delay', grade: 'Critical Error',
+          body: 'Standard bacterial meningitis antibiotics have no activity against Naegleria fowleri. The CSF wet prep showing MOTILE TROPHOZOITES and the history of freshwater swimming should redirect diagnosis to PAM immediately. Bacterial meningitis protocols will fail — amoebicidal therapy must be started.' } },
+      { id: 'disp_pam_admit_observe', label: 'Admit — Viral Encephalitis Protocol', icon: 'admit', outcome: 'incorrect', points: -200,
+        feedback: { title: 'Misdiagnosis — Fatal Delay', grade: 'Fatal Error',
+          body: 'Treating this as viral encephalitis wastes the only potential treatment window. The combination of freshwater swimming exposure, anosmia, bloody CSF with motile trophozoites on wet prep, and olfactory bulb necrosis on MRI is diagnostic of PAM. Acyclovir will not save this patient.' } },
+    ],
+    correctDisposition: 'disp_pam_correct',
+    criticalActions: ['lab_pam_csf', 'consult_pam_id', 'pe_pam_neuro'],
+  },
+
+  // ─── ER Case 8: Lemierre's Syndrome ──────────────────
+  {
+    id: 20, specialty: 'er',
+    meta: { title: 'Post-Pharyngitis Sepsis & Chest Pain', tagLabels: [{ t: 'URGENT', cls: 'urgent' }, { t: 'Infectious Disease', cls: '' }] },
+    patient: {
+      name: 'Connor B.', age: 19, sex: 'Male', avatar: 'male', emoji: '👨',
+      chiefComplaint: 'Right neck pain, high fever, rigors, pleuritic chest pain — 5 days after "strep throat"',
+      vitals: [
+        { label: 'BP',     value: '98/62',   status: 'abnormal'   },
+        { label: 'HR',     value: '132 bpm', status: 'abnormal'   },
+        { label: 'RR',     value: '28 /min', status: 'abnormal'   },
+        { label: 'Temp',   value: '39.8 °C', status: 'abnormal'   },
+        { label: 'O₂ Sat', value: '92%',     status: 'abnormal'   },
+        { label: 'Pain',   value: '8 / 10',  status: 'abnormal'   },
+      ],
+      history: '19-year-old college freshman who had a sore throat 2 weeks ago, saw urgent care, was told it was viral, and sent home. He seemed to improve briefly, then 5 days ago developed worsening right neck pain, spiking fevers with rigors, and today is in the ER with pleuritic chest pain, hemoptysis, and hypoxia. He appears toxic.',
+      pmh: 'No significant history. Not on any medications at time of pharyngitis.',
+      medications: 'Ibuprofen 600 mg PRN (self-prescribed)',
+      allergies: 'NKDA',
+      social: 'Non-smoker. College freshman living in dormitory. Socially drinks on weekends.',
+      family: 'Non-contributory',
+    },
+    actions: [
+      { group: 'Physical Exam', items: [
+        { id: 'pe_lemierre', label: 'Head, Neck & Respiratory Exam', icon: 'exam', cost: null, points: 45,
+          finding: { type: 'exam', title: 'Head, Neck & Pulmonary Examination', subtitle: '',
+            results: [
+              { name: 'Oropharynx',      val: 'Tonsillar erythema with peritonsillar fullness — residual pharyngitis', flag: 'abnormal' },
+              { name: 'Right neck',      val: 'Tender, indurated cord along right SCM — IJV thrombosis', flag: 'critical' },
+              { name: 'Cervical nodes',  val: 'Matted right anterior cervical lymphadenopathy',           flag: 'abnormal' },
+              { name: 'Lung exam',       val: 'Decreased breath sounds right lower lobe, pleural rub',   flag: 'critical' },
+              { name: 'Septic appearance', val: 'Diaphoretic, rigoring, altered, looks toxic',           flag: 'critical' },
+            ],
+            note: { type: 'alert', text: 'Tender SCM cord + post-pharyngitis sepsis + pleuritic chest pain = Lemierre\'s Syndrome (septic thrombophlebitis of internal jugular vein) until proven otherwise.' } } },
+      ] },
+      { group: 'Labs', items: [
+        { id: 'lab_lemierre_cx', label: 'Blood Cultures × 2 (Aerobic & Anaerobic)', icon: 'lab', cost: 'stat', points: 50,
+          finding: { type: 'labs', title: 'Blood Cultures', subtitle: 'Aerobic & Anaerobic — 2 sets',
+            results: [
+              { name: 'Preliminary',  val: 'Gram-negative pleomorphic rods (anaerobic bottle)',  flag: 'critical' },
+              { name: 'Organism',     val: 'Fusobacterium necrophorum — 48h confirmed',           flag: 'critical' },
+              { name: 'Sensitivity',  val: 'Sensitive to metronidazole, ampicillin-sulbactam',   flag: 'normal'   },
+            ],
+            note: { type: 'alert', text: 'Fusobacterium necrophorum is a gram-negative anaerobe — the causative agent of Lemierre\'s. It uniquely causes septic thrombophlebitis of the IJV and hematogenous spread to the lungs (septic pulmonary emboli).' } } },
+        { id: 'lab_lemierre_panel', label: 'CBC / BMP / Coagulation', icon: 'lab', cost: 'stat', points: 20,
+          finding: { type: 'labs', title: 'Comprehensive Lab Panel', subtitle: 'Stat',
+            results: [
+              { name: 'WBC',         val: '28.4 × 10³/µL', ref: '(4.5–11)',  flag: 'critical' },
+              { name: 'Platelets',   val: '68 × 10³/µL',   ref: '(150–400)', flag: 'critical' },
+              { name: 'INR',         val: '1.8',             ref: '(< 1.1)',   flag: 'abnormal' },
+              { name: 'Lactate',     val: '4.2 mmol/L',      ref: '(< 2.0)',   flag: 'critical' },
+              { name: 'Fibrinogen',  val: '680 mg/dL',       ref: '(200–400)', flag: 'abnormal' },
+            ],
+            note: { type: 'warn', text: 'Septic shock physiology (lactate 4.2), early DIC (thrombocytopenia, elevated INR). Aggressive fluid resuscitation and ICU-level care required.' } } },
+      ] },
+      { group: 'Imaging', items: [
+        { id: 'img_lemierre_ct', label: 'CT Neck & Chest with Contrast', icon: 'imaging', cost: 'stat', points: 50,
+          finding: { type: 'imaging', title: 'CT Neck/Chest — Contrast-Enhanced', subtitle: 'Definitive',
+            results: [
+              { name: 'Right IJV',       val: 'Filling defect — thrombus extending from tonsillar fossa to subclavian junction', flag: 'critical' },
+              { name: 'Lung (R lower)',  val: 'Multiple bilateral peripheral cavitating nodules — septic emboli',                 flag: 'critical' },
+              { name: 'Right pleura',    val: 'Right-sided empyema — loculated fluid collection',                                 flag: 'critical' },
+              { name: 'Mediastinum',     val: 'No mediastinitis',                                                                  flag: 'normal'   },
+            ],
+            note: { type: 'alert', text: 'IJV thrombus + cavitating septic pulmonary emboli = Lemierre\'s Syndrome confirmed. Right empyema may require thoracostomy drainage. This is the "forgotten disease" — missed by most clinicians.' } } },
+      ] },
+      { group: 'Consults', items: [
+        { id: 'consult_lemierre_id', label: 'Infectious Disease + Vascular Surgery Consult', icon: 'consult', cost: 'stat', points: 35,
+          finding: { type: 'consult', title: 'Infectious Disease & Vascular Surgery', subtitle: 'Dr. Patel, ID / Dr. Torres, Vascular Surgery',
+            results: [
+              { name: 'Antibiotics',     val: 'Metronidazole 500mg IV q8h + Piperacillin-tazobactam',    flag: 'critical' },
+              { name: 'Anticoagulation', val: 'Therapeutic LMWH — controversial but recommended in IJV thrombosis', flag: 'abnormal' },
+              { name: 'Duration',        val: '6 weeks IV antibiotics minimum — IJV ligation if septic',  flag: 'abnormal' },
+              { name: 'Thoracic',        val: 'Thoracentesis / thoracostomy for empyema drainage',        flag: 'abnormal' },
+            ],
+            note: { type: 'alert', text: 'Anaerobic antibiotic coverage is essential — standard cephalosporins do NOT cover Fusobacterium. Add metronidazole or use a beta-lactam/beta-lactamase inhibitor.' } } },
+      ] },
+    ],
+    dispositions: [
+      { id: 'disp_lemierre_correct', label: 'ICU — IV Anaerobic Abx + Anticoagulation + ID Consult', icon: 'er', outcome: 'correct', points: 200,
+        feedback: { title: 'Correct — Lemierre\'s Requires Aggressive Management', grade: 'Excellent',
+          body: 'Connor has Lemierre\'s Syndrome: Fusobacterium necrophorum septic thrombophlebitis of the right IJV with septic pulmonary emboli and empyema. ICU admission, anaerobic coverage (metronidazole + pip-tazo), therapeutic anticoagulation for the IJV thrombus, and thoracic drainage of empyema is correct. This "forgotten disease" carries significant mortality when missed.' } },
+      { id: 'disp_lemierre_pe', label: 'Anticoagulate Only — Pulmonary Embolism Protocol', icon: 'rx', outcome: 'partial', points: 30,
+        feedback: { title: 'Incomplete — Source Not Addressed', grade: 'Incomplete',
+          body: 'Anticoagulation for the thrombosis is appropriate and you correctly identified the embolic picture, but this is SEPTIC embolism from Fusobacterium, not a bland PE. Without anaerobic antibiotics targeting Fusobacterium (metronidazole, pip-tazo), the infectious source continues to seed. Antibiotics are the primary intervention.' } },
+      { id: 'disp_lemierre_standard_abx', label: 'Standard Sepsis Protocol — Ceftriaxone + Fluids', icon: 'admit', outcome: 'incorrect', points: -80,
+        feedback: { title: 'Inadequate Coverage — Fusobacterium Missed', grade: 'Critical Error',
+          body: 'Ceftriaxone has poor anaerobic coverage and inadequate activity against Fusobacterium necrophorum. Standard sepsis antibiotics without metronidazole or a beta-lactam/beta-lactamase inhibitor will fail to clear this infection. Additionally, the IJV thrombosis requires anticoagulation which was not addressed.' } },
+    ],
+    correctDisposition: 'disp_lemierre_correct',
+    criticalActions: ['lab_lemierre_cx', 'img_lemierre_ct', 'consult_lemierre_id'],
+  },
+
+  // ─── ER Case 9: Ludwig's Angina ───────────────────────
+  {
+    id: 21, specialty: 'er',
+    meta: { title: 'Neck Swelling & Muffled Voice', tagLabels: [{ t: 'CRITICAL', cls: 'urgent' }, { t: 'Airway Emergency', cls: '' }] },
+    patient: {
+      name: 'Raymond K.', age: 47, sex: 'Male', avatar: 'male', emoji: '👨',
+      chiefComplaint: 'Severe jaw pain, neck swelling, difficulty swallowing, muffled voice — 3 days',
+      vitals: [
+        { label: 'BP',     value: '142/88',  status: 'abnormal'   },
+        { label: 'HR',     value: '118 bpm', status: 'abnormal'   },
+        { label: 'RR',     value: '22 /min', status: 'borderline' },
+        { label: 'Temp',   value: '38.9 °C', status: 'abnormal'   },
+        { label: 'O₂ Sat', value: '95%',     status: 'abnormal'   },
+        { label: 'Pain',   value: '9 / 10',  status: 'abnormal'   },
+      ],
+      history: '47-year-old male with poorly controlled diabetes and no dental insurance who had a painful lower left molar for 3 weeks. 3 days ago his jaw and neck began swelling. Now presents with severe submandibular swelling, inability to fully open his mouth (trismus), muffled "hot potato" voice, difficulty swallowing his own saliva, and feels like he cannot breathe properly when lying down.',
+      pmh: 'Type 2 Diabetes Mellitus (poorly controlled, HbA1c 11.8%), hypertension. No dental care in 6 years.',
+      medications: 'Metformin 500 mg BID (inconsistent)',
+      allergies: 'Clindamycin (rash)',
+      social: 'Non-smoker, occasional beer. Construction worker. No dental insurance.',
+      family: 'Non-contributory',
+    },
+    actions: [
+      { group: 'Physical Exam', items: [
+        { id: 'pe_ludwigs', label: 'Oropharyngeal & Neck Airway Assessment', icon: 'exam', cost: null, points: 50,
+          finding: { type: 'exam', title: 'Oropharyngeal & Neck Examination', subtitle: 'Airway Priority',
+            results: [
+              { name: 'Trismus',          val: 'Maximum inter-incisor opening 12 mm (normal > 35 mm)',    flag: 'critical' },
+              { name: 'Floor of mouth',   val: 'Indurated, tender, "woody" hardness — bilateral brawny edema', flag: 'critical' },
+              { name: 'Tongue',           val: 'Elevated and displaced posteriorly — airway threat',      flag: 'critical' },
+              { name: 'Voice',            val: 'Muffled "hot potato" dysphonia',                          flag: 'critical' },
+              { name: 'Submandibular',    val: 'Bilateral firm non-fluctuant swelling extending to neck', flag: 'critical' },
+              { name: 'O₂ on sitting up', val: 'Improves to 97% — cannot lie supine (airway collapses)', flag: 'abnormal' },
+            ],
+            note: { type: 'alert', text: 'Bilateral submandibular woody induration + tongue elevation + trismus + "hot potato" voice = Ludwig\'s Angina. THIS IS AN AIRWAY EMERGENCY. Call anesthesia NOW for awake fiberoptic intubation before further assessment.' } } },
+      ] },
+      { group: 'Labs', items: [
+        { id: 'lab_ludwigs_panel', label: 'CBC / BMP / Blood Cultures / Glucose', icon: 'lab', cost: 'stat', points: 25,
+          finding: { type: 'labs', title: 'Emergency Lab Panel', subtitle: 'Stat',
+            results: [
+              { name: 'WBC',     val: '24.6 × 10³/µL', ref: '(4.5–11)',   flag: 'critical' },
+              { name: 'Glucose', val: '312 mg/dL',       ref: '(70–100)',   flag: 'critical' },
+              { name: 'HbA1c',   val: '11.8%',           ref: '(< 5.7)',    flag: 'critical' },
+              { name: 'Creatinine', val: '1.6 mg/dL',   ref: '(0.7–1.2)', flag: 'abnormal' },
+              { name: 'Blood cultures', val: 'Drawn — preliminary negative (cellulitis, not abscess)', flag: 'normal' },
+            ],
+            note: { type: 'alert', text: 'Poorly controlled diabetes (HbA1c 11.8%) dramatically worsens polymicrobial head and neck infections. Diabetic patients have impaired leukocyte function — infection spreads rapidly through fascial planes.' } } },
+      ] },
+      { group: 'Imaging', items: [
+        { id: 'img_ludwigs_ct', label: 'CT Neck with Contrast (Soft Tissue Protocol)', icon: 'imaging', cost: 'stat', points: 40,
+          finding: { type: 'imaging', title: 'CT Neck — Soft Tissue Contrast', subtitle: 'Stat — After Airway Secured',
+            results: [
+              { name: 'Sublingual space',     val: 'Bilateral phlegmon — no discrete abscess (cellulitis stage)', flag: 'critical' },
+              { name: 'Submandibular space',  val: 'Bilateral involvement — "woody" edema pattern',             flag: 'critical' },
+              { name: 'Parapharyngeal',       val: 'Right parapharyngeal extension — early spread',             flag: 'critical' },
+              { name: 'Airway',               val: 'Trachea displaced and narrowed at oropharynx to 6 mm',      flag: 'critical' },
+              { name: 'Dental origin',        val: 'Periapical abscess at left lower 2nd molar — source',       flag: 'abnormal' },
+            ],
+            note: { type: 'warn', text: 'CT ONLY after airway is secured — do not delay airway management for imaging. Spread to parapharyngeal space risks descending necrotizing mediastinitis, a lethal complication.' } } },
+      ] },
+      { group: 'Consults', items: [
+        { id: 'consult_ludwigs_ents', label: 'ENT + Anesthesia + Oral Surgery Consult', icon: 'consult', cost: 'stat', points: 40,
+          finding: { type: 'consult', title: 'ENT, Anesthesia & Oral Surgery', subtitle: 'Dr. Wu, ENT / Dr. Kim, Anesthesia',
+            results: [
+              { name: 'Airway plan',  val: 'Awake fiberoptic intubation at bedside — tracheostomy on standby', flag: 'critical' },
+              { name: 'Antibiotics',  val: 'Ampicillin-sulbactam 3g IV q6h + Metronidazole 500mg IV q8h',       flag: 'critical' },
+              { name: 'Surgery',      val: 'Submandibular decompression incision and drainage in OR',            flag: 'critical' },
+              { name: 'Dental source',val: 'Tooth #18 extraction under general anesthesia at time of I&D',      flag: 'abnormal' },
+              { name: 'Steroids',     val: 'Dexamethasone 10 mg IV × 1 to reduce airway edema',                 flag: 'abnormal' },
+            ],
+            note: { type: 'alert', text: 'Ludwig\'s Angina: never attempt blind intubation or RSI — airway distortion makes it nearly impossible without fiberoptic guidance. If unable to intubate, surgical airway (cricothyrotomy or tracheostomy) is lifesaving.' } } },
+      ] },
+    ],
+    dispositions: [
+      { id: 'disp_ludwigs_correct', label: 'Awake Fiberoptic Intubation → OR → ICU', icon: 'er', outcome: 'correct', points: 200,
+        feedback: { title: 'Correct — Airway First, Then Definitive Surgical Care', grade: 'Excellent',
+          body: 'Raymond has Ludwig\'s Angina with imminent airway compromise. Awake fiberoptic intubation (with tracheostomy standby), IV polymicrobial antibiotics, and emergent OR for submandibular decompression + dental extraction is the correct management. Delaying airway management for any reason — including imaging — risks fatal asphyxiation.' } },
+      { id: 'disp_ludwigs_abx_only', label: 'IV Antibiotics — Admit to Floor, Monitor', icon: 'admit', outcome: 'partial', points: -40,
+        feedback: { title: 'Incomplete — Airway Emergency Underestimated', grade: 'Significant Error',
+          body: 'IV antibiotics are necessary but insufficient. Ludwig\'s Angina requires immediate surgical airway planning and OR decompression. A 6 mm tracheal lumen can close completely with any positional change. Admitting without securing the airway and planning surgical drainage risks fatal airway collapse on the floor.' } },
+      { id: 'disp_ludwigs_discharge', label: 'Oral Antibiotics — Dental Follow-up Next Week', icon: 'home', outcome: 'incorrect', points: -200,
+        feedback: { title: 'Fatal Error — Airway Emergency Dismissed', grade: 'Fatal Error',
+          body: 'This patient has bilateral fascial space infection with a 6 mm airway lumen. Discharge with oral antibiotics and delayed dental care will result in complete airway obstruction and death within hours. Oral antibiotics cannot penetrate the woody cellulitic tissue adequately.' } },
+    ],
+    correctDisposition: 'disp_ludwigs_correct',
+    criticalActions: ['pe_ludwigs', 'img_ludwigs_ct', 'consult_ludwigs_ents'],
+  },
+
+  // ─── ER Case 10: Capnocytophaga Sepsis ───────────────
+  {
+    id: 22, specialty: 'er',
+    meta: { title: 'Dog Bite Septic Shock', tagLabels: [{ t: 'CRITICAL', cls: 'urgent' }, { t: 'Infectious Disease', cls: '' }] },
+    patient: {
+      name: 'Gerald H.', age: 61, sex: 'Male', avatar: 'male', emoji: '👨',
+      chiefComplaint: 'Rigors, purpuric rash, hypotension — 3 days after minor dog bite',
+      vitals: [
+        { label: 'BP',     value: '72/44',   status: 'abnormal'   },
+        { label: 'HR',     value: '142 bpm', status: 'abnormal'   },
+        { label: 'RR',     value: '30 /min', status: 'abnormal'   },
+        { label: 'Temp',   value: '40.4 °C', status: 'abnormal'   },
+        { label: 'O₂ Sat', value: '89%',     status: 'abnormal'   },
+        { label: 'Lactate',value: '8.2 mmol',status: 'abnormal'   },
+      ],
+      history: '61-year-old male brought in by his wife in septic shock. Three days ago, their healthy family golden retriever nipped his hand — he barely bled, cleaned it with soap, dismissed it as trivial. He had a splenectomy following a motor vehicle accident 12 years ago. Yesterday he developed rigors; today he is barely arousable with a spreading purpuric rash on his extremities.',
+      pmh: 'Asplenia (post-traumatic splenectomy 12 years ago), hypertension, type 2 diabetes. He was advised to have asplenia vaccinations but is not up to date.',
+      medications: 'Amlodipine 10 mg, metformin 1000 mg BID',
+      allergies: 'Sulfonamides',
+      social: 'Retired postal worker. Non-smoker. Dog owner. Vaccinations not updated since splenectomy.',
+      family: 'Non-contributory',
+    },
+    actions: [
+      { group: 'Physical Exam', items: [
+        { id: 'pe_capno', label: 'Full Sepsis & Skin Examination', icon: 'exam', cost: null, points: 35,
+          finding: { type: 'exam', title: 'Systemic Examination', subtitle: 'Sepsis Assessment',
+            results: [
+              { name: 'Skin',          val: 'Extensive purpuric plaques — bilateral arms and legs, rapidly expanding', flag: 'critical' },
+              { name: 'Right hand',    val: 'Small puncture wounds — dog bite site, erythematous but non-purulent', flag: 'abnormal' },
+              { name: 'Mental status', val: 'Disoriented, obtunded — GCS 9',                                         flag: 'critical' },
+              { name: 'Capillary refill', val: '> 5 seconds — cold clammy extremities',                             flag: 'critical' },
+              { name: 'Abdomen',       val: 'No spleen palpable — splenectomy scar present',                         flag: 'abnormal' },
+            ],
+            note: { type: 'alert', text: 'Asplenic patient with dog bite + purpuric rash + septic shock = Overwhelming Post-Splenectomy Infection (OPSI). Capnocytophaga canimorsus is a gram-negative oral flora of dogs — nearly universally fatal in asplenic hosts without immediate treatment. Mortality > 60% once shock develops.' } } },
+      ] },
+      { group: 'Labs', items: [
+        { id: 'lab_capno_cx', label: 'Blood Cultures × 2 + Wound Culture', icon: 'lab', cost: 'stat', points: 40,
+          finding: { type: 'labs', title: 'Blood & Wound Cultures', subtitle: 'Stat — Before Antibiotics',
+            results: [
+              { name: 'Blood culture (aerobic)',  val: 'Thin, fusiform gram-negative rods — Capnocytophaga canimorsus', flag: 'critical' },
+              { name: 'Sensitivity',              val: 'Susceptible to amoxicillin-clavulanate, penicillin, carbapenems', flag: 'normal' },
+              { name: 'Wound culture',            val: 'Capnocytophaga — same organism',                                  flag: 'critical' },
+            ],
+            note: { type: 'alert', text: 'Capnocytophaga canimorsus: normal oral flora of dogs and cats. Asplenic patients lack the ability to clear encapsulated organisms and gram-negative bacteremia — even a minor bite can be fatal within 24–72 hours.' } } },
+        { id: 'lab_capno_dic', label: 'CBC / Coagulation / DIC Panel / BMP', icon: 'lab', cost: 'stat', points: 30,
+          finding: { type: 'labs', title: 'DIC Workup & Organ Function', subtitle: 'Stat',
+            results: [
+              { name: 'WBC',        val: '1.2 × 10³/µL',  ref: '(4.5–11)',   flag: 'critical' },
+              { name: 'Platelets',  val: '14 × 10³/µL',    ref: '(150–400)', flag: 'critical' },
+              { name: 'INR',        val: '4.8',             ref: '(< 1.1)',   flag: 'critical' },
+              { name: 'Fibrinogen', val: '60 mg/dL',        ref: '(200–400)', flag: 'critical' },
+              { name: 'D-Dimer',    val: '> 20,000 ng/mL', ref: '(< 500)',   flag: 'critical' },
+              { name: 'Creatinine', val: '4.2 mg/dL',      ref: '(0.7–1.2)', flag: 'critical' },
+            ],
+            note: { type: 'alert', text: 'Fulminant DIC with multi-organ failure. The purpuric skin lesions represent cutaneous infarction from microvascular thrombosis — a manifestation of DIC. This is OPSI — immediate broad-spectrum antibiotics and ICU resuscitation are lifesaving.' } } },
+      ] },
+      { group: 'Imaging', items: [
+        { id: 'img_capno_cxr', label: 'Chest X-Ray (ARDS screen)', icon: 'imaging', cost: 'stat', points: 15,
+          finding: { type: 'imaging', title: 'Chest X-Ray', subtitle: 'Portable AP',
+            results: [
+              { name: 'Lung fields', val: 'Bilateral interstitial infiltrates — early ARDS pattern', flag: 'critical' },
+              { name: 'Heart',       val: 'Normal cardiac silhouette',                                flag: 'normal'   },
+            ],
+            note: { type: 'warn', text: 'Bilateral infiltrates consistent with sepsis-induced ARDS. This patient may require mechanical ventilation in addition to resuscitation.' } } },
+      ] },
+      { group: 'Consults', items: [
+        { id: 'consult_capno_id', label: 'Infectious Disease + Hematology Consult', icon: 'consult', cost: 'stat', points: 35,
+          finding: { type: 'consult', title: 'Infectious Disease & Hematology', subtitle: 'Dr. Chen, ID / Dr. Park, Hematology',
+            results: [
+              { name: 'Antibiotic',     val: 'Piperacillin-tazobactam 4.5g IV q6h IMMEDIATELY',           flag: 'critical' },
+              { name: 'DIC management', val: 'FFP + cryoprecipitate + platelet transfusion for bleeding', flag: 'critical' },
+              { name: 'Vasopressors',   val: 'Norepinephrine 0.1–0.3 mcg/kg/min — MAP target > 65',       flag: 'critical' },
+              { name: 'OPSI protocol',  val: 'Asplenic patients must be counselled about dog/cat bite danger and updated vaccinations after recovery', flag: 'abnormal' },
+            ],
+            note: { type: 'alert', text: 'OPSI carries 50–70% mortality once septic shock is established. Every 30 minutes of antibiotic delay increases mortality by ~7%. Do not wait for culture results.' } } },
+      ] },
+    ],
+    dispositions: [
+      { id: 'disp_capno_correct', label: 'ICU — Pip-Tazo + Vasopressors + DIC Management', icon: 'er', outcome: 'correct', points: 200,
+        feedback: { title: 'Correct — OPSI Requires Immediate Aggressive Treatment', grade: 'Excellent',
+          body: 'Gerald has Overwhelming Post-Splenectomy Infection (OPSI) from Capnocytophaga canimorsus — rare, but devastatingly lethal in asplenic hosts. Immediate broad-spectrum IV antibiotics (pip-tazo or meropenem), vasopressors, DIC management, and ICU care is correct. Asplenic patients must always be counseled about animal bite risks.' } },
+      { id: 'disp_capno_abx_oral', label: 'Amoxicillin-Clavulanate PO — Wound Care', icon: 'rx', outcome: 'incorrect', points: -200,
+        feedback: { title: 'Fatal Error — Severity of OPSI Missed', grade: 'Fatal Error',
+          body: 'This patient is in septic shock with DIC, multi-organ failure, and purpuric skin necrosis. Oral antibiotics and wound care is appropriate for a HEALTHY patient with a dog bite, but this asplenic man in shock requires ICU admission, IV antibiotics, vasopressors, and blood product support. Discharge would be fatal.' } },
+      { id: 'disp_capno_wound_only', label: 'Wound Irrigation — Observation in ED', icon: 'admit', outcome: 'incorrect', points: -150,
+        feedback: { title: 'Catastrophically Under-Treated', grade: 'Critical Error',
+          body: 'The bite wound is trivial — the organism has already disseminated hematogenously. The problem is not the wound but fulminant bacteremia in an asplenic host. Wound care without antibiotics and resuscitation will not address the life-threatening bacteremia and shock.' } },
+    ],
+    correctDisposition: 'disp_capno_correct',
+    criticalActions: ['lab_capno_cx', 'lab_capno_dic', 'consult_capno_id'],
+  },
+
+  // ─── ER Case 11: Acute Angle-Closure Glaucoma ─────────
+  {
+    id: 23, specialty: 'er',
+    meta: { title: 'Unilateral Eye Pain & Headache', tagLabels: [{ t: 'URGENT', cls: 'urgent' }, { t: 'Ophthalmology', cls: '' }] },
+    patient: {
+      name: 'Margot V.', age: 66, sex: 'Female', avatar: 'female', emoji: '👩',
+      chiefComplaint: 'Sudden unilateral eye pain, halos around lights, headache, nausea',
+      vitals: [
+        { label: 'BP',     value: '168/96',  status: 'abnormal'   },
+        { label: 'HR',     value: '88 bpm',  status: 'normal'     },
+        { label: 'RR',     value: '14 /min', status: 'normal'     },
+        { label: 'Temp',   value: '36.9 °C', status: 'normal'     },
+        { label: 'O₂ Sat', value: '98%',     status: 'normal'     },
+        { label: 'Pain',   value: '8 / 10',  status: 'abnormal'   },
+      ],
+      history: '66-year-old farsighted female who was in a dim movie theater last evening. She developed sudden severe left eye pain, headache over the left side, and began seeing rainbow halos around lights. She vomited twice. She was previously misdiagnosed with migraine. She noticed her vision in the left eye is blurry and her eye looks red. She takes no eye drops.',
+      pmh: 'Hyperopia (farsighted), mild hypertension. No prior eye surgery.',
+      medications: 'Hydrochlorothiazide 25 mg QD',
+      allergies: 'NKDA',
+      social: 'Non-smoker, retired art teacher. Asian descent (higher anatomical risk).',
+      family: 'Sister had "eye pressure problem"',
+    },
+    actions: [
+      { group: 'Physical Exam', items: [
+        { id: 'pe_glaucoma', label: 'Ocular Examination (Slit Lamp + Tonometry)', icon: 'exam', cost: null, points: 50,
+          finding: { type: 'exam', title: 'Ocular Examination', subtitle: 'Left Eye — Detailed',
+            results: [
+              { name: 'Visual acuity (L)',  val: '20/200 — severely reduced (was 20/40)',          flag: 'critical' },
+              { name: 'Pupil (L)',          val: 'Fixed, mid-dilated (~5mm), non-reactive to light', flag: 'critical' },
+              { name: 'Cornea (L)',         val: 'Hazy/steamy — corneal edema from high IOP',       flag: 'critical' },
+              { name: 'Conjunctiva (L)',    val: 'Ciliary flush — circumlimbal injection',           flag: 'abnormal' },
+              { name: 'Anterior chamber',  val: 'Shallow — narrow angle confirmed',                 flag: 'critical' },
+              { name: 'Globe',             val: 'Rock-hard to palpation',                            flag: 'critical' },
+            ],
+            note: { type: 'alert', text: 'Fixed mid-dilated pupil + corneal haze + rock-hard eye + halos = Acute Angle-Closure Glaucoma. IOP must be measured immediately. Every hour of elevated IOP causes irreversible ganglion cell death — vision loss is permanent without rapid treatment.' } } },
+      ] },
+      { group: 'Labs', items: [
+        { id: 'lab_glaucoma_iop', label: 'Intraocular Pressure Measurement (Tonometry)', icon: 'lab', cost: 'stat', points: 50,
+          finding: { type: 'labs', title: 'Intraocular Pressure — Goldmann Applanation Tonometry', subtitle: 'Stat',
+            results: [
+              { name: 'Left IOP',  val: '62 mmHg (CRITICAL — normal 10–21 mmHg)',  flag: 'critical' },
+              { name: 'Right IOP', val: '18 mmHg (normal)',                          flag: 'normal'   },
+              { name: 'Gonioscopy',val: 'Closed angle — 360° iridotrabecular contact', flag: 'critical' },
+            ],
+            note: { type: 'alert', text: 'IOP 62 mmHg = 3× normal. At pressures above 40 mmHg, central retinal artery perfusion pressure is exceeded — acute ischemic optic neuropathy and permanent vision loss develop within hours. Begin IOP-lowering therapy IMMEDIATELY.' } } },
+      ] },
+      { group: 'Imaging', items: [
+        { id: 'img_glaucoma_oct', label: 'Ocular Ultrasound (B-scan) / OCT Anterior Segment', icon: 'imaging', cost: null, points: 20,
+          finding: { type: 'imaging', title: 'B-Scan Ocular Ultrasound', subtitle: 'Left Eye',
+            results: [
+              { name: 'Anterior chamber',val: 'Shallow — consistent with narrow angle anatomy',     flag: 'abnormal' },
+              { name: 'Lens position',   val: 'Anterior lens displacement — contributes to angle closure', flag: 'abnormal' },
+              { name: 'Vitreous',        val: 'Clear — no posterior pathology',                     flag: 'normal'   },
+            ],
+            note: { type: '', text: 'B-scan confirms anatomical narrow angle. Hyperfarsighted eye with short axial length predisposes to angle closure — worsened by pupil dilation in dim light (movie theater).' } } },
+      ] },
+      { group: 'Consults', items: [
+        { id: 'consult_glaucoma_oph', label: 'Ophthalmology Emergency Consult', icon: 'consult', cost: 'stat', points: 40,
+          finding: { type: 'consult', title: 'Ophthalmology Emergency Consultation', subtitle: 'Dr. Hashimoto, Ophthalmology',
+            results: [
+              { name: 'Timolol 0.5%',    val: '1 drop left eye q15min × 2 — reduces aqueous production',   flag: 'critical' },
+              { name: 'Brimonidine 0.2%',val: '1 drop left eye — reduces aqueous production',               flag: 'critical' },
+              { name: 'Pilocarpine 2%',  val: '1 drop q15min × 2 — miotic agent, opens drainage angle',    flag: 'critical' },
+              { name: 'Acetazolamide',   val: '500 mg IV — systemic carbonic anhydrase inhibitor',          flag: 'critical' },
+              { name: 'Mannitol',        val: '1 g/kg IV over 30 min if IOP not controlled',               flag: 'abnormal' },
+              { name: 'Definitive',      val: 'Laser peripheral iridotomy both eyes within 24–48 hours',   flag: 'critical' },
+            ],
+            note: { type: 'alert', text: 'Bilateral laser peripheral iridotomy (LPI) is the definitive treatment to prevent recurrence. The fellow eye must also be treated prophylactically — 50% of fellow eyes develop acute closure within 5 years without LPI.' } } },
+      ] },
+    ],
+    dispositions: [
+      { id: 'disp_glaucoma_correct', label: 'Emergency IOP Reduction + Ophthalmology + Laser LPI', icon: 'er', outcome: 'correct', points: 200,
+        feedback: { title: 'Correct — Vision-Saving Management', grade: 'Excellent',
+          body: 'Margot has Acute Angle-Closure Glaucoma with IOP of 62 mmHg. Immediate multi-drug IOP reduction (topical timolol + pilocarpine + acetazolamide ± mannitol), urgent ophthalmology consultation, and definitive laser peripheral iridotomy is correct. Without treatment within hours, permanent vision loss is inevitable.' } },
+      { id: 'disp_glaucoma_migraine', label: 'Migraine Protocol — Sumatriptan + Antiemetics', icon: 'rx', outcome: 'incorrect', points: -120,
+        feedback: { title: 'Dangerous Misdiagnosis — Glaucoma Dismissed', grade: 'Critical Error',
+          body: 'This is the classic missed diagnosis of acute angle-closure glaucoma — mistaken for migraine. The fixed mid-dilated pupil, rock-hard eye, and IOP of 62 mmHg distinguish it definitively. Triptans have no role. Every hour without IOP reduction causes irreversible retinal ganglion cell death.' } },
+      { id: 'disp_glaucoma_neuro', label: 'CT Head — Rule Out Intracranial Pathology', icon: 'rx', outcome: 'partial', points: 20,
+        feedback: { title: 'Partial Credit — Correct to Rule Out Stroke, But Eye Missed', grade: 'Incomplete',
+          body: 'Ruling out intracranial pathology is reasonable given headache and vision change, but the ocular examination findings (fixed pupil, corneal haze, rock-hard eye) should diagnose angle-closure glaucoma clinically. A CT head adds delay without directing the correct treatment. The ophthalmologist should have been called simultaneously.' } },
+    ],
+    correctDisposition: 'disp_glaucoma_correct',
+    criticalActions: ['pe_glaucoma', 'lab_glaucoma_iop', 'consult_glaucoma_oph'],
+  },
+
+  // ─── ER Case 12: Myxedema Coma ────────────────────────
+  {
+    id: 24, specialty: 'er',
+    meta: { title: 'Unresponsive — Found at Home', tagLabels: [{ t: 'CRITICAL', cls: 'urgent' }, { t: 'Endocrinology', cls: '' }] },
+    patient: {
+      name: 'Evelyn T.', age: 74, sex: 'Female', avatar: 'female', emoji: '👩',
+      chiefComplaint: 'Found unresponsive at home, hypothermic, bradycardic — not herself for 3 months',
+      vitals: [
+        { label: 'BP',     value: '88/56',   status: 'abnormal'   },
+        { label: 'HR',     value: '42 bpm',  status: 'abnormal'   },
+        { label: 'RR',     value: '8 /min',  status: 'abnormal'   },
+        { label: 'Temp',   value: '33.8 °C', status: 'abnormal'   },
+        { label: 'O₂ Sat', value: '88%',     status: 'abnormal'   },
+        { label: 'GCS',    value: '6 / 15',  status: 'abnormal'   },
+      ],
+      history: '74-year-old female with known hypothyroidism found unresponsive on her bathroom floor by her daughter. Daughter reports her mother had been "slowing down" for months — gaining weight, sleeping excessively, constipated, and increasingly confused. On examination, she ran out of levothyroxine 4 months ago and could not afford refills. She has not answered the phone in 2 days. Found in a cold house (thermostat set to 62°F) which she claimed to prefer.',
+      pmh: 'Hypothyroidism (diagnosed 12 years ago), hypertension, atrial fibrillation',
+      medications: 'Levothyroxine 100 mcg QD (not refilled × 4 months), metoprolol 25 mg BID, warfarin 2.5 mg QD',
+      allergies: 'Penicillin (anaphylaxis)',
+      social: 'Widow, lives alone, retired school librarian. Daughter lives 2 hours away.',
+      family: 'Sister with Hashimoto\'s thyroiditis',
+    },
+    actions: [
+      { group: 'Physical Exam', items: [
+        { id: 'pe_myxedema', label: 'Full Physical Examination', icon: 'exam', cost: null, points: 45,
+          finding: { type: 'exam', title: 'Complete Physical Examination', subtitle: 'Myxedema Assessment',
+            results: [
+              { name: 'Consciousness',    val: 'GCS 6 — responds only to pain (E1V2M3)',                    flag: 'critical' },
+              { name: 'Skin',             val: 'Pale, dry, doughy — non-pitting periorbital edema',         flag: 'abnormal' },
+              { name: 'Hair/eyebrows',    val: 'Thinning scalp hair, lateral eyebrow loss (Queen Anne sign)', flag: 'abnormal' },
+              { name: 'Tongue',           val: 'Macroglossia — large, doughy tongue',                       flag: 'abnormal' },
+              { name: 'Reflexes',         val: 'Markedly delayed relaxation phase (hung-up reflexes)',       flag: 'critical' },
+              { name: 'Abdomen',          val: 'Distended — paralytic ileus, no bowel sounds',              flag: 'abnormal' },
+            ],
+            note: { type: 'alert', text: 'Hypothermia + bradycardia + hypoventilation + coma + macroglossia + hung-up reflexes in a hypothyroid patient off meds = Myxedema Coma. Mortality 20–40% even with treatment. Do not rewarm rapidly — use passive rewarming only.' } } },
+      ] },
+      { group: 'Labs', items: [
+        { id: 'lab_myxedema_tsh', label: 'TSH / Free T4 / Free T3 (Stat)', icon: 'lab', cost: 'stat', points: 50,
+          finding: { type: 'labs', title: 'Thyroid Function Tests', subtitle: 'Stat',
+            results: [
+              { name: 'TSH',     val: '> 100 mIU/L',   ref: '(0.4–4.0)',     flag: 'critical' },
+              { name: 'Free T4', val: '0.2 ng/dL',      ref: '(0.8–1.8)',     flag: 'critical' },
+              { name: 'Free T3', val: '< 0.5 pg/mL',   ref: '(2.3–4.2)',    flag: 'critical' },
+            ],
+            note: { type: 'alert', text: 'TSH > 100 with critically low Free T4/T3 confirms severe hypothyroidism. In myxedema coma, T4 must be replaced IV. Do NOT wait for thyroid labs to start treatment — clinical diagnosis is sufficient.' } } },
+        { id: 'lab_myxedema_panel', label: 'ABG / Cortisol / CBC / BMP / Glucose', icon: 'lab', cost: 'stat', points: 30,
+          finding: { type: 'labs', title: 'Critical Care Labs', subtitle: 'Stat',
+            results: [
+              { name: 'PaCO₂',    val: '68 mmHg',     ref: '(35–45)',   flag: 'critical' },
+              { name: 'PaO₂',     val: '52 mmHg',     ref: '(80–100)', flag: 'critical' },
+              { name: 'Na',       val: '122 mEq/L',   ref: '(136–145)', flag: 'critical' },
+              { name: 'Glucose',  val: '44 mg/dL',    ref: '(70–100)', flag: 'critical' },
+              { name: 'Cortisol', val: '4.2 mcg/dL',  ref: '(6–23 AM)',flag: 'abnormal' },
+              { name: 'INR',      val: '3.8',          ref: '(< 1.1)',  flag: 'critical' },
+            ],
+            note: { type: 'alert', text: 'Hyponatremia (SIADH), hypoglycemia, CO₂ retention (hypoventilation), and low cortisol suggest concurrent adrenal insufficiency. Give hydrocortisone BEFORE levothyroxine — thyroid replacement without cortisol can precipitate adrenal crisis.' } } },
+      ] },
+      { group: 'Imaging', items: [
+        { id: 'img_myxedema_cxr', label: 'Chest X-Ray & EKG', icon: 'imaging', cost: 'stat', points: 20,
+          finding: { type: 'imaging', title: 'Chest X-Ray & EKG', subtitle: 'Stat',
+            results: [
+              { name: 'Cardiac silhouette', val: 'Markedly enlarged — pericardial effusion',           flag: 'critical' },
+              { name: 'EKG',                val: 'Sinus bradycardia 42 bpm — low voltage, flat T waves', flag: 'critical' },
+              { name: 'EKG — Osborn waves', val: 'Present at J-point (hypothermia signature)',           flag: 'abnormal' },
+            ],
+            note: { type: 'warn', text: 'Pericardial effusion (myxedema pericarditis) + low voltage EKG + Osborn waves = hypothyroid cardiomyopathy. Pericardiocentesis rarely needed — resolves with thyroid replacement.' } } },
+      ] },
+      { group: 'Consults', items: [
+        { id: 'consult_myxedema_endo', label: 'Endocrinology + ICU Consult', icon: 'consult', cost: 'stat', points: 35,
+          finding: { type: 'consult', title: 'Endocrinology & Critical Care', subtitle: 'Dr. Nguyen, Endocrinology',
+            results: [
+              { name: 'Step 1',           val: 'Hydrocortisone 100 mg IV q8h — BEFORE thyroid hormone',         flag: 'critical' },
+              { name: 'Step 2',           val: 'Levothyroxine 200–400 mcg IV loading dose, then 50–100 mcg/day', flag: 'critical' },
+              { name: 'Liothyronine T3',  val: '10 mcg IV q8h — some centers add T3 for severe cases',          flag: 'abnormal' },
+              { name: 'Rewarming',        val: 'Passive rewarming ONLY — warm blankets, warm IV fluids',         flag: 'critical' },
+              { name: 'Ventilation',      val: 'Intubate now — CO₂ 68, RR 8, severe hypoventilation',           flag: 'critical' },
+            ],
+            note: { type: 'alert', text: 'Critical sequence: Hydrocortisone FIRST → then Levothyroxine IV. Reversing this order risks precipitating adrenal crisis. Active external rewarming (heating blankets, warm water immersion) causes peripheral vasodilation and cardiovascular collapse — passive rewarming only.' } } },
+      ] },
+    ],
+    dispositions: [
+      { id: 'disp_myxedema_correct', label: 'Intubate + IV T4/Hydrocortisone + ICU', icon: 'er', outcome: 'correct', points: 200,
+        feedback: { title: 'Correct — Myxedema Coma Protocol', grade: 'Excellent',
+          body: 'Evelyn has myxedema coma with hypoventilation, hypothermia, and cardiovascular compromise. Immediate intubation (CO₂ 68), IV hydrocortisone FIRST (adrenal insufficiency must be covered), then IV levothyroxine loading, passive rewarming, glucose correction, and ICU admission is the correct sequence. Mortality is 20–40% even with optimal care.' } },
+      { id: 'disp_myxedema_oral', label: 'Oral Levothyroxine — Warm Up — General Ward', icon: 'admit', outcome: 'incorrect', points: -150,
+        feedback: { title: 'Incorrect Route and Inadequate Level of Care', grade: 'Critical Error',
+          body: 'Oral levothyroxine is not appropriate when the patient is comatose (aspiration risk, unreliable absorption). IV levothyroxine is required in myxedema coma. Additionally, CO₂ retention at 68 mmHg requires intubation — general ward admission without airway management will lead to respiratory arrest.' } },
+      { id: 'disp_myxedema_sepsis', label: 'Empiric Sepsis Antibiotics — Rule Out Infection', icon: 'rx', outcome: 'partial', points: 30,
+        feedback: { title: 'Partial — Infection Ruled Out But Root Cause Missed', grade: 'Incomplete',
+          body: 'Hypothermia + coma can be caused by sepsis (especially in elderly), so empiric antibiotics while workup is pending is defensible. However, the clinical picture — macroglossia, periorbital edema, hung-up reflexes, TSH > 100, off levothyroxine × 4 months — makes myxedema coma the diagnosis. Antibiotics alone will not save this patient.' } },
+    ],
+    correctDisposition: 'disp_myxedema_correct',
+    criticalActions: ['lab_myxedema_tsh', 'lab_myxedema_panel', 'consult_myxedema_endo'],
+  },
+
+  // ─── ER Case 13: Pheochromocytoma Crisis ─────────────
+  {
+    id: 25, specialty: 'er',
+    meta: { title: 'Paroxysmal Hypertensive Crisis', tagLabels: [{ t: 'CRITICAL', cls: 'urgent' }, { t: 'Endocrinology', cls: '' }] },
+    patient: {
+      name: 'Derek F.', age: 38, sex: 'Male', avatar: 'male', emoji: '👨',
+      chiefComplaint: 'BP 262/148, severe headache, diaphoresis, palpitations — episodic × 8 months',
+      vitals: [
+        { label: 'BP',     value: '262/148', status: 'abnormal'   },
+        { label: 'HR',     value: '148 bpm', status: 'abnormal'   },
+        { label: 'RR',     value: '22 /min', status: 'borderline' },
+        { label: 'Temp',   value: '37.6 °C', status: 'normal'     },
+        { label: 'O₂ Sat', value: '96%',     status: 'normal'     },
+        { label: 'Glucose',value: '218 mg/dL',status: 'abnormal'  },
+      ],
+      history: '38-year-old male with a documented 8-month history of episodic "spells" — sudden onset severe headache, profuse diaphoresis, palpitations, and flushing lasting 20–40 minutes. Three prior ER visits diagnosed as "panic attacks" or "hypertensive urgency." Tonight\'s spell is lasting > 90 minutes and BP will not respond to labetalol given by EMS. He is extremely anxious and diaphoretic. He has never taken antihypertensives and was otherwise healthy.',
+      pmh: 'No prior hypertension diagnosis. Appendectomy age 22. Uncle reportedly had an "adrenal tumor."',
+      medications: 'None prescribed. Labetalol given by EMS en route.',
+      allergies: 'NKDA',
+      social: 'Non-smoker, non-drinker. High school PE teacher. Active and fit.',
+      family: 'Uncle had adrenal tumor. Maternal grandfather died of "stroke at young age."',
+    },
+    actions: [
+      { group: 'Physical Exam', items: [
+        { id: 'pe_pheo', label: 'Cardiovascular & Endocrine Examination', icon: 'exam', cost: null, points: 35,
+          finding: { type: 'exam', title: 'Cardiovascular & Systemic Examination', subtitle: '',
+            results: [
+              { name: 'Diaphoresis',     val: 'Profuse — soaking shirt, face and trunk',             flag: 'critical' },
+              { name: 'Fundoscopy',      val: 'Hypertensive retinopathy — grade III (flame haemorrhages)', flag: 'critical' },
+              { name: 'Neurological',    val: 'Encephalopathy — confusion, visual disturbance',       flag: 'critical' },
+              { name: 'Abdomen',         val: 'Right upper quadrant fullness on deep palpation — do not press further', flag: 'abnormal' },
+              { name: 'Skin',            val: 'Café-au-lait spots noted — 3 spots on torso',          flag: 'abnormal' },
+            ],
+            note: { type: 'alert', text: 'Episodic headache + diaphoresis + palpitations (the "triad") + hypertensive encephalopathy + positive family history + café-au-lait spots = Pheochromocytoma crisis. DO NOT give beta-blockers alone — this causes paradoxical worsening via unopposed alpha stimulation.' } } },
+      ] },
+      { group: 'Labs', items: [
+        { id: 'lab_pheo_catecholamines', label: 'Plasma Free Metanephrines (Stat)', icon: 'lab', cost: 'stat', points: 50,
+          finding: { type: 'labs', title: 'Plasma Free Metanephrines', subtitle: 'Diagnostic Gold Standard',
+            results: [
+              { name: 'Normetanephrine', val: '8,420 pg/mL', ref: '(normal < 145)',  flag: 'critical' },
+              { name: 'Metanephrine',    val: '4,180 pg/mL', ref: '(normal < 62)',   flag: 'critical' },
+              { name: 'Chromogranin A',  val: '940 ng/mL',   ref: '(normal < 76)',   flag: 'critical' },
+            ],
+            note: { type: 'alert', text: 'Plasma free metanephrines elevated > 4× normal = pheochromocytoma confirmed biochemically. Sensitivity 97% for pheo. Do not delay treatment waiting for these results — treat the crisis clinically.' } } },
+        { id: 'lab_pheo_panel', label: 'Troponin / BMP / CBC / Glucose', icon: 'lab', cost: 'stat', points: 20,
+          finding: { type: 'labs', title: 'Cardiac & Metabolic Panel', subtitle: 'Stat',
+            results: [
+              { name: 'Troponin I', val: '1.4 ng/mL',  ref: '(< 0.04)',  flag: 'critical' },
+              { name: 'Glucose',    val: '218 mg/dL',   ref: '(70–100)', flag: 'critical' },
+              { name: 'K+',         val: '3.1 mEq/L',  ref: '(3.5–5.0)',flag: 'abnormal' },
+              { name: 'WBC',        val: '16 × 10³/µL',ref: '(4.5–11)', flag: 'abnormal' },
+            ],
+            note: { type: 'warn', text: 'Troponin elevation reflects catecholamine-induced myocardial injury (Takotsubo-pattern or true infarction). Hyperglycemia and hypokalemia are catecholamine effects. Echo to assess LV function.' } } },
+      ] },
+      { group: 'Imaging', items: [
+        { id: 'img_pheo_ct', label: 'CT Abdomen/Pelvis with Contrast', icon: 'imaging', cost: 'stat', points: 40,
+          finding: { type: 'imaging', title: 'CT Abdomen & Pelvis — Contrast', subtitle: 'Stat — After BP Control',
+            results: [
+              { name: 'Right adrenal',  val: '5.8 cm heterogeneous mass — cystic center, peripheral enhancement', flag: 'critical' },
+              { name: 'Left adrenal',   val: 'Normal',                                                              flag: 'normal'   },
+              { name: 'Calcification',  val: 'Peripheral "egg-shell" calcification',                               flag: 'abnormal' },
+              { name: 'Lymph nodes',    val: 'No retroperitoneal adenopathy',                                       flag: 'normal'   },
+            ],
+            note: { type: 'alert', text: 'Right adrenal mass with classic pheo morphology (heterogeneous, cystic, calcified). Ensure contrast CT only AFTER BP is controlled — contrast can trigger catecholamine release. Consider MIBG scan later to rule out extra-adrenal or metastatic disease.' } } },
+      ] },
+      { group: 'Consults', items: [
+        { id: 'consult_pheo_endo', label: 'Endocrinology + Anesthesia Consult', icon: 'consult', cost: 'stat', points: 35,
+          finding: { type: 'consult', title: 'Endocrinology & Anesthesia', subtitle: 'Dr. Kim, Endocrinology',
+            results: [
+              { name: 'Alpha blockade FIRST', val: 'Phentolamine 5–10 mg IV bolus — NEVER beta-blockers first', flag: 'critical' },
+              { name: 'If refractory',        val: 'Nicardipine infusion 5 mg/hr or nitroprusside',              flag: 'critical' },
+              { name: 'Beta-blockade timing', val: 'Only AFTER full alpha blockade established',                  flag: 'critical' },
+              { name: 'Pre-op prep',          val: 'Phenoxybenzamine PO × 10–14 days before elective surgery',   flag: 'abnormal' },
+              { name: 'Genetics',             val: 'Screen for MEN2, VHL, NF1, SDHx mutations (family history)', flag: 'abnormal' },
+            ],
+            note: { type: 'alert', text: 'THE GOLDEN RULE: Never give beta-blockers before alpha-blockers in pheo. Beta blockade causes unopposed alpha stimulation → paradoxical severe hypertension, reflex bradycardia, and cardiovascular collapse. This error has killed patients.' } } },
+      ] },
+    ],
+    dispositions: [
+      { id: 'disp_pheo_correct', label: 'IV Phentolamine (Alpha-Block First) + ICU + Endo Consult', icon: 'er', outcome: 'correct', points: 200,
+        feedback: { title: 'Correct — Alpha Blockade First Is Critical', grade: 'Excellent',
+          body: 'Derek has a pheochromocytoma crisis. Phentolamine IV (alpha-blocker first), ICU monitoring, endocrinology consultation, and planning for elective adrenalectomy after 10–14 days of oral phenoxybenzamine is correct. Genetic screening (MEN2, VHL, NF1) is indicated given family history of adrenal tumor.' } },
+      { id: 'disp_pheo_labetolol', label: 'IV Labetalol — Hypertensive Emergency Protocol', icon: 'rx', outcome: 'incorrect', points: -150,
+        feedback: { title: 'Dangerous Error — Beta-Before-Alpha Fatal in Pheo', grade: 'Fatal Error',
+          body: 'Labetalol has predominantly beta-blocking effects. Giving it alone (or first) in a pheochromocytoma crisis blocks beta-mediated vasodilation while leaving alpha vasoconstriction unopposed — this causes paradoxical severe hypertension, reflex bradycardia, and can precipitate cardiovascular collapse. Alpha blockade must come FIRST.' } },
+      { id: 'disp_pheo_panic', label: 'Anxiolytic + Admit Observation — Panic Disorder', icon: 'admit', outcome: 'incorrect', points: -100,
+        feedback: { title: 'Misdiagnosis — Pheochromocytoma Pattern Dismissed', grade: 'Critical Error',
+          body: 'This patient was already misdiagnosed with panic attacks three times. The episodic triad (headache + diaphoresis + palpitations), BP 262/148, café-au-lait spots, family history of adrenal tumor, and catecholamine-induced hyperglycemia and troponin elevation are not panic attacks. Benzodiazepines do not lower BP in catecholamine excess.' } },
+    ],
+    correctDisposition: 'disp_pheo_correct',
+    criticalActions: ['lab_pheo_catecholamines', 'img_pheo_ct', 'consult_pheo_endo'],
+  },
+
+  // ─── ER Case 14: HELLP Syndrome ──────────────────────
+  {
+    id: 26, specialty: 'er',
+    meta: { title: 'Pregnant — RUQ Pain & Thrombocytopenia', tagLabels: [{ t: 'CRITICAL', cls: 'urgent' }, { t: 'Obstetrics', cls: '' }] },
+    patient: {
+      name: 'Jasmine R.', age: 31, sex: 'Female', avatar: 'female', emoji: '👩',
+      chiefComplaint: 'Severe RUQ pain, headache, visual disturbance — 34 weeks pregnant',
+      vitals: [
+        { label: 'BP',     value: '168/108', status: 'abnormal'   },
+        { label: 'HR',     value: '102 bpm', status: 'abnormal'   },
+        { label: 'RR',     value: '18 /min', status: 'borderline' },
+        { label: 'Temp',   value: '37.2 °C', status: 'normal'     },
+        { label: 'O₂ Sat', value: '98%',     status: 'normal'     },
+        { label: 'Pain',   value: '8 / 10',  status: 'abnormal'   },
+      ],
+      history: '31-year-old G2P1 at 34+2 weeks gestation presenting with 8 hours of progressively worsening severe right upper quadrant and epigastric pain. She also has a severe frontal headache and sees "flashing lights and zigzag lines." At her 32-week visit, blood pressure was 138/88 and she had trace proteinuria. She was told to "monitor at home." She is very anxious about her baby.',
+      pmh: 'Uncomplicated first pregnancy 3 years ago. Mild gestational hypertension in first pregnancy.',
+      medications: 'Prenatal vitamins, occasional acetaminophen',
+      allergies: 'Sulfonamides',
+      social: 'Non-smoker, non-drinker. High school teacher. Married.',
+      family: 'Mother had preeclampsia with both pregnancies',
+    },
+    actions: [
+      { group: 'Physical Exam', items: [
+        { id: 'pe_hellp', label: 'Obstetric & Abdominal Examination', icon: 'exam', cost: null, points: 40,
+          finding: { type: 'exam', title: 'Obstetric & Abdominal Examination', subtitle: '',
+            results: [
+              { name: 'BP repeat (R arm)',   val: '172/112 — severe range',                              flag: 'critical' },
+              { name: 'RUQ tenderness',      val: 'Severe epigastric and RUQ tenderness on palpation',   flag: 'critical' },
+              { name: 'Edema',               val: 'Severe bilateral pitting edema to the knees',         flag: 'abnormal' },
+              { name: 'Fundal height',       val: '34 cm — appropriate for gestational age',             flag: 'normal'   },
+              { name: 'Fetal heart rate',    val: '148 bpm — reactive on CTG',                           flag: 'normal'   },
+              { name: 'Visual fields',       val: 'Bilateral scintillating scotoma on confrontation',    flag: 'critical' },
+            ],
+            note: { type: 'alert', text: 'Severe-range BP + RUQ pain + visual symptoms + proteinuria = HELLP syndrome or severe preeclampsia. HELLP (Hemolysis, Elevated Liver enzymes, Low Platelets) carries risk of liver rupture, abruptio placentae, DIC, and maternal/fetal death. Delivery is the cure.' } } },
+      ] },
+      { group: 'Labs', items: [
+        { id: 'lab_hellp_panel', label: 'CBC / LFTs / LDH / Uric Acid / Coags', icon: 'lab', cost: 'stat', points: 50,
+          finding: { type: 'labs', title: 'HELLP Diagnostic Panel', subtitle: 'Stat — Diagnostic',
+            results: [
+              { name: 'Platelets',  val: '58 × 10³/µL',   ref: '(150–400)',  flag: 'critical' },
+              { name: 'AST',        val: '420 U/L',         ref: '(10–40)',    flag: 'critical' },
+              { name: 'ALT',        val: '380 U/L',         ref: '(7–40)',     flag: 'critical' },
+              { name: 'LDH',        val: '1,480 U/L',       ref: '(< 200)',    flag: 'critical' },
+              { name: 'Haptoglobin',val: '< 8 mg/dL',       ref: '(30–200)',   flag: 'critical' },
+              { name: 'Bilirubin',  val: '3.8 mg/dL',       ref: '(< 1.2)',    flag: 'critical' },
+            ],
+            note: { type: 'alert', text: 'Thrombocytopenia + elevated AST/LDH + hemolysis (low haptoglobin, elevated bilirubin) = HELLP confirmed. Tennessee classification: Class 1 (platelets < 50k). Risk of spontaneous hepatic rupture — avoid abdominal palpation. Delivery WITHIN HOURS.' } } },
+        { id: 'lab_hellp_urine', label: 'Urine Protein:Creatinine Ratio / UA', icon: 'lab', cost: 'stat', points: 20,
+          finding: { type: 'labs', title: 'Urinalysis & Protein:Creatinine Ratio', subtitle: 'Stat',
+            results: [
+              { name: 'Protein:Cr ratio', val: '3.8 (nephrotic range — > 0.3 = significant)',  flag: 'critical' },
+              { name: 'UA dipstick',      val: '4+ protein, no blood, no nitrites',             flag: 'critical' },
+              { name: 'Creatinine',       val: '1.1 mg/dL (elevated for pregnancy)',            flag: 'abnormal' },
+            ],
+            note: { type: 'warn', text: 'Nephrotic-range proteinuria confirms severe preeclampsia. In pregnancy, creatinine > 0.8 is abnormal — rising creatinine indicates renal involvement.' } } },
+      ] },
+      { group: 'Imaging', items: [
+        { id: 'img_hellp_us', label: 'Fetal Ultrasound + Liver Ultrasound', icon: 'imaging', cost: 'stat', points: 25,
+          finding: { type: 'imaging', title: 'Obstetric & Liver Ultrasound', subtitle: 'Stat',
+            results: [
+              { name: 'Fetal biometry',  val: '34-week parameters — appropriate for gestational age',    flag: 'normal'   },
+              { name: 'Fetal doppler',   val: 'Normal umbilical artery PI — no fetal compromise yet',    flag: 'normal'   },
+              { name: 'Liver',           val: 'Subcapsular hematoma RIGHT lobe — 3.2 cm — DO NOT PALPATE', flag: 'critical' },
+              { name: 'Peritoneum',      val: 'Trace free fluid around liver — early hemorrhage',         flag: 'critical' },
+            ],
+            note: { type: 'alert', text: 'HEPATIC RUPTURE IS IMMINENT. Subcapsular hematoma + free peritoneal fluid = pre-rupture state. Alert interventional radiology and OB surgery. No further abdominal palpation. Emergency C-section or induction NOW.' } } },
+      ] },
+      { group: 'Consults', items: [
+        { id: 'consult_hellp_ob', label: 'Obstetrics + Maternal-Fetal Medicine + ICU Consult', icon: 'consult', cost: 'stat', points: 40,
+          finding: { type: 'consult', title: 'Obstetrics & Maternal-Fetal Medicine', subtitle: 'Dr. Silva, MFM / Dr. Okafor, ICU',
+            results: [
+              { name: 'Delivery plan',   val: 'Emergency C-section — 34 weeks, steroids given for fetal lung maturity', flag: 'critical' },
+              { name: 'Magnesium',       val: 'Magnesium sulfate 4g IV load then 2g/hr — eclampsia seizure prophylaxis', flag: 'critical' },
+              { name: 'Antihypertensive',val: 'Labetalol 20mg IV q10min OR hydralazine 5mg IV — target SBP < 160',      flag: 'critical' },
+              { name: 'Steroids',        val: 'Betamethasone 12mg IM × 2 doses — fetal lung maturity',                  flag: 'abnormal' },
+              { name: 'Blood products',  val: 'Platelets if < 50k before surgery, FFP for DIC',                         flag: 'critical' },
+            ],
+            note: { type: 'alert', text: 'Delivery is the only cure for HELLP syndrome. Maternal stabilization is critical but must not delay delivery. Magnesium sulfate prevents eclamptic seizures but is NOT an antihypertensive.' } } },
+      ] },
+    ],
+    dispositions: [
+      { id: 'disp_hellp_correct', label: 'Emergency C-Section + MgSO₄ + Antihypertensives + ICU', icon: 'er', outcome: 'correct', points: 200,
+        feedback: { title: 'Correct — Delivery Is the Only Cure for HELLP', grade: 'Excellent',
+          body: 'Jasmine has Class 1 HELLP syndrome at 34 weeks with a subcapsular hepatic hematoma threatening rupture. Emergency C-section, magnesium seizure prophylaxis, BP control (SBP < 160), and ICU admission is correct. The fetus at 34 weeks will do well with NICU support — maternal life must be prioritized.' } },
+      { id: 'disp_hellp_conservative', label: 'Expectant Management — Corticosteroids, Monitor 48h', icon: 'admit', outcome: 'incorrect', points: -120,
+        feedback: { title: 'Dangerous Delay — Hepatic Rupture Risk', grade: 'Critical Error',
+          body: 'Expectant management is only considered in very select HELLP cases < 34 weeks in stable patients without liver involvement. This patient has a subcapsular hepatic hematoma, Class 1 thrombocytopenia (< 50k), severe-range BP, and visual symptoms. Delay risks hepatic rupture, DIC, maternal death, and fetal demise.' } },
+      { id: 'disp_hellp_gallbladder', label: 'GI Consult — Rule Out Cholecystitis / Gallstones', icon: 'rx', outcome: 'incorrect', points: -80,
+        feedback: { title: 'Missed Obstetric Emergency', grade: 'Critical Error',
+          body: 'RUQ pain in pregnancy is frequently attributed to biliary pathology — this is the most dangerous diagnostic error in obstetrics. The combination of hypertension, proteinuria, thrombocytopenia, hemolysis, and elevated liver enzymes in a pregnant woman is HELLP syndrome until proven otherwise. Ultrasound revealed both a liver hematoma AND a normal gallbladder.' } },
+    ],
+    correctDisposition: 'disp_hellp_correct',
+    criticalActions: ['lab_hellp_panel', 'img_hellp_us', 'consult_hellp_ob'],
+  },
+
+  // ─── ER Case 15: Fat Embolism Syndrome ───────────────
+  {
+    id: 27, specialty: 'er',
+    meta: { title: 'Post-Fracture Hypoxia & Confusion', tagLabels: [{ t: 'URGENT', cls: 'urgent' }, { t: 'Trauma', cls: '' }] },
+    patient: {
+      name: 'Marcus D.', age: 24, sex: 'Male', avatar: 'male', emoji: '👨',
+      chiefComplaint: 'Acute dyspnea, confusion, petechial rash — 48 hours after femur fracture fixation',
+      vitals: [
+        { label: 'BP',     value: '108/66',  status: 'borderline' },
+        { label: 'HR',     value: '116 bpm', status: 'abnormal'   },
+        { label: 'RR',     value: '30 /min', status: 'abnormal'   },
+        { label: 'Temp',   value: '38.2 °C', status: 'borderline' },
+        { label: 'O₂ Sat', value: '83%',     status: 'abnormal'   },
+        { label: 'GCS',    value: '11 / 15', status: 'abnormal'   },
+      ],
+      history: '24-year-old male who suffered a closed right femoral shaft fracture in a motorcycle crash 48 hours ago. He underwent uncomplicated intramedullary nail fixation yesterday. Today he suddenly developed severe dyspnea, is confused and agitated, and a nurse noticed a petechial rash on his chest and axillae. He has no chest pain. His pain was well-controlled postoperatively.',
+      pmh: 'No significant history. No prior surgeries.',
+      medications: 'Post-op: morphine PCA, ketorolac, enoxaparin 40 mg SC',
+      allergies: 'NKDA',
+      social: 'Non-smoker. Construction apprentice. Lives with girlfriend.',
+      family: 'Non-contributory',
+    },
+    actions: [
+      { group: 'Physical Exam', items: [
+        { id: 'pe_fat_embolism', label: 'Full Respiratory & Neurological Exam', icon: 'exam', cost: null, points: 50,
+          finding: { type: 'exam', title: 'Respiratory & Neurological Examination', subtitle: 'Gurd Criteria Assessment',
+            results: [
+              { name: 'Petechiae',        val: 'PATHOGNOMONIC — non-palpable petechiae bilateral axillae, chest, conjunctiva', flag: 'critical' },
+              { name: 'Mental status',    val: 'Confused, agitated, disoriented — GCS 11',                                     flag: 'critical' },
+              { name: 'Breath sounds',    val: 'Bilateral coarse crackles — diffuse',                                          flag: 'critical' },
+              { name: 'SpO₂ on 15L NRB', val: '83% — refractory hypoxemia',                                                   flag: 'critical' },
+              { name: 'Retinal exam',     val: 'Fat globules visible in retinal vessels on fundoscopy',                        flag: 'critical' },
+              { name: 'Fever',            val: '38.2°C — low-grade, part of FES',                                             flag: 'abnormal' },
+            ],
+            note: { type: 'alert', text: 'GURD CRITERIA MET: petechiae + hypoxemia + neurological dysfunction = Fat Embolism Syndrome (FES). Petechiae in axillae are PATHOGNOMONIC — occurs in only 50–60% of cases but are diagnostic when present. This is NOT a pulmonary embolism — D-Dimer and CTPA findings differ.' } } },
+      ] },
+      { group: 'Labs', items: [
+        { id: 'lab_fes_panel', label: 'ABG / CBC / Lipase / Fat Droplets in Urine', icon: 'lab', cost: 'stat', points: 40,
+          finding: { type: 'labs', title: 'Fat Embolism Syndrome Panel', subtitle: 'Stat',
+            results: [
+              { name: 'PaO₂',         val: '48 mmHg on 100% O₂',     ref: '(80–100)', flag: 'critical' },
+              { name: 'PaO₂/FiO₂',   val: '48 (< 200 = ARDS criteria)',              flag: 'critical' },
+              { name: 'Hematocrit',   val: '28% (rapid drop from 42%)',ref: '(41–53)', flag: 'critical' },
+              { name: 'Platelets',    val: '88 × 10³/µL',             ref: '(150–400)',flag: 'abnormal' },
+              { name: 'Lipase',       val: '280 U/L',                  ref: '(< 60)',  flag: 'abnormal' },
+              { name: 'Urine fat',    val: 'Fat macroglobules on Sudan Red staining', flag: 'critical' },
+            ],
+            note: { type: 'warn', text: 'Fat globules in urine (lipuria) confirm fat embolism. Rapid hematocrit drop occurs as RBCs are consumed by fat emboli in pulmonary vasculature. P:F ratio < 200 = ARDS — mechanical ventilation likely required.' } } },
+      ] },
+      { group: 'Imaging', items: [
+        { id: 'img_fes_cxr', label: 'Chest X-Ray + CT Chest', icon: 'imaging', cost: 'stat', points: 30,
+          finding: { type: 'imaging', title: 'Chest Imaging', subtitle: 'CXR + HRCT',
+            results: [
+              { name: 'CXR',            val: 'Bilateral "snowstorm" interstitial infiltrates',             flag: 'critical' },
+              { name: 'CT chest',       val: 'Bilateral ground-glass opacities — non-dependent pattern', flag: 'critical' },
+              { name: 'CTPA emboli',    val: 'No large vessel filling defects — consistent with FES vs PE', flag: 'abnormal' },
+              { name: 'Cardiomegaly',   val: 'Mild RV strain pattern on CT',                              flag: 'abnormal' },
+            ],
+            note: { type: 'warn', text: 'Fat emboli are too small to be seen on CTPA — CTPA will be negative for large vessel emboli but shows diffuse ground-glass. Distinguishes FES from classic PE. Treatment differs: FES = supportive, not anticoagulation.' } } },
+      ] },
+      { group: 'Consults', items: [
+        { id: 'consult_fes_icu', label: 'Pulmonology / Critical Care + Orthopedic Surgery Consult', icon: 'consult', cost: 'stat', points: 30,
+          finding: { type: 'consult', title: 'Critical Care & Orthopedic Surgery', subtitle: 'Dr. Morrison, Pulm-CCM',
+            results: [
+              { name: 'Intubation',     val: 'Urgent — P:F 48, ARDS criteria met. Lung-protective ventilation', flag: 'critical' },
+              { name: 'Corticosteroids',val: 'Methylprednisolone 1.5 mg/kg/day × 3 days — reduces fat-induced inflammation', flag: 'abnormal' },
+              { name: 'Supportive care',val: 'No specific antidote — treat ARDS, maintain oxygenation',        flag: 'normal'   },
+              { name: 'Anticoagulation',val: 'Continue enoxaparin prophylaxis — do NOT give therapeutic dose',  flag: 'abnormal' },
+              { name: 'Ortho input',    val: 'IMN already placed — no further surgical change indicated',       flag: 'normal'   },
+            ],
+            note: { type: 'warn', text: 'Fat Embolism Syndrome is treated SUPPORTIVELY — not with thrombolytics or therapeutic anticoagulation (which are for PE). Lung-protective ventilation (6 mL/kg IBW, PEEP ≥ 8), corticosteroids, and time are the treatment.' } } },
+      ] },
+    ],
+    dispositions: [
+      { id: 'disp_fes_correct', label: 'Intubate — Lung-Protective Ventilation + ICU + Steroids', icon: 'er', outcome: 'correct', points: 200,
+        feedback: { title: 'Correct — Supportive Care for Fat Embolism Syndrome', grade: 'Excellent',
+          body: 'Marcus has Fat Embolism Syndrome — the clinical triad (hypoxemia + neurological dysfunction + petechiae) and post-fracture timing are diagnostic. Urgent intubation with lung-protective ventilation (ARDS protocol), corticosteroids, and ICU support is correct. There is no specific antidote; prognosis is generally favorable with aggressive supportive care.' } },
+      { id: 'disp_fes_anticoag', label: 'Full Therapeutic Anticoagulation — Pulmonary Embolism', icon: 'rx', outcome: 'incorrect', points: -100,
+        feedback: { title: 'Wrong Diagnosis — FES ≠ Classic PE', grade: 'Critical Error',
+          body: 'This is Fat Embolism Syndrome, not classic thromboembolism. CTPA shows no large vessel clot — the emboli are fat globules invisible to CTPA. Therapeutic anticoagulation does not treat FES and increases hemorrhagic risk in a post-operative patient. The pathognomonic petechiae, lipuria, and snowstorm infiltrates distinguish FES from PE.' } },
+      { id: 'disp_fes_discharge', label: 'Increase O₂ to 15L — Reassess in 4 Hours', icon: 'admit', outcome: 'incorrect', points: -80,
+        feedback: { title: 'Insufficient — ARDS Requires ICU Ventilation', grade: 'Significant Error',
+          body: 'This patient has a P:F ratio of 48 (severe ARDS) with a SpO₂ of 83% on 15L non-rebreather. He is not recruitable with supplemental oxygen alone and requires mechanical ventilation. Observation without definitive airway management in a confused, severely hypoxic ARDS patient risks respiratory arrest.' } },
+    ],
+    correctDisposition: 'disp_fes_correct',
+    criticalActions: ['pe_fat_embolism', 'lab_fes_panel', 'consult_fes_icu'],
+  },
+
+  // ─── ER Case 16: Methemoglobinemia ───────────────────
+  {
+    id: 28, specialty: 'er',
+    meta: { title: 'Cyanosis Despite High O₂ — Dye Worker', tagLabels: [{ t: 'URGENT', cls: 'urgent' }, { t: 'Toxicology', cls: '' }] },
+    patient: {
+      name: 'Yusuf A.', age: 26, sex: 'Male', avatar: 'male', emoji: '👨',
+      chiefComplaint: 'Cyanosis, headache, dizziness — pulse ox 92% but not improving on 100% O₂',
+      vitals: [
+        { label: 'BP',     value: '118/74',  status: 'normal'     },
+        { label: 'HR',     value: '108 bpm', status: 'abnormal'   },
+        { label: 'RR',     value: '22 /min', status: 'borderline' },
+        { label: 'Temp',   value: '37.1 °C', status: 'normal'     },
+        { label: 'SpO₂',  value: '92% on NRB', status: 'abnormal' },
+        { label: 'GCS',    value: '13 / 15', status: 'abnormal'   },
+      ],
+      history: '26-year-old male who works at an industrial textile dye facility. He was cleaning mixing vats without adequate PPE for 3 hours and came in feeling dizzy, with a headache, and "turning blue." His colleague also feels unwell. On examination, he is visibly cyanotic with slate-grey/chocolate-brown discoloration to his lips and nail beds despite being on a non-rebreather mask at 15L. The pulse oximeter reads 92% and will not improve.',
+      pmh: 'No significant history. G6PD status unknown.',
+      medications: 'None',
+      allergies: 'NKDA',
+      social: 'Non-smoker. Recent immigrant. Working at dye factory for 3 months. English is second language.',
+      family: 'Non-contributory',
+    },
+    actions: [
+      { group: 'Physical Exam', items: [
+        { id: 'pe_methb', label: 'Skin, Mucous Membranes & Neurological Exam', icon: 'exam', cost: null, points: 40,
+          finding: { type: 'exam', title: 'Integument & Neurological Examination', subtitle: '',
+            results: [
+              { name: 'Skin color',       val: 'Chocolate-brown/slate-grey cyanosis — lips, nail beds, face', flag: 'critical' },
+              { name: 'Blood color',      val: 'Venous blood sample: dark chocolate-brown (will not turn red on O₂ exposure)', flag: 'critical' },
+              { name: 'SpO₂ response',    val: 'No improvement on 100% O₂ — SpO₂ plateau at ~85%',           flag: 'critical' },
+              { name: 'Mental status',    val: 'Confused, lethargic, GCS 13',                                  flag: 'critical' },
+              { name: 'Respiratory',      val: 'Tachypneic but lungs clear bilaterally',                       flag: 'borderline' },
+            ],
+            note: { type: 'alert', text: 'Chocolate-brown blood that does NOT become red when shaken in room air = Methemoglobinemia. Standard pulse oximetry is UNRELIABLE — it reads falsely high (~85%) in methemoglobinemia. Only co-oximetry measures true methemoglobin level. Request CO-oximetry immediately.' } } },
+      ] },
+      { group: 'Labs', items: [
+        { id: 'lab_methb_coox', label: 'Arterial Co-Oximetry + ABG (Stat)', icon: 'lab', cost: 'stat', points: 50,
+          finding: { type: 'labs', title: 'Arterial Blood Gas with Co-Oximetry', subtitle: 'Stat — Diagnostic',
+            results: [
+              { name: 'MetHb level',  val: '44% (CRITICAL — normal < 1%)',        flag: 'critical' },
+              { name: 'PaO₂',        val: '488 mmHg on 100% O₂ (dissolved O₂ is normal)', flag: 'normal'  },
+              { name: 'SaO₂ (calc)', val: '98% (co-oximetry shows truth: 56%)', flag: 'critical' },
+              { name: 'pH',          val: '7.32',  ref: '(7.35–7.45)',           flag: 'abnormal' },
+              { name: 'Lactate',     val: '3.8 mmol/L',                          flag: 'critical' },
+            ],
+            note: { type: 'alert', text: 'The dissociation: PaO₂ normal (oxygen dissolved in plasma is fine) but MetHb 44% means 44% of hemoglobin cannot carry oxygen. Lactic acidosis from cellular hypoxia. Methylene blue is the antidote — administer within minutes.' } } },
+        { id: 'lab_methb_g6pd', label: 'G6PD Enzyme Level (Before Methylene Blue)', icon: 'lab', cost: 'stat', points: 25,
+          finding: { type: 'labs', title: 'G6PD Enzyme Activity', subtitle: 'Pre-Treatment Screen',
+            results: [
+              { name: 'G6PD activity', val: '12.1 U/gHgb (normal — G6PD sufficient)', ref: '(7–20 U/gHgb)', flag: 'normal' },
+            ],
+            note: { type: 'warn', text: 'G6PD must be checked BEFORE methylene blue — G6PD-deficient patients cannot regenerate NADPH and methylene blue may cause hemolysis. Since G6PD is normal here, methylene blue is safe to administer.' } } },
+      ] },
+      { group: 'Imaging', items: [
+        { id: 'img_methb_cxr', label: 'Chest X-Ray (Rule Out Pulmonary Cause)', icon: 'imaging', cost: 'stat', points: 10,
+          finding: { type: 'imaging', title: 'Chest X-Ray', subtitle: 'Portable AP',
+            results: [
+              { name: 'Lung fields', val: 'Clear — no infiltrates, no effusion',          flag: 'normal' },
+              { name: 'Heart',       val: 'Normal size and contour',                       flag: 'normal' },
+            ],
+            note: { type: '', text: 'Clear CXR confirms no primary pulmonary pathology — cyanosis is NOT due to lung disease. This supports the co-oximetry diagnosis of methemoglobinemia.' } } },
+      ] },
+      { group: 'Consults', items: [
+        { id: 'consult_methb_toxicology', label: 'Toxicology + Poison Control Consult', icon: 'consult', cost: 'stat', points: 35,
+          finding: { type: 'consult', title: 'Medical Toxicology & Poison Control', subtitle: '1-800-222-1222 / Dr. Lee, Toxicology',
+            results: [
+              { name: 'Antidote',      val: 'Methylene blue 1–2 mg/kg IV over 5 minutes — GIVE NOW', flag: 'critical' },
+              { name: 'Repeat dose',   val: 'If MetHb > 30% persists at 1 hour: repeat 1 mg/kg',    flag: 'abnormal' },
+              { name: 'If G6PD deficient', val: 'High-dose ascorbic acid 1g IV + exchange transfusion', flag: 'abnormal' },
+              { name: 'Occupational',  val: 'Report to OSHA — workplace exposure event, coworker needs evaluation', flag: 'abnormal' },
+              { name: 'Mechanism',     val: 'Aniline dye compounds oxidize Fe²⁺ to Fe³⁺ — hemoglobin cannot bind O₂', flag: 'normal' },
+            ],
+            note: { type: 'alert', text: 'Methylene blue reduces MetHb back to hemoglobin by providing electrons via G6PD pathway. Response is rapid — MetHb level should drop > 50% within 30 minutes of administration. If no response, consider alternative diagnoses (sulfhemoglobin, G6PD deficiency).' } } },
+      ] },
+    ],
+    dispositions: [
+      { id: 'disp_methb_correct', label: 'Methylene Blue IV + ICU + Toxicology + OSHA Report', icon: 'er', outcome: 'correct', points: 200,
+        feedback: { title: 'Correct — Methylene Blue Is the Antidote', grade: 'Excellent',
+          body: 'Yusuf has methemoglobinemia (MetHb 44%) from aniline dye exposure. Methylene blue 1–2 mg/kg IV is the antidote and should produce rapid reversal. G6PD should be checked first. ICU monitoring, repeat co-oximetry at 1 hour, OSHA notification, and evaluation of the symptomatic coworker is correct management.' } },
+      { id: 'disp_methb_intubate', label: 'Intubate — ARDS Protocol', icon: 'rx', outcome: 'partial', points: 20,
+        feedback: { title: 'Partial — Airway Secured But Antidote Missing', grade: 'Incomplete',
+          body: 'If methylene blue is available, it should be given BEFORE intubation. The cause of hypoxia is methemoglobin (not pulmonary pathology) — lungs are clear, PaO₂ is normal. Methylene blue may restore oxygenation within minutes, rendering intubation unnecessary. However, intubation to protect airway in a confused MetHb 44% patient is defensible.' } },
+      { id: 'disp_methb_o2', label: 'Increase O₂ Flow Rate — Reassess', icon: 'admit', outcome: 'incorrect', points: -120,
+        feedback: { title: 'Supplemental O₂ Does Not Treat Methemoglobinemia', grade: 'Critical Error',
+          body: 'Standard pulse oximetry is unreliable in methemoglobinemia (reads 85% regardless of true MetHb level). Increasing O₂ cannot correct the problem — methemoglobin physically cannot carry oxygen regardless of partial pressure. The antidote is methylene blue, not oxygen. Without co-oximetry and the specific antidote, this patient will deteriorate.' } },
+    ],
+    correctDisposition: 'disp_methb_correct',
+    criticalActions: ['lab_methb_coox', 'consult_methb_toxicology', 'lab_methb_g6pd'],
+  },
+
+  // ─── ER Case 17: Vertebral Artery Dissection ─────────
+  {
+    id: 29, specialty: 'er',
+    meta: { title: 'Sudden Occipital Headache & Ataxia Post-Yoga', tagLabels: [{ t: 'URGENT', cls: 'urgent' }, { t: 'Neurology', cls: '' }] },
+    patient: {
+      name: 'Amara S.', age: 32, sex: 'Female', avatar: 'female', emoji: '👩',
+      chiefComplaint: 'Sudden occipital headache, neck pain, dizziness, falling to the left — began during yoga',
+      vitals: [
+        { label: 'BP',     value: '138/82',  status: 'abnormal'   },
+        { label: 'HR',     value: '86 bpm',  status: 'normal'     },
+        { label: 'RR',     value: '16 /min', status: 'normal'     },
+        { label: 'Temp',   value: '37.0 °C', status: 'normal'     },
+        { label: 'O₂ Sat', value: '99%',     status: 'normal'     },
+        { label: 'Pain',   value: '7 / 10',  status: 'abnormal'   },
+      ],
+      history: '32-year-old healthy female who was performing an advanced head-standing yoga pose (Sirsasana) when she felt a sudden "pop" in the back of her neck followed by immediate severe occipital headache described as "thunder clap." She became acutely dizzy, fell to the left, and vomited × 3. She has persistent left-sided facial numbness, double vision, and difficulty swallowing. She has no vascular risk factors and is on OCP.',
+      pmh: 'Migraines (rare, well-controlled). No prior strokes or TIAs. No connective tissue disorder diagnosed.',
+      medications: 'Oral contraceptive pill, sumatriptan PRN (not taken today)',
+      allergies: 'NKDA',
+      social: 'Non-smoker, social drinker. Yoga instructor. Physically fit.',
+      family: 'Mother had Ehlers-Danlos syndrome (suspected)',
+    },
+    actions: [
+      { group: 'Physical Exam', items: [
+        { id: 'pe_vad', label: 'NIHSS + Posterior Fossa Neurological Exam', icon: 'exam', cost: null, points: 45,
+          finding: { type: 'exam', title: 'Posterior Circulation Stroke Assessment', subtitle: 'NIHSS + Wallenberg Features',
+            results: [
+              { name: 'Nystagmus',         val: 'Horizontal nystagmus — beats leftward (ipsilateral lesion)',   flag: 'critical' },
+              { name: 'Finger-nose test',   val: 'Left limb dysmetria — cerebellar ataxia',                     flag: 'critical' },
+              { name: 'Gait',               val: 'Truncal ataxia — falls toward left',                          flag: 'critical' },
+              { name: 'Left Horner',        val: 'Ptosis + miosis left eye — sympathetic chain disruption',     flag: 'critical' },
+              { name: 'Facial sensation',   val: 'Decreased pain/temperature LEFT face (CN V ipsilateral)',     flag: 'critical' },
+              { name: 'Body sensation',     val: 'Decreased pain/temperature RIGHT arm and leg (spinothalamic cross)', flag: 'critical' },
+            ],
+            note: { type: 'alert', text: 'Wallenberg Syndrome (Lateral Medullary Infarction) pattern: ipsilateral facial numbness + contralateral body numbness + Horner + ataxia + dysphagia + nystagmus. Caused by PICA or vertebral artery occlusion. THUNDERCLAP onset during neck strain = dissection until proven otherwise.' } } },
+      ] },
+      { group: 'Labs', items: [
+        { id: 'lab_vad_coags', label: 'INR / aPTT / CBC / Hypercoagulable Screen', icon: 'lab', cost: 'stat', points: 20,
+          finding: { type: 'labs', title: 'Coagulation & Hematology', subtitle: 'Stat',
+            results: [
+              { name: 'INR',        val: '1.1',            ref: '(< 1.1)',   flag: 'normal'   },
+              { name: 'Platelets',  val: '286 × 10³/µL',  ref: '(150–400)', flag: 'normal'   },
+              { name: 'Factor V Leiden', val: 'Heterozygous mutation — predisposes to dissection', flag: 'abnormal' },
+              { name: 'Protein C/S',    val: 'Normal',                                            flag: 'normal'   },
+            ],
+            note: { type: 'warn', text: 'Factor V Leiden on OCP significantly increases thrombosis and vascular wall fragility risk. Connective tissue disorder workup (Ehlers-Danlos, Marfan) should be pursued in young dissection patients given family history.' } } },
+      ] },
+      { group: 'Imaging', items: [
+        { id: 'img_vad_cta', label: 'CT Head + CTA Head & Neck (Stat)', icon: 'imaging', cost: 'stat', points: 50,
+          finding: { type: 'imaging', title: 'CT Head & CT Angiography — Head & Neck', subtitle: 'Stat — Definitive',
+            results: [
+              { name: 'CT head',         val: 'No hemorrhage — no hyperdensity',                                          flag: 'normal'   },
+              { name: 'Left vertebral',  val: 'CTA: Intimal flap + "string sign" left vertebral artery V4 segment',       flag: 'critical' },
+              { name: 'Left PICA',       val: 'Occluded — left posterior inferior cerebellar artery thrombosis',           flag: 'critical' },
+              { name: 'Left cerebellum', val: 'Early ischemic changes lateral medulla and cerebellum — Wallenberg territory', flag: 'critical' },
+              { name: 'MRI DWI',         val: 'Restricted diffusion lateral medulla and left cerebellum — acute infarct',   flag: 'critical' },
+            ],
+            note: { type: 'alert', text: '"String sign" (tapered narrowing with intimal flap) of left vertebral artery = dissection confirmed. PICA occlusion causing Wallenberg syndrome. tPA is relatively contraindicated in dissection with infarct — anticoagulation is the mainstay.' } } },
+      ] },
+      { group: 'Consults', items: [
+        { id: 'consult_vad_neuro', label: 'Neurology (Vascular) + Neurosurgery Consult', icon: 'consult', cost: 'stat', points: 35,
+          finding: { type: 'consult', title: 'Vascular Neurology Consultation', subtitle: 'Dr. Vasquez, Vascular Neurology',
+            results: [
+              { name: 'tPA decision',    val: 'NOT indicated — active dissection with established infarct, risk of subarachnoid hemorrhage', flag: 'critical' },
+              { name: 'Anticoagulation', val: 'Heparin infusion OR antiplatelet (aspirin 325 mg) — evidence equipoise', flag: 'critical' },
+              { name: 'BP target',       val: 'SBP < 140 — reduce propagation risk',                                    flag: 'abnormal' },
+              { name: 'OCP',             val: 'DISCONTINUE immediately — thrombogenic risk in dissection',              flag: 'critical' },
+              { name: 'Monitoring',      val: 'Stroke unit admission — swallow assessment (dysphagia common in Wallenberg)', flag: 'abnormal' },
+            ],
+            note: { type: 'alert', text: 'Vertebral artery dissection in young women on OCP is increasingly recognized. Yoga poses (neck hyperextension, rotation) can shear the vertebral artery wall. Connective tissue disorders (EDS, Marfan) must be screened. Prognosis generally better than atherosclerotic stroke.' } } },
+      ] },
+    ],
+    dispositions: [
+      { id: 'disp_vad_correct', label: 'Anticoagulation + Stroke Unit + Stop OCP + Neurology', icon: 'er', outcome: 'correct', points: 200,
+        feedback: { title: 'Correct — Vertebral Dissection Protocol', grade: 'Excellent',
+          body: 'Amara has a left vertebral artery dissection with Wallenberg syndrome. Anticoagulation (or antiplatelet — equipoise exists), immediate OCP cessation, stroke unit admission, swallow assessment, and investigation for connective tissue disorder is correct. tPA is not indicated given active dissection and risk of hemorrhagic transformation.' } },
+      { id: 'disp_vad_tpa', label: 'IV tPA — Within Stroke Window', icon: 'rx', outcome: 'incorrect', points: -100,
+        feedback: { title: 'Contraindicated — Dissection Precludes tPA', grade: 'Critical Error',
+          body: 'tPA in vertebral artery dissection carries risk of hemorrhagic transformation at the dissection site and subarachnoid hemorrhage. While the patient is within the time window, the imaging shows an active intimal dissection — thrombolytics are relatively contraindicated. Anticoagulation and mechanical thrombectomy evaluation are the appropriate considerations.' } },
+      { id: 'disp_vad_migraine', label: 'Migraine with Aura — Sumatriptan + Antiemetics', icon: 'rx', outcome: 'incorrect', points: -120,
+        feedback: { title: 'Dangerous Misdiagnosis — Stroke Missed', grade: 'Critical Error',
+          body: 'Triptans cause vasoconstriction and are absolutely contraindicated in stroke or TIA. This patient has Wallenberg syndrome — a posterior circulation stroke from vertebral dissection — not a migraine. The thunderclap onset during neck strain, Horner syndrome, crossed sensory deficits, and ataxia are not migraine features. Triptans could extend the stroke.' } },
+    ],
+    correctDisposition: 'disp_vad_correct',
+    criticalActions: ['pe_vad', 'img_vad_cta', 'consult_vad_neuro'],
+  },
+
+  // ─── ER Case 18: Acute Mesenteric Ischemia ────────────
+  {
+    id: 30, specialty: 'er',
+    meta: { title: 'Severe Abdominal Pain Out of Proportion to Exam', tagLabels: [{ t: 'CRITICAL', cls: 'urgent' }, { t: 'Vascular Surgery', cls: '' }] },
+    patient: {
+      name: 'Howard P.', age: 73, sex: 'Male', avatar: 'male', emoji: '👨',
+      chiefComplaint: 'Sudden severe diffuse abdominal pain — 4 hours, known atrial fibrillation',
+      vitals: [
+        { label: 'BP',     value: '102/64',  status: 'borderline' },
+        { label: 'HR',     value: '122 bpm (irregular)', status: 'abnormal' },
+        { label: 'RR',     value: '22 /min', status: 'borderline' },
+        { label: 'Temp',   value: '37.4 °C', status: 'normal'     },
+        { label: 'O₂ Sat', value: '96%',     status: 'normal'     },
+        { label: 'Pain',   value: '10 / 10', status: 'abnormal'   },
+      ],
+      history: '73-year-old male with known persistent atrial fibrillation who missed his warfarin for 4 days "because he felt fine." He presents with sudden onset severe, colicky, diffuse abdominal pain that began 4 hours ago. He describes the pain as the worst of his life, has had 3 episodes of profuse watery diarrhea (some bloody), and has vomited twice. On exam, his abdomen is SOFT and minimally tender — dramatically less than expected for his level of agony.',
+      pmh: 'Persistent atrial fibrillation, congestive heart failure (EF 30%), type 2 diabetes, hypertension. Prior TIA 2 years ago.',
+      medications: 'Warfarin 5 mg QD (missed × 4 days), carvedilol 12.5 mg BID, furosemide 40 mg QD, metformin',
+      allergies: 'ACE inhibitors (angioedema)',
+      social: 'Non-smoker, retired electrician. Lives with wife. Does his own ADLs.',
+      family: 'Brother died of "bowel problems" in his 70s',
+    },
+    actions: [
+      { group: 'Physical Exam', items: [
+        { id: 'pe_ami', label: 'Abdominal & Cardiovascular Examination', icon: 'exam', cost: null, points: 45,
+          finding: { type: 'exam', title: 'Abdominal & Cardiovascular Examination', subtitle: 'Serial Exam Critical',
+            results: [
+              { name: 'Pain severity',     val: '10/10 subjective — writhing on stretcher, unable to find comfortable position', flag: 'critical' },
+              { name: 'Abdomen',           val: 'SOFT — minimal tenderness on palpation (classic: pain out of proportion to exam)', flag: 'critical' },
+              { name: 'Bowel sounds',      val: 'Hyperactive early — "borborygmi" from ischemic bowel',                         flag: 'abnormal' },
+              { name: 'Rectal exam',       val: 'Gross bloody stool — maroon-colored',                                          flag: 'critical' },
+              { name: 'Cardiac rhythm',    val: 'Irregularly irregular — uncontrolled AF (HR 122)',                              flag: 'critical' },
+            ],
+            note: { type: 'alert', text: '"PAIN OUT OF PROPORTION TO EXAM" is the hallmark of Acute Mesenteric Ischemia. Soft abdomen with 10/10 pain = gut ischemia until proven otherwise in an AF patient on subtherapeutic anticoagulation. Peritonitis develops LATE — when bowel has infarcted. Do not be falsely reassured by soft abdomen.' } } },
+      ] },
+      { group: 'Labs', items: [
+        { id: 'lab_ami_lactate', label: 'Lactate + CBC + BMP + Coagulation + LFTs', icon: 'lab', cost: 'stat', points: 40,
+          finding: { type: 'labs', title: 'Mesenteric Ischemia Panel', subtitle: 'Stat',
+            results: [
+              { name: 'Lactate',      val: '7.8 mmol/L',    ref: '(< 2.0)',   flag: 'critical' },
+              { name: 'WBC',          val: '24.6 × 10³/µL', ref: '(4.5–11)',  flag: 'critical' },
+              { name: 'Creatinine',   val: '2.2 mg/dL',     ref: '(0.7–1.2)', flag: 'critical' },
+              { name: 'INR',          val: '1.2 (subtherapeutic — was 2.1 last month)', ref: '', flag: 'critical' },
+              { name: 'Phosphate',    val: '5.8 mg/dL',     ref: '(2.5–4.5)', flag: 'critical' },
+              { name: 'Base deficit', val: '-12 mEq/L',                        flag: 'critical' },
+            ],
+            note: { type: 'alert', text: 'Lactate 7.8 + hyperphosphatemia + severe metabolic acidosis (base deficit -12) = bowel necrosis with cellular lysis. Elevated phosphate from necrotic cells is a late, ominous sign. Hyperphosphatemia + lactate > 6 in AMI carries 80%+ mortality. Move FAST.' } } },
+        { id: 'lab_ami_ddimer', label: 'D-Dimer / ABG', icon: 'lab', cost: 'stat', points: 15,
+          finding: { type: 'labs', title: 'D-Dimer & ABG', subtitle: 'Stat',
+            results: [
+              { name: 'D-Dimer', val: '> 10,000 ng/mL', ref: '(< 500)',   flag: 'critical' },
+              { name: 'pH',      val: '7.21',            ref: '(7.35–7.45)', flag: 'critical' },
+              { name: 'HCO₃',   val: '11 mEq/L',        ref: '(22–26)',   flag: 'critical' },
+            ],
+            note: { type: 'warn', text: 'Markedly elevated D-Dimer supports thromboembolic occlusion of mesenteric vessels. Severe metabolic acidosis from bowel ischemia. This patient needs the OR, not observation.' } } },
+      ] },
+      { group: 'Imaging', items: [
+        { id: 'img_ami_cta', label: 'CT Angiography Abdomen/Pelvis (Mesenteric Protocol)', icon: 'imaging', cost: 'stat', points: 50,
+          finding: { type: 'imaging', title: 'CT Mesenteric Angiography', subtitle: 'Arterial Phase + Venous Phase',
+            results: [
+              { name: 'SMA',              val: 'Large filling defect at SMA origin — embolus, near-total occlusion',             flag: 'critical' },
+              { name: 'Small bowel',      val: 'Pneumatosis intestinalis — gas in bowel wall (bowel necrosis)',                  flag: 'critical' },
+              { name: 'Portal vein',      val: 'Portal venous gas — severe mesenteric ischemia, advanced necrosis',             flag: 'critical' },
+              { name: 'Bowel wall',       val: 'Non-enhancing — full-thickness ischemia',                                       flag: 'critical' },
+              { name: 'Free air',         val: 'Not detected — perforation not yet occurred',                                   flag: 'normal'   },
+            ],
+            note: { type: 'alert', text: 'PNEUMATOSIS + PORTAL VENOUS GAS = TRANSMURAL BOWEL NECROSIS. This is a near-terminal finding. Mortality > 80% with this CT pattern. IMMEDIATE surgical exploration is the only possible intervention. Do not pursue further imaging or repeat labs — call surgery now.' } } },
+      ] },
+      { group: 'Consults', items: [
+        { id: 'consult_ami_vasc', label: 'Vascular Surgery + General Surgery Emergency Consult', icon: 'consult', cost: 'stat', points: 40,
+          finding: { type: 'consult', title: 'Vascular & General Surgery — Emergency', subtitle: 'Dr. Torres, Vascular Surgery',
+            results: [
+              { name: 'Decision',      val: 'Emergency exploratory laparotomy — NOW',                                    flag: 'critical' },
+              { name: 'Anticoagulation', val: 'Heparin 5,000u IV bolus immediately, infusion during prep',              flag: 'critical' },
+              { name: 'Revascularization', val: 'Surgical embolectomy or on-table angioplasty if viable bowel remains', flag: 'critical' },
+              { name: 'Resection',     val: 'Resect non-viable bowel — second-look laparotomy at 24–48 hours',          flag: 'critical' },
+              { name: 'Prognosis',     val: 'Pneumatosis + portal gas: mortality 80–90% even with surgery',             flag: 'critical' },
+            ],
+            note: { type: 'alert', text: 'Time from symptom onset to revascularization is the strongest predictor of survival in AMI. Each hour of delay adds ~10% mortality. Even with aggressive surgical intervention and bowel resection, survival with this degree of necrosis is < 20%. Family discussion of prognosis is essential.' } } },
+      ] },
+    ],
+    dispositions: [
+      { id: 'disp_ami_correct', label: 'Emergency Heparin + OR — Bowel Resection + Embolectomy', icon: 'er', outcome: 'correct', points: 200,
+        feedback: { title: 'Correct — Mesenteric Ischemia Requires Immediate Surgery', grade: 'Excellent',
+          body: 'Howard has acute SMA embolism with pneumatosis and portal venous gas — transmural bowel necrosis. Immediate heparin, emergency exploratory laparotomy with SMA embolectomy, and resection of non-viable bowel is the only intervention. Prognosis is very poor at this stage but surgical intervention is the only chance of survival.' } },
+      { id: 'disp_ami_observe', label: 'IV Fluids + NPO — Monitor Serial Exams', icon: 'admit', outcome: 'incorrect', points: -150,
+        feedback: { title: 'Fatal Delay — Bowel Is Already Necrotic', grade: 'Fatal Error',
+          body: 'Observation with serial abdominal exams is the most common and lethal error in AMI. The soft abdomen falsely reassures clinicians while the bowel is necrotic. Pneumatosis intestinalis and portal venous gas on CT represent advanced bowel necrosis — the window for survival is closing with each minute. Observation allows complete bowel infarction and septic shock.' } },
+      { id: 'disp_ami_gi', label: 'GI Consult — Colonoscopy to Evaluate Bleeding', icon: 'rx', outcome: 'incorrect', points: -120,
+        feedback: { title: 'Wrong Pathway — Colonoscopy Contraindicated', grade: 'Critical Error',
+          body: 'Colonoscopy is absolutely contraindicated when mesenteric ischemia is suspected — insufflation pressure can precipitate perforation of an ischemic, friable bowel. The bloody diarrhea is a consequence of bowel ischemia, not the primary pathology. CT angiography already confirmed SMA embolus — surgery, not endoscopy, is required.' } },
+    ],
+    correctDisposition: 'disp_ami_correct',
+    criticalActions: ['pe_ami', 'img_ami_cta', 'consult_ami_vasc'],
+  },
+
+  // ══════════════════════════════════════════════════════
+  //  INFECTIOUS DISEASE
+  // ══════════════════════════════════════════════════════
+
+  // ─── ID Case 31: Maria C. — Typhoid Fever ────────────
+  {
+    id: 31, specialty: 'id',
+    meta: { title: 'Fever — Returned Traveler', tagLabels: [{ t: 'TRAVEL HX', cls: 'urgent' }, { t: 'Infectious Disease', cls: '' }] },
+    patient: {
+      name: 'Maria C.', age: 28, sex: 'Female', avatar: 'female', emoji: '👩',
+      chiefComplaint: 'Stepwise fever for 10 days, returned from India 2 weeks ago',
+      vitals: [
+        { label: 'BP',     value: '108/68',   status: 'borderline' },
+        { label: 'HR',     value: '76 bpm',   status: 'normal'     },
+        { label: 'RR',     value: '18 /min',  status: 'normal'     },
+        { label: 'Temp',   value: '39.8 °C',  status: 'abnormal'   },
+        { label: 'O₂ Sat', value: '98%',      status: 'normal'     },
+        { label: 'Pain',   value: '3 / 10',   status: 'normal'     },
+      ],
+      history: '28-year-old female who spent 3 weeks in rural Rajasthan visiting family. Presents with gradually rising fever over 10 days, now daily temperatures of 39–40 °C. Complains of dull frontal headache, anorexia, and diffuse abdominal discomfort. Reports loose stools for the last 4 days. Notes a faint salmon-colored rash on her trunk that appeared 2 days ago. Took no prophylactic medications before travel.',
+      pmh: 'No significant past medical history',
+      medications: 'None',
+      allergies: 'NKDA',
+      social: 'Graduate student, non-smoker, minimal alcohol, sexually active with one partner',
+      family: 'No relevant family history',
+    },
+    actions: [
+      { group: 'Physical Exam', items: [
+        { id: 'pe_31_abd', label: 'Abdominal & Skin Examination', icon: 'exam', points: 30,
+          finding: { type: 'exam', title: 'Physical Examination', subtitle: 'Abdomen & Integument',
+            results: [
+              { name: 'Abdomen',        val: 'Mild diffuse tenderness, splenomegaly (3 cm below costal margin)', flag: 'abnormal'  },
+              { name: 'Skin',           val: 'Rose spots — 8–10 faint salmon-pink macules on anterior trunk, 2–4 mm, blanching', flag: 'critical' },
+              { name: 'Relative bradycardia', val: 'HR 76 with Temp 39.8 °C — pulse-temperature dissociation', flag: 'critical' },
+              { name: 'Tongue',         val: 'White coating centrally, red edges (typhoid tongue)',             flag: 'abnormal'  },
+            ],
+            note: { type: 'alert', text: 'Rose spots + relative bradycardia + splenomegaly in a returned traveler from South Asia = Salmonella typhi until proven otherwise.' } },
+          stateEffect: { state: 'worsening', message: 'Persistent high fever and splenomegaly. Patient fatigued and refusing oral intake. Watch for intestinal perforation.' } },
+      ] },
+      { group: 'Labs', items: [
+        { id: 'lab_cbc_31', label: 'CBC with Differential', icon: 'lab', points: 25,
+          finding: { type: 'labs', title: 'Complete Blood Count', subtitle: 'Stat',
+            results: [
+              { name: 'WBC',         val: '3.2 × 10³/µL',   ref: '(4.5–11)',    flag: 'abnormal' },
+              { name: 'Neutrophils', val: '38%',             ref: '(50–70%)',    flag: 'abnormal' },
+              { name: 'Lymphocytes', val: '52%',             ref: '(20–45%)',    flag: 'abnormal' },
+              { name: 'Platelets',   val: '98 × 10³/µL',    ref: '(150–400)',   flag: 'abnormal' },
+              { name: 'Hgb',         val: '10.8 g/dL',      ref: '(12–16)',     flag: 'abnormal' },
+            ],
+            note: { type: 'alert', text: 'Leukopenia with relative lymphocytosis is characteristic of typhoid fever — a key differentiating feature from bacterial sepsis.' } } },
+        { id: 'lab_bcx_31', label: 'Blood Cultures (×2 sets)', icon: 'lab', points: 50,
+          finding: { type: 'labs', title: 'Blood Cultures', subtitle: 'Gold Standard Diagnostic',
+            results: [
+              { name: 'Culture ×2',  val: 'Salmonella enterica serotype Typhi — POSITIVE',  flag: 'critical' },
+              { name: 'Sensitivity', val: '70–80% in week 1 of illness — ordered correctly in time window', flag: 'normal' },
+              { name: 'Resistance',  val: 'Fluoroquinolone-resistant (ciprofloxacin MIC 0.25 µg/mL)',       flag: 'critical' },
+            ],
+            note: { type: 'alert', text: 'Confirmed typhoid. Fluoroquinolone resistance common from South Asia — use azithromycin (first-line for uncomplicated) or IV ceftriaxone (for severe disease). Report to public health.' } } },
+        { id: 'lab_lft_31', label: 'CMP / Liver Function Tests', icon: 'lab', points: 15,
+          finding: { type: 'labs', title: 'Metabolic & Liver Panel', subtitle: 'Comprehensive',
+            results: [
+              { name: 'ALT',         val: '112 U/L',   ref: '(7–56)',    flag: 'abnormal' },
+              { name: 'AST',         val: '98 U/L',    ref: '(10–40)',   flag: 'abnormal' },
+              { name: 'Bilirubin',   val: '1.8 mg/dL', ref: '(0.2–1.2)',flag: 'abnormal' },
+              { name: 'Albumin',     val: '3.1 g/dL',  ref: '(3.5–5)',  flag: 'abnormal' },
+              { name: 'Creatinine',  val: '0.9 mg/dL', ref: '(0.6–1.2)',flag: 'normal'   },
+            ],
+            note: { type: '', text: 'Hepatitis is common in typhoid; transaminitis usually resolves with antibiotic treatment.' } } },
+        { id: 'lab_widal_31', label: 'Tropical Disease Screen (Typhoid / Widal)', icon: 'lab', points: 20,
+          finding: { type: 'labs', title: 'Typhoid Serology & Tropical Screen', subtitle: 'Widal Test + Malaria RDT',
+            results: [
+              { name: 'Widal O antigen',    val: '1:320 (positive ≥1:160)',                     flag: 'abnormal' },
+              { name: 'Widal H antigen',    val: '1:160 (positive ≥1:160)',                     flag: 'abnormal' },
+              { name: 'Malaria RDT',        val: 'NEGATIVE (P. falciparum / P. vivax)',          flag: 'normal'   },
+              { name: 'Dengue NS1 Ag',      val: 'NEGATIVE',                                    flag: 'normal'   },
+            ],
+            note: { type: '', text: 'Widal test supports typhoid diagnosis but has limited specificity in endemic areas. Blood cultures (already ordered) remain gold standard.' } } },
+      ] },
+      { group: 'Imaging', items: [
+        { id: 'img_us_31', label: 'Abdominal Ultrasound', icon: 'imaging', points: 20,
+          finding: { type: 'imaging', title: 'Abdominal Ultrasound', subtitle: 'Comprehensive',
+            results: [
+              { name: 'Spleen',          val: 'Enlarged — 16 cm (normal < 12 cm)',   flag: 'abnormal' },
+              { name: 'Liver',           val: 'Mildly enlarged, homogeneous texture', flag: 'abnormal' },
+              { name: 'Bowel',           val: 'No free air, no perforation detected', flag: 'normal'   },
+              { name: 'Lymph nodes',     val: 'Mesenteric lymphadenopathy (1–2 cm)', flag: 'abnormal' },
+            ],
+            note: { type: '', text: 'Splenomegaly and hepatomegaly consistent with systemic typhoid infection. Serial exams warranted to detect bowel perforation — most feared complication.' } } },
+      ] },
+      { group: 'Consults', items: [
+        { id: 'consult_31_id', label: 'Infectious Disease Consult', icon: 'consult', points: 30,
+          finding: { type: 'consult', title: 'Infectious Disease Consultation', subtitle: 'Travel Medicine',
+            results: [
+              { name: 'Assessment',   val: 'Typhoid fever (Salmonella typhi) — moderate severity', flag: 'critical' },
+              { name: 'Treatment',    val: 'Azithromycin 1 g PO day 1, then 500 mg PO daily × 6 days', flag: 'normal' },
+              { name: 'Alternative',  val: 'IV Ceftriaxone 2 g q24h if unable to tolerate PO or worsening', flag: 'normal' },
+              { name: 'Avoid',        val: 'Ciprofloxacin — confirmed resistant; NSAIDs — spleen rupture risk', flag: 'critical' },
+              { name: 'Public Health',val: 'Reportable condition — notify county health department',            flag: 'abnormal' },
+            ],
+            note: { type: 'alert', text: 'Educate on handwashing and food safety. Screen household contacts. Follow-up stool cultures at 3 and 6 months to confirm clearance.' } } },
+      ] },
+    ],
+    dispositions: [
+      { id: 'disp_31_correct', label: 'Admit — Azithromycin + ID Consult + Isolation', icon: 'admit', outcome: 'correct', points: 100,
+        feedback: { title: 'Excellent — Typhoid Managed Correctly', grade: 'Outstanding',
+          body: 'Admission for IV hydration and azithromycin treats fluoroquinolone-resistant typhoid appropriately. ID consult ensures correct antibiotic selection and public health reporting. Rose spots, relative bradycardia, and splenomegaly in a returned traveler from South Asia are classic. Blood cultures in week 1 carry 70–80% sensitivity — the optimal window.' } },
+      { id: 'disp_31_partial', label: 'Admit — Ciprofloxacin + IV Fluids', icon: 'admit', outcome: 'partial', points: -30,
+        feedback: { title: 'Partially Correct — Fluoroquinolone Resistance Missed', grade: 'Needs Improvement',
+          body: 'Ciprofloxacin was the historical first-line agent for typhoid, but fluoroquinolone resistance from the Indian subcontinent is now widespread (>80% in some regions). Using ciprofloxacin in a resistant case risks clinical failure and prolonged fever. Azithromycin or ceftriaxone are preferred for travelers returning from South Asia.' } },
+      { id: 'disp_31_incorrect', label: 'Discharge — Viral Illness, Supportive Care', icon: 'rx', outcome: 'incorrect', points: -120,
+        feedback: { title: 'Critical Error — Untreated Typhoid Can Perforate', grade: 'Critical Error',
+          body: 'Typhoid fever is not a viral self-limiting illness. Untreated, 10–30% of patients develop complications including intestinal perforation (mortality 50%), hemorrhage, myocarditis, and encephalopathy. The combination of rose spots + relative bradycardia + splenomegaly + travel to endemic area mandates blood cultures and antibiotic treatment.' } },
+    ],
+    correctDisposition: 'disp_31_correct',
+    criticalActions: ['pe_31_abd', 'lab_bcx_31', 'consult_31_id'],
+  },
+
+  // ─── ID Case 32: Ahmed K. — Visceral Leishmaniasis (Kala-Azar) ─────────────
+  {
+    id: 32, specialty: 'id',
+    meta: { title: 'Weight Loss & Splenomegaly', tagLabels: [{ t: 'TRAVEL HX', cls: 'urgent' }, { t: 'Tropical Medicine', cls: '' }] },
+    patient: {
+      name: 'Ahmed K.', age: 34, sex: 'Male', avatar: 'male', emoji: '👨',
+      chiefComplaint: 'Progressive weight loss, fevers, and abdominal distension — 3 months after return from Sudan',
+      vitals: [
+        { label: 'BP',     value: '96/60',    status: 'abnormal'   },
+        { label: 'HR',     value: '102 bpm',  status: 'abnormal'   },
+        { label: 'RR',     value: '20 /min',  status: 'borderline' },
+        { label: 'Temp',   value: '38.6 °C',  status: 'abnormal'   },
+        { label: 'O₂ Sat', value: '97%',      status: 'normal'     },
+        { label: 'Weight', value: '52 kg (↓14 kg)', status: 'abnormal' },
+      ],
+      history: '34-year-old male aid worker who spent 6 months in Blue Nile state, Sudan. Returned 3 months ago. Progressive fatigue, intermittent fevers (often twice daily), and dramatic weight loss — 14 kg in 10 weeks. Abdomen has become progressively distended. Now notes grayish discoloration of the skin on his hands and face. Denies cough, diarrhea, or urinary symptoms. Mild epistaxis last week.',
+      pmh: 'No prior illnesses. No malaria prophylaxis taken while in Sudan.',
+      medications: 'None',
+      allergies: 'NKDA',
+      social: 'Aid worker, non-smoker, occasional alcohol, no IV drug use',
+      family: 'No relevant history',
+    },
+    actions: [
+      { group: 'Physical Exam', items: [
+        { id: 'pe_32_abd', label: 'Abdominal & Skin Examination', icon: 'exam', points: 35,
+          finding: { type: 'exam', title: 'Physical Examination', subtitle: 'Abdomen, Skin & Lymphatics',
+            results: [
+              { name: 'Spleen',        val: 'MASSIVE — palpable 12 cm below costal margin, non-tender', flag: 'critical' },
+              { name: 'Liver',         val: 'Hepatomegaly — 4 cm below costal margin',                  flag: 'abnormal' },
+              { name: 'Skin',          val: 'Diffuse darkening (post-kala-azar dermal hyperpigmentation) — gray/dark on extremities', flag: 'critical' },
+              { name: 'Lymph nodes',   val: 'Bilateral inguinal lymphadenopathy (1.5–2 cm)',             flag: 'abnormal' },
+              { name: 'Muscle mass',   val: 'Severe wasting — temporal and thenar muscle loss evident',  flag: 'abnormal' },
+            ],
+            note: { type: 'alert', text: 'Massive splenomegaly + skin darkening (kala-azar means "black fever" in Hindi) + aid worker in East Africa = Leishmania donovani until proven otherwise.' } },
+          stateEffect: { state: 'worsening', message: 'Patient severely malnourished with massive splenomegaly. High risk of spontaneous splenic rupture. Pancytopenia worsening — prophylactic antibiotics consideration.' } },
+      ] },
+      { group: 'Labs', items: [
+        { id: 'lab_cbc_32', label: 'CBC with Differential', icon: 'lab', points: 30,
+          finding: { type: 'labs', title: 'Complete Blood Count', subtitle: 'Pancytopenia Panel',
+            results: [
+              { name: 'WBC',       val: '1.8 × 10³/µL',  ref: '(4.5–11)',   flag: 'critical' },
+              { name: 'Hgb',       val: '6.4 g/dL',       ref: '(13–17)',    flag: 'critical' },
+              { name: 'Platelets', val: '42 × 10³/µL',   ref: '(150–400)',  flag: 'critical' },
+              { name: 'Retic',     val: '2.1%',            ref: '(0.5–2.5)', flag: 'normal'   },
+            ],
+            note: { type: 'alert', text: 'Severe pancytopenia — WBC, RBC, and platelets all critically low. Splenic sequestration + bone marrow infiltration by Leishmania amastigotes.' } } },
+        { id: 'lab_protein_32', label: 'CMP / Total Protein & Albumin', icon: 'lab', points: 20,
+          finding: { type: 'labs', title: 'Comprehensive Metabolic Panel', subtitle: 'Protein Studies',
+            results: [
+              { name: 'Total Protein',    val: '9.8 g/dL',    ref: '(6–8.3)',   flag: 'abnormal' },
+              { name: 'Albumin',          val: '1.6 g/dL',    ref: '(3.5–5)',   flag: 'critical' },
+              { name: 'Globulin',         val: '8.2 g/dL',    ref: '(2–3.5)',   flag: 'critical' },
+              { name: 'A:G Ratio',        val: '0.19 (severely inverted)', ref: '(>1.2)', flag: 'critical' },
+            ],
+            note: { type: 'alert', text: 'Reversed albumin:globulin ratio with polyclonal hypergammaglobulinemia is classic for visceral leishmaniasis. Severe hypoalbuminemia causing ascites.' } } },
+        { id: 'lab_inflam_32', label: 'CRP / ESR / Procalcitonin', icon: 'lab', points: 10,
+          finding: { type: 'labs', title: 'Inflammatory Markers', subtitle: 'Infection Screen',
+            results: [
+              { name: 'ESR',          val: '118 mm/hr',  ref: '(<20)',    flag: 'critical' },
+              { name: 'CRP',          val: '64 mg/L',    ref: '(<10)',    flag: 'abnormal' },
+              { name: 'Procalcitonin',val: '0.8 ng/mL',  ref: '(<0.25)', flag: 'abnormal' },
+            ],
+            note: { type: '', text: 'Markedly elevated ESR is characteristic of visceral leishmaniasis and hypergammaglobulinemia. Procalcitonin borderline — co-infection not excluded.' } } },
+        { id: 'lab_rk39_32', label: 'Tropical Disease Screen (rK39 Rapid Test)', icon: 'lab', points: 50,
+          finding: { type: 'labs', title: 'Tropical Disease Rapid Tests', subtitle: 'Leishmania-specific',
+            results: [
+              { name: 'rK39 RDT',         val: 'POSITIVE — Leishmania donovani antigen confirmed',  flag: 'critical' },
+              { name: 'Malaria RDT',       val: 'NEGATIVE',                                          flag: 'normal'   },
+              { name: 'DAT (titer)',        val: '1:3200 — Direct Agglutination Test strongly positive', flag: 'critical' },
+              { name: 'Leishmania IgG',    val: 'Positive (ELISA)',                                  flag: 'abnormal' },
+            ],
+            note: { type: 'alert', text: 'rK39 rapid test has 97–100% sensitivity and specificity in East African visceral leishmaniasis. Splenic aspirate (98% sensitive) remains gold standard if diagnosis unclear — do NOT perform with platelets this low.' } } },
+      ] },
+      { group: 'Imaging', items: [
+        { id: 'img_us_32', label: 'Abdominal Ultrasound', icon: 'imaging', points: 20,
+          finding: { type: 'imaging', title: 'Abdominal Ultrasound', subtitle: 'Organ Assessment',
+            results: [
+              { name: 'Spleen',     val: '28 cm longitudinal — massive splenomegaly (normal < 12 cm)', flag: 'critical' },
+              { name: 'Liver',      val: '19 cm — hepatomegaly, homogeneous, no focal lesions',         flag: 'abnormal' },
+              { name: 'Ascites',    val: 'Moderate free fluid in abdomen — hypoalbuminemia related',   flag: 'abnormal' },
+              { name: 'Vasculature',val: 'Portal vein 16 mm — portal hypertension',                    flag: 'abnormal' },
+            ],
+            note: { type: '', text: 'Ultrasound confirms massive hepatosplenomegaly. Avoid splenic aspiration given thrombocytopenia risk. Bone marrow biopsy preferred for parasite confirmation if rK39 insufficient.' } } },
+      ] },
+      { group: 'Consults', items: [
+        { id: 'consult_32_id', label: 'Infectious Disease / Tropical Medicine Consult', icon: 'consult', points: 30,
+          finding: { type: 'consult', title: 'Tropical Medicine Consultation', subtitle: 'Visceral Leishmaniasis Protocol',
+            results: [
+              { name: 'Diagnosis',    val: 'Visceral Leishmaniasis (Kala-Azar) — L. donovani, East Africa', flag: 'critical' },
+              { name: '1st Line',     val: 'Liposomal Amphotericin B — 3 mg/kg IV days 1–5, then day 14 and 21', flag: 'normal' },
+              { name: 'Alternative',  val: 'Miltefosine PO (weight-based dosing) — teratogenic, avoid in women of childbearing age', flag: 'normal' },
+              { name: 'Monitoring',   val: 'Splenic index at 6 months to confirm response; parasite clearance', flag: 'normal' },
+              { name: 'Transfusions', val: 'PRBCs for Hgb < 6 g/dL; platelets if < 20k or active bleeding',    flag: 'normal' },
+            ],
+            note: { type: 'alert', text: 'WHO-recommended: Liposomal AmB 30 mg/kg total (East Africa protocol). Follow with surveillance for PKDL (post-kala-azar dermal leishmaniasis) months to years later.' } } },
+      ] },
+    ],
+    dispositions: [
+      { id: 'disp_32_correct', label: 'Admit ICU — Liposomal Amphotericin B + Blood Products + ID Consult', icon: 'admit', outcome: 'correct', points: 100,
+        feedback: { title: 'Excellent — Visceral Leishmaniasis Recognized and Treated', grade: 'Outstanding',
+          body: 'Liposomal amphotericin B is WHO-recommended first-line therapy for East African visceral leishmaniasis. ICU-level monitoring required given pancytopenia, massive splenomegaly, and risk of splenic rupture. The rK39 RDT is highly accurate in this setting. Key diagnostic clues: massive splenomegaly + skin darkening + returning traveler from East/South Africa + reversed albumin:globulin ratio + pancytopenia.' } },
+      { id: 'disp_32_partial', label: 'Admit — Bone Marrow Biopsy First, Defer Treatment', icon: 'admit', outcome: 'partial', points: -20,
+        feedback: { title: 'Acceptable but Delay Is Risky', grade: 'Needs Improvement',
+          body: 'Bone marrow biopsy is confirmatory (sensitivity 60–85%) but is not required when rK39 is positive and the clinical picture is classic. Delaying treatment for confirmatory testing risks further deterioration in a patient with Hgb 6.4 g/dL and platelet count 42k. In resource-limited settings and with a positive rK39, treatment should begin promptly.' } },
+      { id: 'disp_32_incorrect', label: 'Discharge — Malaria Treatment Empirically', icon: 'rx', outcome: 'incorrect', points: -130,
+        feedback: { title: 'Fatal Error — Wrong Diagnosis', grade: 'Critical Error',
+          body: 'Malaria was specifically excluded by rapid antigen testing. Empirical antimalarials will not treat visceral leishmaniasis and the patient will die from progressive pancytopenia, hemorrhage, or bacterial superinfection. Kala-azar is uniformly fatal without treatment. The 14 kg weight loss, skin darkening, and 3-month duration are inconsistent with acute malaria.' } },
+    ],
+    correctDisposition: 'disp_32_correct',
+    criticalActions: ['pe_32_abd', 'lab_rk39_32', 'consult_32_id'],
+  },
+
+  // ─── ID Case 33: Elena R. — Dengue Hemorrhagic Fever ─────────────
+  {
+    id: 33, specialty: 'id',
+    meta: { title: 'Fever & Thrombocytopenia', tagLabels: [{ t: 'TRAVEL HX', cls: 'urgent' }, { t: 'Hemorrhagic Fever', cls: '' }] },
+    patient: {
+      name: 'Elena R.', age: 21, sex: 'Female', avatar: 'female', emoji: '👩',
+      chiefComplaint: 'High fever, severe myalgias, and rash — returned from Thailand 5 days ago',
+      vitals: [
+        { label: 'BP',     value: '98/64',    status: 'abnormal'   },
+        { label: 'HR',     value: '112 bpm',  status: 'abnormal'   },
+        { label: 'RR',     value: '22 /min',  status: 'borderline' },
+        { label: 'Temp',   value: '39.4 °C',  status: 'abnormal'   },
+        { label: 'O₂ Sat', value: '97%',      status: 'normal'     },
+        { label: 'Pain',   value: '8 / 10',   status: 'abnormal'   },
+      ],
+      history: '21-year-old college student who traveled to Chiang Mai, Thailand for 2 weeks. Developed acute-onset fever (40 °C), severe retro-orbital headache, and debilitating myalgia ("breakbone fever") 5 days before return. Initial fever broke on day 4 — now returning on day 7 with new rash, worsening abdominal pain, and gum bleeding this morning. Took no prophylaxis. No prior dengue illness.',
+      pmh: 'No significant past medical history',
+      medications: 'Ibuprofen 400 mg TID (self-administered for fever)',
+      allergies: 'Sulfa (rash)',
+      social: 'College student, social alcohol, non-smoker',
+      family: 'No relevant history',
+    },
+    actions: [
+      { group: 'Physical Exam', items: [
+        { id: 'pe_33_exam', label: 'Tourniquet Test & Skin/Mucosal Exam', icon: 'exam', points: 40,
+          finding: { type: 'exam', title: 'Physical Examination', subtitle: 'Hemorrhagic Assessment',
+            results: [
+              { name: 'Tourniquet test',  val: 'POSITIVE — 28 petechiae in 2.5 cm² after 5 min inflation (≥20 = positive)', flag: 'critical' },
+              { name: 'Skin rash',        val: 'Confluent petechial rash on trunk and extremities — "islands of white in sea of red"', flag: 'critical' },
+              { name: 'Gums',             val: 'Oozing from gingival margins — spontaneous mucosal bleeding', flag: 'critical' },
+              { name: 'Abdomen',          val: 'Right upper quadrant tenderness, positive fluid wave (ascites)',  flag: 'abnormal' },
+              { name: 'Eyes',             val: 'Conjunctival injection, no jaundice',                             flag: 'abnormal' },
+            ],
+            note: { type: 'alert', text: 'Positive tourniquet test + petechial rash + mucosal bleeding + ascites = Dengue Hemorrhagic Fever grade II–III. Plasma leakage to third space. STOP NSAIDs immediately — dramatically increases bleeding risk.' } },
+          stateEffect: { state: 'worsening', message: 'Patient entering critical phase. Plasma leakage causing hemoconcentration. Risk of dengue shock syndrome in next 24–48 hours. Close monitoring required.' } },
+      ] },
+      { group: 'Labs', items: [
+        { id: 'lab_cbc_33', label: 'CBC with Differential', icon: 'lab', points: 40,
+          finding: { type: 'labs', title: 'Complete Blood Count', subtitle: 'Critical Monitoring',
+            results: [
+              { name: 'WBC',       val: '2.1 × 10³/µL',  ref: '(4.5–11)',   flag: 'critical' },
+              { name: 'Platelets', val: '24 × 10³/µL',   ref: '(150–400)',  flag: 'critical' },
+              { name: 'Hematocrit',val: '52%',            ref: '(36–46%)',   flag: 'critical' },
+              { name: 'Hgb',       val: '14.8 g/dL',     ref: '(12–16)',    flag: 'abnormal' },
+            ],
+            note: { type: 'alert', text: 'Leukopenia + thrombocytopenia + hematocrit rise ≥20% = Dengue Hemorrhagic Fever confirmed (WHO criteria). Hemoconcentration indicates plasma leakage into third space.' } } },
+        { id: 'lab_lft_33', label: 'CMP / Liver Function Tests', icon: 'lab', points: 20,
+          finding: { type: 'labs', title: 'Comprehensive Metabolic Panel', subtitle: 'Organ Function',
+            results: [
+              { name: 'AST',       val: '410 U/L',    ref: '(10–40)',   flag: 'critical' },
+              { name: 'ALT',       val: '280 U/L',    ref: '(7–56)',    flag: 'critical' },
+              { name: 'Albumin',   val: '2.8 g/dL',   ref: '(3.5–5)',  flag: 'abnormal' },
+              { name: 'Creatinine',val: '1.6 mg/dL',  ref: '(0.6–1.2)',flag: 'abnormal' },
+              { name: 'Na',        val: '128 mEq/L',  ref: '(135–145)',flag: 'abnormal' },
+            ],
+            note: { type: 'alert', text: 'Severe dengue hepatitis with AST > ALT (unlike viral hepatitis). Hyponatremia from plasma leakage. Hypoalbuminemia worsening capillary leakage — monitor closely.' } } },
+        { id: 'lab_dengue_33', label: 'Tropical Disease Screen (Dengue NS1 + Serology)', icon: 'lab', points: 50,
+          finding: { type: 'labs', title: 'Dengue Rapid Diagnostic Tests', subtitle: 'NS1 Ag + IgM/IgG ELISA',
+            results: [
+              { name: 'NS1 Antigen',  val: 'POSITIVE (day 5 — still detectable in DHF)',          flag: 'critical' },
+              { name: 'Dengue IgM',   val: 'POSITIVE — secondary dengue infection (IgM/IgG ≥ 1.2)', flag: 'critical' },
+              { name: 'Dengue IgG',   val: 'POSITIVE — pre-existing antibody (DENV serotype prior exposure)', flag: 'abnormal' },
+              { name: 'Serotype note',val: 'Secondary infection with different serotype — ADE mechanism drives DHF severity', flag: 'critical' },
+            ],
+            note: { type: 'alert', text: 'Secondary dengue infection via Antibody-Dependent Enhancement (ADE) is the primary driver of DHF. Previous dengue IgG cross-reacts with new serotype, amplifying viral replication. No antiviral — supportive care is everything.' } } },
+        { id: 'lab_abg_33', label: 'ABG / Metabolic Assessment', icon: 'lab', points: 15,
+          finding: { type: 'labs', title: 'Arterial Blood Gas', subtitle: 'Respiratory & Acid-Base',
+            results: [
+              { name: 'pH',    val: '7.32',      ref: '(7.35–7.45)', flag: 'abnormal' },
+              { name: 'pCO₂', val: '30 mmHg',   ref: '(35–45)',     flag: 'abnormal' },
+              { name: 'HCO₃', val: '16 mEq/L',  ref: '(22–26)',     flag: 'abnormal' },
+              { name: 'Lactate',val: '3.2 mmol/L',ref: '(<2)',       flag: 'critical' },
+            ],
+            note: { type: 'alert', text: 'Metabolic acidosis with compensatory hyperventilation. Elevated lactate indicates tissue hypoperfusion — dengue shock syndrome developing. Aggressive IV fluid resuscitation required.' } } },
+      ] },
+      { group: 'Consults', items: [
+        { id: 'consult_33_id', label: 'Infectious Disease Consult', icon: 'consult', points: 25,
+          finding: { type: 'consult', title: 'Infectious Disease Consultation', subtitle: 'Dengue Management Protocol',
+            results: [
+              { name: 'Diagnosis',  val: 'Dengue Hemorrhagic Fever Grade III (Dengue Shock Syndrome)', flag: 'critical' },
+              { name: 'Fluids',     val: 'Isotonic crystalloid 10 mL/kg over 1 hour — then titrate to clinical response', flag: 'normal' },
+              { name: 'Avoid',      val: 'NSAIDs (ibuprofen) — STOP immediately. No aspirin. No corticosteroids.', flag: 'critical' },
+              { name: 'Avoid',      val: 'Prophylactic platelet transfusion — ONLY transfuse if < 10k or active severe bleeding', flag: 'critical' },
+              { name: 'Monitoring', val: 'Hourly vitals, serial hematocrit Q4–6h, strict I&O, watch for fluid overload in recovery', flag: 'normal' },
+            ],
+            note: { type: 'alert', text: 'No dengue antiviral exists. Management is entirely supportive. The leakage phase (days 4–7) is the most dangerous — plasma returns to vasculature in recovery phase; over-hydration causes pulmonary edema.' } } },
+      ] },
+    ],
+    dispositions: [
+      { id: 'disp_33_correct', label: 'Admit ICU — IV Crystalloids, Stop NSAIDs, Serial Hematocrit Monitoring', icon: 'admit', outcome: 'correct', points: 100,
+        feedback: { title: 'Excellent — DHF Managed Appropriately', grade: 'Outstanding',
+          body: 'ICU admission with careful crystalloid resuscitation is the cornerstone of dengue hemorrhagic fever management. Stopping NSAIDs (ibuprofen) is critical — they worsen platelet dysfunction and GI bleeding. Serial hematocrit every 4–6 hours tracks plasma leakage. Platelet transfusion is withheld unless < 10,000 or severe bleeding. The positive tourniquet test, hematocrit rise ≥ 20%, and thrombocytopenia confirm DHF.' } },
+      { id: 'disp_33_partial', label: 'Admit — Platelet Transfusion Empirically Given', icon: 'admit', outcome: 'partial', points: -25,
+        feedback: { title: 'Partially Correct — Prophylactic Platelets Contraindicated in DHF', grade: 'Needs Improvement',
+          body: 'Prophylactic platelet transfusion is not recommended in dengue — platelets are destroyed rapidly by the immune response, transfusions carry risk, and clinical trials show no benefit without active bleeding. Only transfuse if count < 10,000/µL or active significant hemorrhage. Fluid management, not platelets, is the primary intervention.' } },
+      { id: 'disp_33_incorrect', label: 'Discharge — Viral Syndrome, Continue NSAIDs for Pain', icon: 'rx', outcome: 'incorrect', points: -150,
+        feedback: { title: 'Fatal Error — DHF Untreated with Harmful Medication', grade: 'Critical Error',
+          body: 'This patient has dengue shock syndrome. Discharge is not safe — she needs continuous hemodynamic monitoring and careful fluid management. Continuing NSAIDs in dengue hemorrhagic fever is contraindicated: ibuprofen inhibits platelet function (already at 24k), promotes GI bleeding, and can precipitate fatal hemorrhage. This decision could be lethal.' } },
+    ],
+    correctDisposition: 'disp_33_correct',
+    criticalActions: ['pe_33_exam', 'lab_cbc_33', 'lab_dengue_33'],
+  },
+
+  // ─── ID Case 34: Robert L. — Disseminated Histoplasmosis (HIV) ─────────────
+  {
+    id: 34, specialty: 'id',
+    meta: { title: 'Fever & Mucocutaneous Lesions (HIV)', tagLabels: [{ t: 'IMMUNOCOMPROMISED', cls: 'urgent' }, { t: 'Fungal Infection', cls: '' }] },
+    patient: {
+      name: 'Robert L.', age: 45, sex: 'Male', avatar: 'male', emoji: '👨',
+      chiefComplaint: 'Progressive fatigue, fever, weight loss, and skin lesions in known HIV patient',
+      vitals: [
+        { label: 'BP',     value: '104/68',   status: 'borderline' },
+        { label: 'HR',     value: '108 bpm',  status: 'abnormal'   },
+        { label: 'RR',     value: '24 /min',  status: 'abnormal'   },
+        { label: 'Temp',   value: '38.9 °C',  status: 'abnormal'   },
+        { label: 'O₂ Sat', value: '91%',      status: 'abnormal'   },
+        { label: 'Weight', value: '61 kg (↓11 kg in 6 wks)', status: 'abnormal' },
+      ],
+      history: '45-year-old male with HIV diagnosed 8 years ago (lost to follow-up × 2 years, non-adherent to ART). Spent a long weekend cave exploring in Mammoth Cave National Park, Kentucky (Ohio River Valley) 8 weeks ago. Now presents with 6 weeks of progressive fatigue, daily fevers, night sweats, and 11 kg weight loss. New skin lesions appearing — "bumps on face and chest." Dry cough, dyspnea on exertion. Mild confusion today (family reports).',
+      pmh: 'HIV/AIDS (non-adherent ART: bictegravir/tenofovir/emtricitabine stopped 2 years ago)',
+      medications: 'None currently (self-discontinued ART)',
+      allergies: 'Trimethoprim-sulfamethoxazole (hives)',
+      social: 'Photographer, former smoker (5 pack-years), no IVDU, occasional alcohol',
+      family: 'No relevant family history',
+    },
+    actions: [
+      { group: 'Physical Exam', items: [
+        { id: 'pe_34_skin', label: 'Mucocutaneous & Pulmonary Examination', icon: 'exam', points: 35,
+          finding: { type: 'exam', title: 'Physical Examination', subtitle: 'Skin, Mucosa & Lungs',
+            results: [
+              { name: 'Skin',        val: 'Numerous 2–5 mm papules with central umbilication on face, chest, and arms — morphologically resembling molluscum contagiosum', flag: 'critical' },
+              { name: 'Oral mucosa', val: 'White plaques on palate (thrush) + 3 shallow ulcers on tongue', flag: 'abnormal' },
+              { name: 'Lungs',       val: 'Diffuse bilateral crackles, diminished at bases',                 flag: 'critical' },
+              { name: 'Lymph nodes', val: 'Cervical + axillary lymphadenopathy (2–3 cm, non-tender)',       flag: 'abnormal' },
+              { name: 'Neuro',       val: 'Mild disorientation to time (year correct, date wrong)',          flag: 'abnormal' },
+            ],
+            note: { type: 'alert', text: 'Umbilicated papules in HIV with CD4 < 50 = think Histoplasma, Penicilliosis, Cryptococcus, or molluscum. Cave explorer + Ohio River Valley + disseminated findings = Histoplasma capsulatum until proven otherwise.' } },
+          stateEffect: { state: 'worsening', message: 'O₂ sat 91%, mild confusion — CNS involvement and respiratory failure developing. Time-critical: initiate antifungal therapy urgently. ART restart timing critical (IRIS risk).' } },
+      ] },
+      { group: 'Labs', items: [
+        { id: 'lab_cbc_34', label: 'CBC with Differential', icon: 'lab', points: 25,
+          finding: { type: 'labs', title: 'Complete Blood Count', subtitle: 'Bone Marrow Assessment',
+            results: [
+              { name: 'WBC',       val: '2.4 × 10³/µL',  ref: '(4.5–11)',  flag: 'critical' },
+              { name: 'Hgb',       val: '7.8 g/dL',       ref: '(13–17)',   flag: 'critical' },
+              { name: 'Platelets', val: '68 × 10³/µL',   ref: '(150–400)', flag: 'critical' },
+              { name: 'Peripheral smear', val: 'Intracellular yeast forms seen within macrophages in 30% of fields', flag: 'critical' },
+            ],
+            note: { type: 'alert', text: 'Pancytopenia + intracellular yeast on peripheral smear = Histoplasma capsulatum (2–4 µm budding yeast engulfed by macrophages). Bone marrow biopsy will show heavy fungal burden.' } } },
+        { id: 'lab_ldh_34', label: 'Tumor Markers / LDH', icon: 'lab', points: 15,
+          finding: { type: 'labs', title: 'LDH & Inflammatory Markers', subtitle: 'Disease Severity',
+            results: [
+              { name: 'LDH',          val: '1,840 U/L',   ref: '(140–280)',  flag: 'critical' },
+              { name: 'Ferritin',     val: '12,400 ng/mL',ref: '(12–300)',   flag: 'critical' },
+              { name: 'Alkaline Phos',val: '420 U/L',     ref: '(44–147)',   flag: 'critical' },
+            ],
+            note: { type: 'alert', text: 'Markedly elevated LDH and ferritin correlate with disseminated histoplasmosis burden and are used to track treatment response. Ferritin > 10,000 is a poor prognostic marker.' } } },
+        { id: 'lab_histo_34', label: 'Fungal Antigen Screen (Histoplasma urine Ag)', icon: 'lab', points: 60,
+          finding: { type: 'labs', title: 'Fungal Antigen Diagnostics', subtitle: 'Urine & Serum',
+            results: [
+              { name: 'Urine Histoplasma Ag', val: 'POSITIVE — 18.4 ng/mL (MiraVista EIA, ref < 0.2)',   flag: 'critical' },
+              { name: 'Serum Histoplasma Ag', val: 'POSITIVE — 9.6 ng/mL',                               flag: 'critical' },
+              { name: 'Cryptococcal Ag (serum)',val: 'NEGATIVE',                                          flag: 'normal'   },
+              { name: 'Beta-D-Glucan',          val: '380 pg/mL (positive > 80)',                         flag: 'critical' },
+            ],
+            note: { type: 'alert', text: 'Urine Histoplasma antigen is the most sensitive test (85–95%) for disseminated disease in immunocompromised patients. Cryptococcal Ag negative helps narrow the differential. Begin treatment — do not wait for culture (4–6 weeks).' } } },
+        { id: 'lab_cd4_34', label: 'HIV / CD4 Count / Viral Load', icon: 'lab', points: 30,
+          finding: { type: 'labs', title: 'HIV Immunological Status', subtitle: 'Stat',
+            results: [
+              { name: 'CD4 Count',    val: '42 cells/µL (AIDS-defining)',     ref: '(> 500 normal)', flag: 'critical' },
+              { name: 'HIV-1 RNA',    val: '2,400,000 copies/mL',            ref: '(undetectable)', flag: 'critical' },
+              { name: 'HIV-2',        val: 'Not detected',                    ref: '',               flag: 'normal'   },
+            ],
+            note: { type: 'alert', text: 'CD4 42 — profound immunosuppression explaining disseminated disease. Restart ART 2–4 weeks AFTER antifungal induction to reduce IRIS risk (Histoplasma-IRIS can be severe). Do not restart ART simultaneously.' } } },
+      ] },
+      { group: 'Imaging', items: [
+        { id: 'img_ct_34', label: 'CT Chest (with contrast)', icon: 'imaging', points: 25,
+          finding: { type: 'imaging', title: 'CT Chest', subtitle: 'With Contrast',
+            results: [
+              { name: 'Pulmonary',   val: 'Diffuse bilateral micronodules (2–4 mm) in miliary pattern + ground-glass opacities', flag: 'critical' },
+              { name: 'Mediastinum', val: 'Mediastinal lymphadenopathy — multiple nodes 1.5–3.5 cm',                              flag: 'abnormal' },
+              { name: 'Pleura',      val: 'Small bilateral pleural effusions',                                                     flag: 'abnormal' },
+            ],
+            note: { type: 'alert', text: 'Miliary pattern + mediastinal lymphadenopathy in HIV with CD4 < 50 = disseminated histoplasmosis (or TB — exclude with sputum AFB). Radiographic pattern overlaps heavily with miliary TB.' } },
+          stateEffect: { state: 'worsening', message: 'Bilateral miliary infiltrates confirmed. Patient requires supplemental O₂. Begin antifungal therapy urgently — delay beyond 24 hours significantly worsens outcomes.' } },
+      ] },
+      { group: 'Consults', items: [
+        { id: 'consult_34_id', label: 'Infectious Disease Consult (HIV + Fungal)', icon: 'consult', points: 35,
+          finding: { type: 'consult', title: 'HIV / Infectious Disease Consultation', subtitle: 'Disseminated Histoplasmosis Protocol',
+            results: [
+              { name: 'Diagnosis',    val: 'Disseminated Histoplasmosis — AIDS-defining illness (CD4 42)', flag: 'critical' },
+              { name: 'Induction',    val: 'Liposomal Amphotericin B 3 mg/kg IV daily × 14 days (minimum)', flag: 'normal' },
+              { name: 'Step-down',    val: 'Itraconazole 200 mg PO TID × 3 days, then BID × 12 months (minimum)', flag: 'normal' },
+              { name: 'ART restart',  val: 'Delay ART restart 2–4 weeks — risk of IRIS (Histoplasma-IRIS severe)', flag: 'critical' },
+              { name: 'Avoid',        val: 'Fluconazole — Histoplasma is intrinsically resistant. Do not use voriconazole first-line.', flag: 'critical' },
+              { name: 'PCP ppx',      val: 'Atovaquone (sulfa allergy) 1500 mg PO daily — CD4 42 requires prophylaxis', flag: 'normal' },
+            ],
+            note: { type: 'alert', text: 'Track urine Histoplasma antigen every 2–4 weeks to monitor response. Relapse rate high without lifelong secondary prophylaxis (itraconazole) until CD4 > 150 on sustained ART.' } } },
+      ] },
+    ],
+    dispositions: [
+      { id: 'disp_34_correct', label: 'Admit ICU — Liposomal AmB + Delay ART 2–4 weeks + Atovaquone PCP Ppx', icon: 'admit', outcome: 'correct', points: 100,
+        feedback: { title: 'Excellent — Disseminated Histoplasmosis Correctly Managed', grade: 'Outstanding',
+          body: 'Liposomal amphotericin B induction followed by itraconazole step-down is the IDSA-recommended regimen for severe disseminated histoplasmosis. Delaying ART 2–4 weeks reduces paradoxical IRIS. The urine antigen test is the highest-yield diagnostic in this setting. PCP prophylaxis with atovaquone (sulfa allergy) prevents a second OI at CD4 42. Cave exposure in Ohio River Valley is the classic exposure history.' } },
+      { id: 'disp_34_partial', label: 'Admit — Fluconazole + Restart ART Immediately', icon: 'admit', outcome: 'partial', points: -40,
+        feedback: { title: 'Two Critical Errors', grade: 'Significant Error',
+          body: 'Fluconazole has no meaningful activity against Histoplasma capsulatum — it is intrinsically resistant. Only itraconazole (or amphotericin B for severe disease) is effective. Restarting ART immediately in a patient with CD4 42 and active disseminated histoplasmosis risks severe immune reconstitution inflammatory syndrome (IRIS), which can be fatal in fungal infections.' } },
+      { id: 'disp_34_incorrect', label: 'Admit — Start Empiric TB Treatment (RIPE)', icon: 'rx', outcome: 'incorrect', points: -100,
+        feedback: { title: 'Wrong Diagnosis — Histoplasma, Not TB', grade: 'Critical Error',
+          body: 'While the miliary chest CT and cave exposure could suggest TB, the urine Histoplasma antigen was strongly positive (18.4 ng/mL) and intracellular yeast forms were visible on peripheral smear. Treating TB instead of histoplasmosis leaves the fungal infection untreated — fatal at CD4 42. The umbilicated skin papules and Ohio River Valley exposure are characteristic of disseminated Histoplasma, not TB.' } },
+    ],
+    correctDisposition: 'disp_34_correct',
+    criticalActions: ['pe_34_skin', 'lab_histo_34', 'lab_cd4_34', 'consult_34_id'],
+  },
+
+  // ─── ID Case 35: James T. — Acute HIV-1 Seroconversion ─────────────
+  {
+    id: 35, specialty: 'id',
+    meta: { title: 'Mononucleosis-Like Syndrome', tagLabels: [{ t: 'EXPOSURE HX', cls: 'urgent' }, { t: 'Infectious Disease', cls: '' }] },
+    patient: {
+      name: 'James T.', age: 26, sex: 'Male', avatar: 'male', emoji: '👨',
+      chiefComplaint: 'Sore throat, rash, fever, and swollen lymph nodes — 3 weeks after unprotected sexual exposure',
+      vitals: [
+        { label: 'BP',     value: '118/74',   status: 'normal'     },
+        { label: 'HR',     value: '96 bpm',   status: 'borderline' },
+        { label: 'RR',     value: '18 /min',  status: 'normal'     },
+        { label: 'Temp',   value: '38.3 °C',  status: 'abnormal'   },
+        { label: 'O₂ Sat', value: '99%',      status: 'normal'     },
+        { label: 'Pain',   value: '5 / 10',   status: 'borderline' },
+      ],
+      history: '26-year-old male presents with 10 days of progressive flu-like illness: fever, sore throat, diffuse myalgia and arthralgia, and a rash that appeared 5 days ago. Reports a mononucleosis-like syndrome unlike any prior illness he has experienced. Mentions one episode of unprotected receptive anal intercourse with a partner of unknown HIV status 3 weeks ago. Previously tested HIV-negative 6 months ago. Has not taken PrEP. Denies IV drug use. Has not sought testing since the exposure.',
+      pmh: 'No prior illnesses. Up to date on standard vaccinations.',
+      medications: 'None',
+      allergies: 'NKDA',
+      social: 'Insurance analyst, MSM, non-smoker, social alcohol, no drugs',
+      family: 'No relevant history',
+    },
+    actions: [
+      { group: 'Physical Exam', items: [
+        { id: 'pe_35_exam', label: 'Lymph Node, Skin & Oral Examination', icon: 'exam', points: 30,
+          finding: { type: 'exam', title: 'Physical Examination', subtitle: 'Lymphatic, Mucocutaneous',
+            results: [
+              { name: 'Lymph nodes',  val: 'Generalized lymphadenopathy — cervical, axillary, inguinal (bilateral, 1–2 cm, tender)', flag: 'abnormal' },
+              { name: 'Oropharynx',   val: 'Erythematous pharynx, tonsillar exudate; 4 shallow aphthous-type ulcers on buccal mucosa', flag: 'abnormal' },
+              { name: 'Skin',         val: 'Non-pruritic maculopapular rash — trunk, palms, and soles (2–5 mm erythematous macules)', flag: 'critical' },
+              { name: 'Spleen',       val: 'Mild splenomegaly (tip palpable)',                                                         flag: 'abnormal' },
+              { name: 'Testes',       val: 'No masses or tenderness',                                                                 flag: 'normal'   },
+            ],
+            note: { type: 'alert', text: 'Maculopapular rash on palms/soles + oral ulcers + generalized lymphadenopathy 3 weeks post high-risk exposure = acute HIV seroconversion (Fiebig stage III–IV). Viral loads > 1 million at this stage — extreme infectivity window.' } } },
+      ] },
+      { group: 'Labs', items: [
+        { id: 'lab_hiv_35', label: 'HIV / EBV / CMV / Hepatitis Panel', icon: 'lab', points: 60,
+          finding: { type: 'labs', title: 'Acute Retroviral / Viral Panel', subtitle: '4th Generation Ag/Ab + RNA',
+            results: [
+              { name: 'HIV-1/2 Ag/Ab (4th gen)', val: 'REACTIVE — p24 antigen DETECTED',                       flag: 'critical' },
+              { name: 'HIV-1 RNA (PCR)',          val: '1,840,000 copies/mL (log₁₀ 6.3)',                       flag: 'critical' },
+              { name: 'HIV-1/2 differentiation',  val: 'HIV-1 POSITIVE — HIV-2 NEGATIVE',                      flag: 'critical' },
+              { name: 'Monospot (EBV heterophile)',val: 'NEGATIVE — ruling out infectious mononucleosis',       flag: 'normal'   },
+              { name: 'EBV VCA IgM',              val: 'NEGATIVE',                                              flag: 'normal'   },
+              { name: 'CMV IgM',                  val: 'NEGATIVE',                                              flag: 'normal'   },
+              { name: 'HBsAg / HCV Ab',           val: 'NEGATIVE',                                              flag: 'normal'   },
+            ],
+            note: { type: 'alert', text: 'Acute HIV confirmed — p24 antigenemia + HIV-1 RNA 1.84M copies/mL. 4th-gen Ag/Ab is positive; antibody-only (3rd gen) may still be NEGATIVE at this early stage — the "window period." Begin 4-party exposure counseling and immediate ART.' } },
+          stateEffect: { state: 'improving', message: 'Diagnosis confirmed — acute HIV seroconversion. Early ART initiation dramatically reduces reservoir seeding. Patient can achieve undetectable status within 3–6 months. Excellent long-term prognosis with adherence.' } },
+        { id: 'lab_cbc_35', label: 'CBC with Differential', icon: 'lab', points: 20,
+          finding: { type: 'labs', title: 'Complete Blood Count', subtitle: 'Lymphocyte Assessment',
+            results: [
+              { name: 'WBC',         val: '3.8 × 10³/µL',  ref: '(4.5–11)',   flag: 'abnormal' },
+              { name: 'Lymphocytes', val: '14% (absolute 530/µL)', ref: '(>1000)', flag: 'abnormal' },
+              { name: 'Atypical lymphs', val: '12% — reactive lymphocytosis (virocytes)', flag: 'abnormal' },
+              { name: 'Platelets',   val: '110 × 10³/µL',  ref: '(150–400)',  flag: 'abnormal' },
+            ],
+            note: { type: '', text: 'Lymphopenia with atypical lymphocytes (virocytes) is characteristic of acute HIV. Unlike EBV mono, true atypical large lymphocytes are less prominent; instead, CD4 T-cells are acutely depleted.' } } },
+        { id: 'lab_inflam_35', label: 'CRP / ESR / Procalcitonin', icon: 'lab', points: 10,
+          finding: { type: 'labs', title: 'Inflammatory Markers', subtitle: 'Acute Phase',
+            results: [
+              { name: 'CRP',          val: '48 mg/L',    ref: '(<10)',   flag: 'abnormal' },
+              { name: 'ESR',          val: '62 mm/hr',   ref: '(<20)',   flag: 'abnormal' },
+              { name: 'Procalcitonin',val: '0.18 ng/mL', ref: '(<0.25)',flag: 'normal'   },
+            ],
+            note: { type: '', text: 'Elevated inflammatory markers confirm active systemic illness. Normal procalcitonin makes bacterial sepsis unlikely. Pattern consistent with acute viral syndrome.' } } },
+        { id: 'lab_bmp_35', label: 'BMP / Lactic Acid', icon: 'lab', points: 10,
+          finding: { type: 'labs', title: 'Basic Metabolic Panel', subtitle: 'Baseline before ART',
+            results: [
+              { name: 'Creatinine',  val: '0.9 mg/dL',   ref: '(0.6–1.2)',flag: 'normal'   },
+              { name: 'Glucose',     val: '88 mg/dL',    ref: '(70–100)', flag: 'normal'   },
+              { name: 'Na / K',      val: '138 / 4.0 mEq/L', ref: '(normal)', flag: 'normal' },
+              { name: 'ALT',         val: '62 U/L',      ref: '(7–56)',   flag: 'abnormal' },
+              { name: 'Lactic Acid', val: '1.1 mmol/L',  ref: '(<2)',     flag: 'normal'   },
+            ],
+            note: { type: '', text: 'Normal renal function — TAF-based ART (tenofovir alafenamide) preferred over TDF given renal safety profile. Mildly elevated ALT from hepatic inflammation — baseline before ART.' } } },
+      ] },
+      { group: 'Consults', items: [
+        { id: 'consult_35_id', label: 'Infectious Disease Consult (HIV Care)', icon: 'consult', points: 40,
+          finding: { type: 'consult', title: 'HIV/Infectious Disease Consultation', subtitle: 'Acute Seroconversion Management',
+            results: [
+              { name: 'Diagnosis',    val: 'Acute HIV-1 Seroconversion — Fiebig Stage III (p24 Ag + / Ab ±)', flag: 'critical' },
+              { name: 'ART — Start',  val: 'Bictegravir/Tenofovir AF/Emtricitabine (Biktarvy) 1 tab PO daily — SAME DAY', flag: 'normal' },
+              { name: 'Why early ART',val: 'Limits viral reservoir seeding, preserves immune function, reduces set-point VL', flag: 'normal' },
+              { name: 'Baseline labs',val: 'CD4/VL, genotype resistance testing (before ART), HLA-B5701 (abacavir), creatinine', flag: 'normal' },
+              { name: 'Partner notification', val: 'Discuss with patient — DIS (Disease Intervention Specialists) available', flag: 'normal' },
+              { name: 'PrEP counseling',      val: 'Educate partners — PrEP can prevent future transmission',                flag: 'normal' },
+              { name: 'Prognosis',            val: 'With adherence: undetectable in 3–6 months; normal lifespan expected',  flag: 'normal' },
+            ],
+            note: { type: 'alert', text: 'U=U: Undetectable = Untransmittable. Counsel patient that achieving undetectable viral load prevents sexual transmission. This is both therapeutic and a public health intervention.' } } },
+      ] },
+    ],
+    dispositions: [
+      { id: 'disp_35_correct', label: 'Start ART Same Day — Biktarvy + ID Follow-up + Partner Notification', icon: 'rx', outcome: 'correct', points: 100,
+        feedback: { title: 'Excellent — Acute HIV Diagnosed and Managed Optimally', grade: 'Outstanding',
+          body: 'Same-day ART initiation during acute HIV seroconversion dramatically limits the size of the viral reservoir and preserves immune function. The 4th-generation HIV-1/2 Ag/Ab combo test detects p24 antigenemia weeks before antibodies appear — critical in the acute window period. HIV-1 RNA PCR confirms the diagnosis. Biktarvy (bictegravir/TAF/FTC) is preferred first-line for its high barrier to resistance and excellent tolerability. Counsel on U=U.' } },
+      { id: 'disp_35_partial', label: 'Admit — Wait for Resistance Testing Before Starting ART', icon: 'admit', outcome: 'partial', points: -20,
+        feedback: { title: 'Partially Correct — Delay in ART Is Suboptimal', grade: 'Needs Improvement',
+          body: 'DHHS guidelines recommend starting ART on the same day or within days of diagnosis — including before resistance results return. Send genotype resistance testing before starting ART, but do not wait for results. Start empirically with a high-barrier-to-resistance regimen (integrase inhibitor-based). Reservoir seeding occurs rapidly in the first weeks — each day of delay matters.' } },
+      { id: 'disp_35_incorrect', label: 'Discharge — Symptomatic Treatment for EBV Mononucleosis', icon: 'rx', outcome: 'incorrect', points: -130,
+        feedback: { title: 'Missed HIV Diagnosis — Mononucleosis Ruled Out by Monospot', grade: 'Critical Error',
+          body: 'The monospot test and EBV VCA IgM were both negative, ruling out infectious mononucleosis. HIV-1 RNA of 1.84 million copies/mL and a reactive 4th-generation Ag/Ab test confirm acute HIV. The palm/sole rash and oral ulcers are not typical of EBV mono. Discharging without ART allows continued immune destruction during the seroconversion syndrome — when viral load is highest and reservoir seeding is most aggressive.' } },
+    ],
+    correctDisposition: 'disp_35_correct',
+    criticalActions: ['pe_35_exam', 'lab_hiv_35', 'consult_35_id'],
+  },
+
+  {
+id: 36,
+specialty: 'id',
+meta: { title: 'Acute Pyelonephritis', tagLabels: [{ t: 'FEVER', cls: 'urgent' }, { t: 'URINARY', cls: '' }] },
+patient: {
+name: 'Maria L.', age: 34, sex: 'Female', avatar: 'female', emoji: '👩',
+chiefComplaint: 'Fever, flank pain, and nausea for 2 days',
+vitals: [
+{ label: 'BP', value: '102/66', status: 'borderline' },
+{ label: 'HR', value: '108 bpm', status: 'abnormal' },
+{ label: 'RR', value: '20 /min', status: 'borderline' },
+{ label: 'Temp', value: '39.1 °C', status: 'abnormal' },
+{ label: 'O₂ Sat', value: '98%', status: 'normal' },
+{ label: 'Pain', value: '7 / 10', status: 'abnormal' }
+],
+history: '34 year old woman with 2 days of fever, chills, right sided flank pain, and dysuria. Reports urinary frequency and urgency. Symptoms worsened despite increased fluid intake. No recent hospitalizations. Denies vaginal discharge. No prior similar episodes.',
+pmh: 'Recurrent urinary tract infections',
+medications: 'None',
+allergies: 'NKDA',
+social: 'Sexually active, no tobacco, occasional alcohol',
+family: 'Non contributory'
+},
+actions: [
+{ group: 'Physical Exam', items: [
+{ id: 'pe_36_exam', label: 'Abdominal and Costovertebral Exam', icon: 'exam', points: 30,
+finding: { type: 'exam', title: 'Physical Exam', subtitle: 'Abdomen and flank',
+results: [
+{ name: 'Costovertebral angle tenderness', val: 'Positive on right side', flag: 'critical' },
+{ name: 'Abdominal tenderness', val: 'Mild suprapubic tenderness', flag: 'abnormal' },
+{ name: 'Guarding', val: 'None', flag: 'normal' }
+],
+note: { type: 'alert', text: 'Costovertebral angle tenderness strongly suggests upper urinary tract infection involving the kidney.' }
+}
+}
+]},
+{ group: 'Labs', items: [
+{ id: 'lab_36_urine', label: 'Urinalysis', icon: 'lab', points: 50,
+finding: { type: 'labs', title: 'Urinalysis', subtitle: 'Infection markers',
+results: [
+{ name: 'Leukocyte esterase', val: 'Positive', ref: 'Negative', flag: 'critical' },
+{ name: 'Nitrites', val: 'Positive', ref: 'Negative', flag: 'critical' },
+{ name: 'WBC', val: 'Greater than 50 per hpf', ref: '0 to 5', flag: 'critical' },
+{ name: 'Bacteria', val: 'Many', ref: 'None', flag: 'critical' }
+],
+note: { type: 'alert', text: 'Nitrites and leukocyte esterase together strongly support gram negative urinary infection.' }
+}
+}
+]},
+{ group: 'Imaging', items: [
+{ id: 'img_36_ct', label: 'CT Abdomen and Pelvis', icon: 'imaging', points: 30,
+finding: { type: 'imaging', title: 'CT Findings', subtitle: 'Renal inflammation',
+results: [
+{ name: 'Right kidney', val: 'Enlarged with perinephric stranding', flag: 'abnormal' }
+],
+note: { type: '', text: 'Imaging is useful if complications or obstruction are suspected.' }
+}
+}
+]},
+{ group: 'Consults', items: [
+{ id: 'consult_36_id', label: 'Infectious Disease', icon: 'consult', points: 20,
+finding: { type: 'consult', title: 'Management Guidance', subtitle: 'Antibiotic therapy',
+results: [
+{ name: 'Recommendation', val: 'Outpatient oral fluoroquinolone or inpatient IV antibiotics if unstable', flag: 'normal' }
+],
+note: { type: 'alert', text: 'Severe cases require IV antibiotics and possible admission.' }
+}
+}
+]}
+],
+dispositions: [
+{ id: 'disp_36_correct', label: 'Start antibiotics and outpatient management', icon: 'rx', outcome: 'correct', points: 100,
+feedback: { title: 'Appropriate treatment', grade: 'Outstanding', body: 'Uncomplicated pyelonephritis can be managed with antibiotics if stable and tolerating oral intake.' } },
+{ id: 'disp_36_partial', label: 'Admit for observation without antibiotics', icon: 'admit', outcome: 'partial', points: -20,
+feedback: { title: 'Incomplete', grade: 'Needs Improvement', body: 'Antibiotics are required and should not be delayed.' } },
+{ id: 'disp_36_incorrect', label: 'Discharge without treatment', icon: 'rx', outcome: 'incorrect', points: -120,
+feedback: { title: 'Dangerous', grade: 'Critical Error', body: 'Untreated pyelonephritis can progress to sepsis.' } }
+],
+correctDisposition: 'disp_36_correct',
+criticalActions: ['pe_36_exam', 'lab_36_urine', 'img_36_ct']
+},
+
+{
+id: 37,
+specialty: 'id',
+meta: { title: 'Community Acquired Pneumonia', tagLabels: [{ t: 'RESPIRATORY', cls: 'urgent' }] },
+patient: {
+name: 'Daniel K.', age: 52, sex: 'Male', avatar: 'male', emoji: '👨',
+chiefComplaint: 'Cough with fever and shortness of breath for 5 days',
+vitals: [
+{ label: 'BP', value: '110/70', status: 'normal' },
+{ label: 'HR', value: '102 bpm', status: 'abnormal' },
+{ label: 'RR', value: '22 /min', status: 'abnormal' },
+{ label: 'Temp', value: '38.5 °C', status: 'abnormal' },
+{ label: 'O₂ Sat', value: '93%', status: 'abnormal' },
+{ label: 'Pain', value: '4 / 10', status: 'borderline' }
+],
+history: '52 year old male with 5 days of productive cough, fever, and pleuritic chest pain. Symptoms progressed with increasing fatigue and mild shortness of breath. No recent travel. No prior lung disease.',
+pmh: 'Hypertension',
+medications: 'Lisinopril',
+allergies: 'NKDA',
+social: 'Smokes 1 pack per day, occasional alcohol',
+family: 'Father had heart disease'
+},
+actions: [
+{ group: 'Physical Exam', items: [
+{ id: 'pe_37_exam', label: 'Lung Exam', icon: 'exam', points: 30,
+finding: { type: 'exam', title: 'Respiratory Exam', subtitle: 'Lung fields',
+results: [
+{ name: 'Breath sounds', val: 'Decreased at right lower lobe', flag: 'abnormal' },
+{ name: 'Crackles', val: 'Present in right base', flag: 'critical' },
+{ name: 'Percussion', val: 'Dullness over right lower lobe', flag: 'abnormal' }
+],
+note: { type: 'alert', text: 'Focal crackles with dullness suggests consolidation.' },
+            stateEffect: { state: 'worsening', message: 'O₂ sat 93% — consolidation confirmed. Patient at risk for respiratory failure without prompt treatment.' }
+}
+}
+]},
+{ group: 'Imaging', items: [
+{ id: 'img_37_cxr', label: 'Chest X ray', icon: 'imaging', points: 40,
+finding: { type: 'imaging', title: 'Chest X ray', subtitle: 'Pulmonary infiltrate',
+results: [
+{ name: 'Right lower lobe', val: 'Consolidation present', flag: 'critical' }
+],
+note: { type: 'alert', text: 'Lobar consolidation is consistent with bacterial pneumonia.' }
+}
+}
+]},
+{ group: 'Labs', items: [
+{ id: 'lab_37_cbc', label: 'CBC', icon: 'lab', points: 20,
+finding: { type: 'labs', title: 'Blood Count', subtitle: 'Infection markers',
+results: [
+{ name: 'WBC', val: '14.2 x 10^3 per uL', ref: '4.5 to 11', flag: 'abnormal' },
+{ name: 'Neutrophils', val: '82%', ref: '40 to 70', flag: 'abnormal' }
+],
+note: { type: '', text: 'Neutrophil predominance suggests bacterial infection.' }
+}
+}
+]},
+{ group: 'Consults', items: [
+{ id: 'consult_37_id', label: 'Pulmonology', icon: 'consult', points: 20,
+finding: { type: 'consult', title: 'Management', subtitle: 'Antibiotic selection',
+results: [
+{ name: 'Recommendation', val: 'Outpatient oral antibiotics if stable, otherwise inpatient IV therapy', flag: 'normal' }
+],
+note: { type: 'alert', text: 'Severity assessment guides disposition.' }
+}
+}
+]}
+],
+dispositions: [
+{ id: 'disp_37_correct', label: 'Start antibiotics outpatient with close follow up', icon: 'rx', outcome: 'correct', points: 100,
+feedback: { title: 'Correct management', grade: 'Outstanding', body: 'Stable patients with community acquired pneumonia can be treated as outpatients with appropriate antibiotics.' } },
+{ id: 'disp_37_partial', label: 'Admit without antibiotics', icon: 'admit', outcome: 'partial', points: -20,
+feedback: { title: 'Incomplete', grade: 'Needs Improvement', body: 'Antibiotics are required.' } },
+{ id: 'disp_37_incorrect', label: 'No treatment and discharge', icon: 'rx', outcome: 'incorrect', points: -120,
+feedback: { title: 'Dangerous', grade: 'Critical Error', body: 'Untreated pneumonia can lead to respiratory failure.' } }
+],
+correctDisposition: 'disp_37_correct',
+criticalActions: ['pe_37_exam', 'img_37_cxr', 'lab_37_cbc']
+},
+
+{
+id: 38,
+specialty: 'id',
+meta: { title: 'Clostridioides Difficile Infection', tagLabels: [{ t: 'DIARRHEA', cls: 'urgent' }] },
+patient: {
+name: 'Sarah M.', age: 67, sex: 'Female', avatar: 'female', emoji: '👩',
+chiefComplaint: 'Watery diarrhea and abdominal cramps after antibiotics',
+vitals: [
+{ label: 'BP', value: '98/60', status: 'abnormal' },
+{ label: 'HR', value: '110 bpm', status: 'abnormal' },
+{ label: 'RR', value: '18 /min', status: 'normal' },
+{ label: 'Temp', value: '38.2 °C', status: 'abnormal' },
+{ label: 'O₂ Sat', value: '97%', status: 'normal' },
+{ label: 'Pain', value: '6 / 10', status: 'abnormal' }
+],
+history: '67 year old woman recently completed a 10 day course of broad spectrum antibiotics for pneumonia. Now has 6 to 8 watery bowel movements per day with abdominal cramping. No blood in stool. Symptoms began 3 days ago.',
+pmh: 'Type 2 diabetes',
+medications: 'Metformin',
+allergies: 'Penicillin allergy',
+social: 'Lives in assisted facility',
+family: 'Non contributory'
+},
+actions: [
+{ group: 'Labs', items: [
+{ id: 'lab_38_stool', label: 'Stool Toxin Test', icon: 'lab', points: 60,
+finding: { type: 'labs', title: 'Stool Testing', subtitle: 'C diff toxins',
+results: [
+{ name: 'Toxin A and B', val: 'Positive', ref: 'Negative', flag: 'critical' }
+],
+note: { type: 'alert', text: 'Positive toxin confirms active infection rather than colonization.' },
+            stateEffect: { state: 'worsening', message: 'Toxin A/B confirmed — C. diff colitis active. High risk of toxic megacolon without treatment.' }
+}
+}
+]},
+{ group: 'Physical Exam', items: [
+{ id: 'pe_38_exam', label: 'Abdominal Exam', icon: 'exam', points: 30,
+finding: { type: 'exam', title: 'Abdominal Findings', subtitle: 'GI exam',
+results: [
+{ name: 'Tenderness', val: 'Diffuse mild tenderness', flag: 'abnormal' },
+{ name: 'Rebound', val: 'Absent', flag: 'normal' }
+],
+note: { type: '', text: 'Severe cases may show signs of toxic megacolon.' }
+}
+}
+]},
+{ group: 'Imaging', items: [
+{ id: 'img_38_ct', label: 'CT Abdomen', icon: 'imaging', points: 20,
+finding: { type: 'imaging', title: 'CT Findings', subtitle: 'Colitis',
+results: [
+{ name: 'Colon', val: 'Wall thickening and inflammation', flag: 'abnormal' }
+],
+note: { type: '', text: 'Imaging used if complications suspected.' }
+}
+}
+]},
+{ group: 'Consults', items: [
+{ id: 'consult_38_id', label: 'Infectious Disease', icon: 'consult', points: 20,
+finding: { type: 'consult', title: 'Treatment Guidance', subtitle: 'Antibiotic therapy',
+results: [
+{ name: 'First line', val: 'Oral vancomycin or fidaxomicin', flag: 'normal' }
+],
+note: { type: 'alert', text: 'Stop inciting antibiotics if possible.' }
+}
+}
+]}
+],
+dispositions: [
+{ id: 'disp_38_correct', label: 'Start oral vancomycin', icon: 'rx', outcome: 'correct', points: 100,
+feedback: { title: 'Correct', grade: 'Outstanding', body: 'Oral vancomycin is first line for moderate to severe infection.' } },
+{ id: 'disp_38_partial', label: 'IV antibiotics only', icon: 'admit', outcome: 'partial', points: -20,
+feedback: { title: 'Incomplete', grade: 'Needs Improvement', body: 'Oral therapy is required since the drug acts in the gut lumen.' } },
+{ id: 'disp_38_incorrect', label: 'No treatment', icon: 'rx', outcome: 'incorrect', points: -120,
+feedback: { title: 'Dangerous', grade: 'Critical Error', body: 'Untreated infection can lead to toxic megacolon and sepsis.' } }
+],
+correctDisposition: 'disp_38_correct',
+criticalActions: ['lab_38_stool', 'pe_38_exam', 'consult_38_id']
+},
+
+{
+id: 39,
+specialty: 'id',
+meta: { title: 'Meningitis Suspicion', tagLabels: [{ t: 'NEURO', cls: 'urgent' }] },
+patient: {
+name: 'Kevin R.', age: 29, sex: 'Male', avatar: 'male', emoji: '👨',
+chiefComplaint: 'Severe headache, fever, and neck stiffness',
+vitals: [
+{ label: 'BP', value: '120/76', status: 'normal' },
+{ label: 'HR', value: '115 bpm', status: 'abnormal' },
+{ label: 'RR', value: '20 /min', status: 'borderline' },
+{ label: 'Temp', value: '39.0 °C', status: 'abnormal' },
+{ label: 'O₂ Sat', value: '98%', status: 'normal' },
+{ label: 'Pain', value: '9 / 10', status: 'abnormal' }
+],
+history: '29 year old man with sudden onset severe headache, fever, photophobia, and vomiting for 1 day. Neck stiffness present. No recent travel. No trauma.',
+pmh: 'None',
+medications: 'None',
+allergies: 'NKDA',
+social: 'College student, occasional alcohol',
+family: 'Non contributory'
+},
+actions: [
+{ group: 'Physical Exam', items: [
+{ id: 'pe_39_exam', label: 'Neurologic Exam', icon: 'exam', points: 40,
+finding: { type: 'exam', title: 'Neurologic Findings', subtitle: 'Meningeal signs',
+results: [
+{ name: 'Nuchal rigidity', val: 'Present', flag: 'critical' },
+{ name: 'Kernig sign', val: 'Positive', flag: 'critical' },
+{ name: 'Brudzinski sign', val: 'Positive', flag: 'critical' }
+],
+note: { type: 'alert', text: 'Classic meningeal signs indicate irritation of the meninges.' },
+            stateEffect: { state: 'worsening', message: 'Positive Kernig and Brudzinski signs. Bacterial meningitis must be treated within minutes — every hour of delay increases mortality by ~10%.' }
+}
+}
+]},
+{ group: 'Labs', items: [
+{ id: 'lab_39_lp', label: 'Lumbar Puncture', icon: 'lab', points: 60,
+finding: { type: 'labs', title: 'CSF Analysis', subtitle: 'Cerebrospinal fluid',
+results: [
+{ name: 'Opening pressure', val: '280 mm H2O', ref: '70 to 180', flag: 'critical' },
+{ name: 'WBC', val: '1200 per uL with neutrophils', ref: '0 to 5', flag: 'critical' },
+{ name: 'Glucose', val: '30 mg/dL', ref: '45 to 80', flag: 'critical' },
+{ name: 'Protein', val: '180 mg/dL', ref: '15 to 45', flag: 'critical' }
+],
+note: { type: 'alert', text: 'Neutrophilic pleocytosis with low glucose suggests bacterial meningitis.' }
+}
+}
+]},
+{ group: 'Imaging', items: [
+{ id: 'img_39_ct', label: 'CT Head', icon: 'imaging', points: 20,
+finding: { type: 'imaging', title: 'CT Head', subtitle: 'Pre lumbar puncture',
+results: [
+{ name: 'Mass effect', val: 'None', flag: 'normal' }
+],
+note: { type: '', text: 'CT may be required before lumbar puncture if increased intracranial pressure suspected.' }
+}
+}
+]},
+{ group: 'Consults', items: [
+{ id: 'consult_39_id', label: 'Infectious Disease', icon: 'consult', points: 20,
+finding: { type: 'consult', title: 'Management', subtitle: 'Emergent therapy',
+results: [
+{ name: 'Treatment', val: 'Immediate IV antibiotics and dexamethasone', flag: 'normal' }
+],
+note: { type: 'alert', text: 'Do not delay antibiotics in suspected bacterial meningitis.' }
+}
+}
+]}
+],
+dispositions: [
+{ id: 'disp_39_correct', label: 'Immediate IV antibiotics after LP', icon: 'rx', outcome: 'correct', points: 100,
+feedback: { title: 'Correct', grade: 'Outstanding', body: 'Bacterial meningitis is a medical emergency requiring prompt antibiotics after diagnostic sampling.' } },
+{ id: 'disp_39_partial', label: 'Observe without antibiotics', icon: 'admit', outcome: 'partial', points: -20,
+feedback: { title: 'Incomplete', grade: 'Needs Improvement', body: 'Observation without treatment risks rapid deterioration.' } },
+{ id: 'disp_39_incorrect', label: 'Discharge home', icon: 'rx', outcome: 'incorrect', points: -120,
+feedback: { title: 'Dangerous', grade: 'Critical Error', body: 'Untreated meningitis can lead to death or permanent neurologic damage.' } }
+],
+correctDisposition: 'disp_39_correct',
+criticalActions: ['pe_39_exam', 'lab_39_lp', 'consult_39_id']
+},
+
+{
+id: 40,
+specialty: 'id',
+meta: { title: 'Skin Abscess', tagLabels: [{ t: 'SKIN', cls: '' }] },
+patient: {
+name: 'Alex P.', age: 41, sex: 'Male', avatar: 'male', emoji: '👨',
+chiefComplaint: 'Painful swollen lump on arm with redness',
+vitals: [
+{ label: 'BP', value: '118/78', status: 'normal' },
+{ label: 'HR', value: '90 bpm', status: 'normal' },
+{ label: 'RR', value: '16 /min', status: 'normal' },
+{ label: 'Temp', value: '37.8 °C', status: 'borderline' },
+{ label: 'O₂ Sat', value: '99%', status: 'normal' },
+{ label: 'Pain', value: '6 / 10', status: 'abnormal' }
+],
+history: '41 year old man with a 4 day history of a painful, enlarging lesion on the forearm. Initially a small pimple that worsened. Reports warmth and redness. No systemic symptoms.',
+pmh: 'None',
+medications: 'None',
+allergies: 'NKDA',
+social: 'Works in construction',
+family: 'Non contributory'
+},
+actions: [
+{ group: 'Physical Exam', items: [
+{ id: 'pe_40_exam', label: 'Skin Exam', icon: 'exam', points: 40,
+finding: { type: 'exam', title: 'Skin Findings', subtitle: 'Local infection',
+results: [
+{ name: 'Lesion', val: 'Fluctuant erythematous nodule with central pus', flag: 'critical' },
+{ name: 'Surrounding erythema', val: 'Present', flag: 'abnormal' }
+],
+note: { type: 'alert', text: 'Fluctuance suggests a drainable abscess requiring incision and drainage.' }
+}
+}
+]},
+{ group: 'Labs', items: [
+{ id: 'lab_40_culture', label: 'Wound Culture', icon: 'lab', points: 40,
+finding: { type: 'labs', title: 'Culture Results', subtitle: 'Bacterial identification',
+results: [
+{ name: 'Organism', val: 'Staphylococcus aureus', ref: 'None', flag: 'critical' }
+],
+note: { type: '', text: 'Culture guides antibiotic selection if needed.' }
+}
+}
+]},
+{ group: 'Consults', items: [
+{ id: 'consult_40_id', label: 'Surgery', icon: 'consult', points: 20,
+finding: { type: 'consult', title: 'Procedure', subtitle: 'Incision and drainage',
+results: [
+{ name: 'Recommendation', val: 'Incision and drainage is primary treatment', flag: 'normal' }
+],
+note: { type: 'alert', text: 'Antibiotics alone are insufficient for abscesses.' }
+}
+}
+]}
+],
+dispositions: [
+{ id: 'disp_40_correct', label: 'Incision and drainage with or without antibiotics', icon: 'rx', outcome: 'correct', points: 100,
+feedback: { title: 'Correct', grade: 'Outstanding', body: 'Source control via drainage is the definitive treatment for abscess.' } },
+{ id: 'disp_40_partial', label: 'Antibiotics only', icon: 'rx', outcome: 'partial', points: -20,
+feedback: { title: 'Incomplete', grade: 'Needs Improvement', body: 'Without drainage, infection may persist.' } },
+{ id: 'disp_40_incorrect', label: 'No treatment', icon: 'rx', outcome: 'incorrect', points: -120,
+feedback: { title: 'Dangerous', grade: 'Critical Error', body: 'Untreated abscess can spread and worsen.' } }
+],
+correctDisposition: 'disp_40_correct',
+criticalActions: ['pe_40_exam', 'lab_40_culture']
+},
+
+{
+id: 41,
+specialty: 'onc',
+meta: { title: 'Suspected Lung Cancer', tagLabels: [{ t: 'CANCER', cls: 'urgent' }] },
+patient: {
+name: 'Robert S.', age: 64, sex: 'Male', avatar: 'male', emoji: '👨',
+chiefComplaint: 'Persistent cough and weight loss',
+vitals: [
+{ label: 'BP', value: '122/78', status: 'normal' },
+{ label: 'HR', value: '88 bpm', status: 'normal' },
+{ label: 'RR', value: '18 /min', status: 'normal' },
+{ label: 'Temp', value: '37.2 °C', status: 'normal' },
+{ label: 'O₂ Sat', value: '95%', status: 'borderline' },
+{ label: 'Pain', value: '3 / 10', status: 'borderline' }
+],
+history: '64 year old male with chronic smoking history presents with persistent cough, unintended weight loss, and occasional hemoptysis over 2 months. Reports fatigue and decreased appetite.',
+pmh: 'COPD',
+medications: 'Inhalers',
+allergies: 'NKDA',
+social: '40 pack year smoking history',
+family: 'Brother had lung cancer'
+},
+actions: [
+{ group: 'Imaging', items: [
+{ id: 'img_41_ct', label: 'CT Chest', icon: 'imaging', points: 60,
+finding: { type: 'imaging', title: 'CT Chest', subtitle: 'Pulmonary mass',
+results: [
+{ name: 'Right upper lobe mass', val: '3.5 cm spiculated lesion', flag: 'critical' }
+],
+note: { type: 'alert', text: 'Spiculated mass is highly suspicious for malignancy.' },
+            stateEffect: { state: 'worsening', message: 'Spiculated 3.5 cm RUL mass — high probability of malignancy. Urgent biopsy and oncology referral required.' }
+}
+}
+]},
+{ group: 'Labs', items: [
+{ id: 'lab_41_biopsy', label: 'Tissue Biopsy', icon: 'lab', points: 60,
+finding: { type: 'labs', title: 'Histopathology', subtitle: 'Tumor type',
+results: [
+{ name: 'Diagnosis', val: 'Non small cell lung carcinoma', ref: 'None', flag: 'critical' }
+],
+note: { type: '', text: 'Biopsy confirms malignancy and subtype.' }
+}
+}
+]},
+{ group: 'Consults', items: [
+{ id: 'consult_41_onc', label: 'Oncology', icon: 'consult', points: 30,
+finding: { type: 'consult', title: 'Treatment Plan', subtitle: 'Staging and therapy',
+results: [
+{ name: 'Next step', val: 'PET CT for staging and molecular testing', flag: 'normal' }
+],
+note: { type: 'alert', text: 'Staging determines treatment options.' }
+}
+}
+]}
+],
+dispositions: [
+{ id: 'disp_41_correct', label: 'Refer to oncology for staging and treatment', icon: 'admit', outcome: 'correct', points: 100,
+feedback: { title: 'Correct', grade: 'Outstanding', body: 'Confirmed lung cancer requires staging and multidisciplinary management.' } },
+{ id: 'disp_41_partial', label: 'Antibiotics for presumed infection', icon: 'rx', outcome: 'partial', points: -20,
+feedback: { title: 'Incomplete', grade: 'Needs Improvement', body: 'Malignancy must be considered given imaging findings.' } },
+{ id: 'disp_41_incorrect', label: 'No follow up needed', icon: 'rx', outcome: 'incorrect', points: -120,
+feedback: { title: 'Dangerous', grade: 'Critical Error', body: 'Untreated lung cancer progresses and reduces survival.' } }
+],
+correctDisposition: 'disp_41_correct',
+criticalActions: ['img_41_ct', 'lab_41_biopsy', 'consult_41_onc']
+},
+
+{
+id: 42,
+specialty: 'onc',
+meta: { title: 'Breast Mass Evaluation', tagLabels: [{ t: 'ONCOLOGY', cls: 'urgent' }] },
+patient: {
+name: 'Linda G.', age: 48, sex: 'Female', avatar: 'female', emoji: '👩',
+chiefComplaint: 'Painless breast lump noticed during self exam',
+vitals: [
+{ label: 'BP', value: '118/72', status: 'normal' },
+{ label: 'HR', value: '76 bpm', status: 'normal' },
+{ label: 'RR', value: '16 /min', status: 'normal' },
+{ label: 'Temp', value: '36.8 °C', status: 'normal' },
+{ label: 'O₂ Sat', value: '99%', status: 'normal' },
+{ label: 'Pain', value: '1 / 10', status: 'normal' }
+],
+history: '48 year old woman reports a painless lump in the left breast discovered 3 weeks ago. No nipple discharge. No systemic symptoms.',
+pmh: 'None',
+medications: 'None',
+allergies: 'NKDA',
+social: 'Non smoker, moderate alcohol',
+family: 'Mother had breast cancer'
+},
+actions: [
+{ group: 'Physical Exam', items: [
+{ id: 'pe_42_exam', label: 'Breast Exam', icon: 'exam', points: 40,
+finding: { type: 'exam', title: 'Breast Findings', subtitle: 'Palpation',
+results: [
+{ name: 'Mass', val: 'Hard irregular mass in left upper outer quadrant', flag: 'critical' },
+{ name: 'Mobility', val: 'Fixed', flag: 'abnormal' }
+],
+note: { type: 'alert', text: 'Hard irregular fixed mass is concerning for malignancy.' }
+}
+}
+]},
+{ group: 'Imaging', items: [
+{ id: 'img_42_mammo', label: 'Mammogram', icon: 'imaging', points: 50,
+finding: { type: 'imaging', title: 'Mammogram', subtitle: 'Breast imaging',
+results: [
+{ name: 'Lesion', val: 'Spiculated mass with microcalcifications', flag: 'critical' }
+],
+note: { type: 'alert', text: 'Microcalcifications increase suspicion for malignancy.' }
+}
+}
+]},
+{ group: 'Labs', items: [
+{ id: 'lab_42_biopsy', label: 'Core Biopsy', icon: 'lab', points: 60,
+finding: { type: 'labs', title: 'Pathology', subtitle: 'Tissue diagnosis',
+results: [
+{ name: 'Diagnosis', val: 'Invasive ductal carcinoma', ref: 'None', flag: 'critical' }
+],
+note: { type: '', text: 'Biopsy confirms breast cancer subtype.' }
+}
+}
+]},
+{ group: 'Consults', items: [
+{ id: 'consult_42_onc', label: 'Oncology and Surgery', icon: 'consult', points: 30,
+finding: { type: 'consult', title: 'Management', subtitle: 'Treatment planning',
+results: [
+{ name: 'Next step', val: 'Staging and receptor testing', flag: 'normal' }
+],
+note: { type: 'alert', text: 'Hormone receptor status guides therapy.' }
+}
+}
+]}
+],
+dispositions: [
+{ id: 'disp_42_correct', label: 'Refer for biopsy confirmation and oncology care', icon: 'admit', outcome: 'correct', points: 100,
+feedback: { title: 'Correct', grade: 'Outstanding', body: 'Suspicious breast mass requires biopsy and oncologic evaluation.' } },
+{ id: 'disp_42_partial', label: 'Reassurance only', icon: 'rx', outcome: 'partial', points: -20,
+feedback: { title: 'Incomplete', grade: 'Needs Improvement', body: 'Imaging and biopsy are required.' } },
+{ id: 'disp_42_incorrect', label: 'Ignore findings', icon: 'rx', outcome: 'incorrect', points: -120,
+feedback: { title: 'Dangerous', grade: 'Critical Error', body: 'Delay in diagnosis worsens prognosis.' } }
+],
+correctDisposition: 'disp_42_correct',
+criticalActions: ['pe_42_exam', 'img_42_mammo', 'lab_42_biopsy']
+},
+
+{
+id: 43,
+specialty: 'onc',
+meta: { title: 'Colorectal Cancer Screening Concern', tagLabels: [{ t: 'GI', cls: '' }] },
+patient: {
+name: 'George H.', age: 61, sex: 'Male', avatar: 'male', emoji: '👨',
+chiefComplaint: 'Blood in stool and fatigue',
+vitals: [
+{ label: 'BP', value: '115/70', status: 'normal' },
+{ label: 'HR', value: '92 bpm', status: 'borderline' },
+{ label: 'RR', value: '18 /min', status: 'normal' },
+{ label: 'Temp', value: '36.9 °C', status: 'normal' },
+{ label: 'O₂ Sat', value: '98%', status: 'normal' },
+{ label: 'Pain', value: '2 / 10', status: 'normal' }
+],
+history: '61 year old man with intermittent rectal bleeding and fatigue for 2 months. Reports unintentional weight loss and change in bowel habits.',
+pmh: 'Iron deficiency anemia',
+medications: 'Iron supplements',
+allergies: 'NKDA',
+social: 'Former smoker',
+family: 'No known colon cancer'
+},
+actions: [
+{ group: 'Labs', items: [
+{ id: 'lab_43_cbc', label: 'CBC', icon: 'lab', points: 30,
+finding: { type: 'labs', title: 'Blood Count', subtitle: 'Anemia evaluation',
+results: [
+{ name: 'Hemoglobin', val: '9.8 g/dL', ref: '13.5 to 17.5', flag: 'abnormal' },
+{ name: 'MCV', val: '72 fL', ref: '80 to 100', flag: 'abnormal' }
+],
+note: { type: '', text: 'Microcytic anemia suggests chronic blood loss.' }
+}
+}
+]},
+{ group: 'Imaging', items: [
+{ id: 'img_43_colonoscopy', label: 'Colonoscopy', icon: 'imaging', points: 60,
+finding: { type: 'imaging', title: 'Colonoscopy', subtitle: 'Colon lesion',
+results: [
+{ name: 'Mass', val: 'Ulcerated lesion in sigmoid colon', flag: 'critical' }
+],
+note: { type: 'alert', text: 'Colonoscopy is diagnostic and allows biopsy.' }
+}
+}
+]},
+{ group: 'Labs', items: [
+{ id: 'lab_43_biopsy', label: 'Biopsy', icon: 'lab', points: 50,
+finding: { type: 'labs', title: 'Histology', subtitle: 'Tumor type',
+results: [
+{ name: 'Diagnosis', val: 'Adenocarcinoma of colon', ref: 'None', flag: 'critical' }
+],
+note: { type: '', text: 'Confirms colorectal malignancy.' }
+}
+}
+]},
+{ group: 'Consults', items: [
+{ id: 'consult_43_onc', label: 'Oncology', icon: 'consult', points: 30,
+finding: { type: 'consult', title: 'Management', subtitle: 'Staging',
+results: [
+{ name: 'Next step', val: 'CT chest abdomen pelvis for staging', flag: 'normal' }
+],
+note: { type: 'alert', text: 'Staging determines prognosis and treatment.' }
+}
+}
+]}
+],
+dispositions: [
+{ id: 'disp_43_correct', label: 'Refer for colonoscopy and oncology staging', icon: 'admit', outcome: 'correct', points: 100,
+feedback: { title: 'Correct', grade: 'Outstanding', body: 'Symptoms and anemia warrant urgent colonoscopy and biopsy.' } },
+{ id: 'disp_43_partial', label: 'Iron therapy only', icon: 'rx', outcome: 'partial', points: -20,
+feedback: { title: 'Incomplete', grade: 'Needs Improvement', body: 'Underlying malignancy must be evaluated.' } },
+{ id: 'disp_43_incorrect', label: 'No further workup', icon: 'rx', outcome: 'incorrect', points: -120,
+feedback: { title: 'Dangerous', grade: 'Critical Error', body: 'Delay in diagnosis worsens outcomes.' } }
+],
+correctDisposition: 'disp_43_correct',
+criticalActions: ['lab_43_cbc', 'img_43_colonoscopy', 'lab_43_biopsy']
+},
+
+{
+id: 44,
+specialty: 'onc',
+meta: { title: 'Lymphoma Evaluation', tagLabels: [{ t: 'HEMATOLOGY', cls: 'urgent' }] },
+patient: {
+name: 'Anna B.', age: 39, sex: 'Female', avatar: 'female', emoji: '👩',
+chiefComplaint: 'Swollen lymph nodes and night sweats',
+vitals: [
+{ label: 'BP', value: '120/80', status: 'normal' },
+{ label: 'HR', value: '96 bpm', status: 'borderline' },
+{ label: 'RR', value: '18 /min', status: 'normal' },
+{ label: 'Temp', value: '38.0 °C', status: 'abnormal' },
+{ label: 'O₂ Sat', value: '98%', status: 'normal' },
+{ label: 'Pain', value: '3 / 10', status: 'borderline' }
+],
+history: '39 year old woman with 3 months of painless lymph node enlargement in the neck, associated with night sweats and weight loss.',
+pmh: 'None',
+medications: 'None',
+allergies: 'NKDA',
+social: 'Non smoker',
+family: 'No cancer history'
+},
+actions: [
+{ group: 'Physical Exam', items: [
+{ id: 'pe_44_exam', label: 'Lymph Node Exam', icon: 'exam', points: 40,
+finding: { type: 'exam', title: 'Lymphatic Exam', subtitle: 'Nodes',
+results: [
+{ name: 'Nodes', val: 'Firm, rubbery, non tender cervical nodes', flag: 'critical' }
+],
+note: { type: 'alert', text: 'Painless lymphadenopathy with systemic symptoms suggests lymphoma.' },
+            stateEffect: { state: 'worsening', message: 'Constitutional B-symptoms with firm rubbery lymphadenopathy. Hodgkin lymphoma likely — biopsy is urgent.' }
+}
+}
+]},
+{ group: 'Labs', items: [
+{ id: 'lab_44_biopsy', label: 'Lymph Node Biopsy', icon: 'lab', points: 70,
+finding: { type: 'labs', title: 'Histology', subtitle: 'Lymph node tissue',
+results: [
+{ name: 'Diagnosis', val: 'Hodgkin lymphoma', ref: 'None', flag: 'critical' }
+],
+note: { type: '', text: 'Biopsy is required for definitive diagnosis.' }
+}
+}
+]},
+{ group: 'Imaging', items: [
+{ id: 'img_44_pet', label: 'PET CT', icon: 'imaging', points: 40,
+finding: { type: 'imaging', title: 'PET CT', subtitle: 'Staging',
+results: [
+{ name: 'Metabolic activity', val: 'Increased uptake in multiple nodes', flag: 'critical' }
+],
+note: { type: 'alert', text: 'PET CT is used for staging and response assessment.' }
+}
+}
+]},
+{ group: 'Consults', items: [
+{ id: 'consult_44_onc', label: 'Oncology', icon: 'consult', points: 30,
+finding: { type: 'consult', title: 'Treatment', subtitle: 'Chemotherapy plan',
+results: [
+{ name: 'Plan', val: 'ABVD regimen consideration after staging', flag: 'normal' }
+],
+note: { type: 'alert', text: 'Treatment depends on stage and subtype.' }
+}
+}
+]}
+],
+dispositions: [
+{ id: 'disp_44_correct', label: 'Oncology referral for biopsy and staging', icon: 'admit', outcome: 'correct', points: 100,
+feedback: { title: 'Correct', grade: 'Outstanding', body: 'Painless lymphadenopathy with B symptoms requires biopsy and oncologic evaluation.' } },
+{ id: 'disp_44_partial', label: 'Antibiotics trial', icon: 'rx', outcome: 'partial', points: -20,
+feedback: { title: 'Incomplete', grade: 'Needs Improvement', body: 'Malignancy must be ruled out.' } },
+{ id: 'disp_44_incorrect', label: 'No evaluation', icon: 'rx', outcome: 'incorrect', points: -120,
+feedback: { title: 'Dangerous', grade: 'Critical Error', body: 'Missed lymphoma leads to delayed treatment.' } }
+],
+correctDisposition: 'disp_44_correct',
+criticalActions: ['pe_44_exam', 'lab_44_biopsy', 'img_44_pet']
+},
+
+{
+id: 45,
+specialty: 'onc',
+meta: { title: 'Prostate Cancer Screening Concern', tagLabels: [{ t: 'UROLOGY', cls: '' }] },
+patient: {
+name: 'Henry J.', age: 70, sex: 'Male', avatar: 'male', emoji: '👨',
+chiefComplaint: 'Urinary frequency and nocturia',
+vitals: [
+{ label: 'BP', value: '130/82', status: 'borderline' },
+{ label: 'HR', value: '78 bpm', status: 'normal' },
+{ label: 'RR', value: '16 /min', status: 'normal' },
+{ label: 'Temp', value: '36.7 °C', status: 'normal' },
+{ label: 'O₂ Sat', value: '98%', status: 'normal' },
+{ label: 'Pain', value: '2 / 10', status: 'normal' }
+],
+history: '70 year old man with urinary hesitancy, weak stream, nocturia, and mild pelvic discomfort over several months.',
+pmh: 'Benign prostatic hyperplasia',
+medications: 'Tamsulosin',
+allergies: 'NKDA',
+social: 'Retired, no smoking',
+family: 'No prostate cancer history'
+},
+actions: [
+{ group: 'Labs', items: [
+{ id: 'lab_45_psa', label: 'PSA Test', icon: 'lab', points: 50,
+finding: { type: 'labs', title: 'PSA Level', subtitle: 'Tumor marker',
+results: [
+{ name: 'PSA', val: '12.4 ng per mL', ref: '0 to 4', flag: 'critical' }
+],
+note: { type: 'alert', text: 'Elevated PSA may indicate prostate cancer or benign enlargement.' }
+}
+}
+]},
+{ group: 'Physical Exam', items: [
+{ id: 'pe_45_dre', label: 'Digital Rectal Exam', icon: 'exam', points: 40,
+finding: { type: 'exam', title: 'Prostate Exam', subtitle: 'DRE findings',
+results: [
+{ name: 'Prostate', val: 'Firm irregular enlargement', flag: 'critical' }
+],
+note: { type: 'alert', text: 'Irregular firm prostate is suspicious for malignancy.' }
+}
+}
+]},
+{ group: 'Imaging', items: [
+{ id: 'img_45_mri', label: 'Prostate MRI', icon: 'imaging', points: 40,
+finding: { type: 'imaging', title: 'MRI Prostate', subtitle: 'Lesion characterization',
+results: [
+{ name: 'Lesion', val: 'Suspicious peripheral zone lesion', flag: 'critical' }
+],
+note: { type: '', text: 'MRI helps guide biopsy targeting.' }
+}
+}
+]},
+{ group: 'Labs', items: [
+{ id: 'lab_45_biopsy', label: 'Prostate Biopsy', icon: 'lab', points: 60,
+finding: { type: 'labs', title: 'Pathology', subtitle: 'Tumor confirmation',
+results: [
+{ name: 'Diagnosis', val: 'Prostate adenocarcinoma', ref: 'None', flag: 'critical' }
+],
+note: { type: '', text: 'Biopsy confirms malignancy and grading.' }
+}
+}
+]}
+],
+dispositions: [
+{ id: 'disp_45_correct', label: 'Urology referral for biopsy and staging', icon: 'admit', outcome: 'correct', points: 100,
+feedback: { title: 'Correct', grade: 'Outstanding', body: 'Elevated PSA with abnormal DRE warrants biopsy and further evaluation.' } },
+{ id: 'disp_45_partial', label: 'Watchful waiting only', icon: 'rx', outcome: 'partial', points: -20,
+feedback: { title: 'Incomplete', grade: 'Needs Improvement', body: 'Further diagnostic evaluation is required given abnormal findings.' } },
+{ id: 'disp_45_incorrect', label: 'No follow up', icon: 'rx', outcome: 'incorrect', points: -120,
+feedback: { title: 'Dangerous', grade: 'Critical Error', body: 'Potential malignancy would be missed.' } }
+],
+correctDisposition: 'disp_45_correct',
+criticalActions: ['lab_45_psa', 'pe_45_dre', 'lab_45_biopsy']
+}
 ]

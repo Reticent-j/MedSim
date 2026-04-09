@@ -36,11 +36,17 @@ function ChevronIcon({ open }) {
   )
 }
 
-function CatalogSubcategory({ sub, caseId, usedActions, disposed, onCatalogTest, availableSet }) {
+function CatalogSubcategory({ sub, caseId, usedActions, disposed, onCatalogTest, availableSet, difficulty }) {
   const [open, setOpen] = useState(false)
 
   const relevantCount = sub.tests.filter(t => availableSet.has(t.id)).length
   const usedCount     = sub.tests.filter(t => isCatalogUsed(caseId, t.id, usedActions)).length
+
+  // Medium: show subcategory relevance badge but NOT individual test highlights
+  // Easy: show everything
+  // Hard: show nothing
+  const showSubBadge  = difficulty !== 'hard' && relevantCount > 0
+  const showTestHints = difficulty === 'easy'
 
   return (
     <div className="catalog-sub">
@@ -50,7 +56,7 @@ function CatalogSubcategory({ sub, caseId, usedActions, disposed, onCatalogTest,
       >
         <ChevronIcon open={open} />
         <span className="catalog-sub-name">{sub.name}</span>
-        {relevantCount > 0 && (
+        {showSubBadge && (
           <span className="catalog-sub-badge relevant">{relevantCount} relevant</span>
         )}
         {usedCount > 0 && (
@@ -63,17 +69,25 @@ function CatalogSubcategory({ sub, caseId, usedActions, disposed, onCatalogTest,
           {sub.tests.map(test => {
             const relevant = availableSet.has(test.id)
             const used = isCatalogUsed(caseId, test.id, usedActions)
+            // Easy: apply relevant class + pip; Medium/Hard: no per-test visual hint
+            const showRelevant = showTestHints && relevant
             return (
               <button
                 key={test.id}
-                className={`catalog-test-btn ${used ? 'used' : ''} ${relevant ? 'relevant' : 'generic'}`}
+                className={`catalog-test-btn ${used ? 'used' : ''} ${showRelevant ? 'relevant' : 'generic'}`}
                 onClick={() => onCatalogTest(test.id, test.label)}
                 disabled={used || disposed}
-                title={relevant ? 'Relevant to this case' : 'Not specifically indicated — generic result'}
+                title={
+                  difficulty === 'easy' && relevant
+                    ? 'Relevant to this case'
+                    : difficulty === 'hard'
+                    ? test.label
+                    : 'Order this test'
+                }
               >
                 <span className="catalog-test-dot" />
                 <span className="catalog-test-label">{test.label}</span>
-                {relevant && !used && <span className="catalog-relevance-pip" />}
+                {showRelevant && !used && <span className="catalog-relevance-pip" />}
                 {used && <span className="action-check">✓</span>}
               </button>
             )
@@ -84,12 +98,15 @@ function CatalogSubcategory({ sub, caseId, usedActions, disposed, onCatalogTest,
   )
 }
 
-function CatalogCategory({ cat, caseId, usedActions, disposed, onCatalogTest, availableSet }) {
+function CatalogCategory({ cat, caseId, usedActions, disposed, onCatalogTest, availableSet, difficulty }) {
   const [open, setOpen] = useState(false)
 
   const totalRelevant = cat.subcategories.reduce(
     (n, sub) => n + sub.tests.filter(t => availableSet.has(t.id)).length, 0
   )
+
+  // Hard: hide category badge too
+  const showCatBadge = difficulty !== 'hard' && totalRelevant > 0
 
   return (
     <div className="catalog-cat">
@@ -101,7 +118,7 @@ function CatalogCategory({ cat, caseId, usedActions, disposed, onCatalogTest, av
           {ACTION_ICON[cat.icon]}
         </div>
         <span className="catalog-cat-name">{cat.category}</span>
-        {totalRelevant > 0 && (
+        {showCatBadge && (
           <span className="catalog-cat-badge">{totalRelevant}</span>
         )}
         <ChevronIcon open={open} />
@@ -118,10 +135,36 @@ function CatalogCategory({ cat, caseId, usedActions, disposed, onCatalogTest, av
               disposed={disposed}
               onCatalogTest={onCatalogTest}
               availableSet={availableSet}
+              difficulty={difficulty}
             />
           ))}
         </div>
       )}
+    </div>
+  )
+}
+
+// Hint bar text varies by difficulty
+function CatalogHint({ difficulty }) {
+  if (difficulty === 'easy') {
+    return (
+      <div className="catalog-hint diff-easy-hint">
+        <span className="catalog-hint-dot relevant" /> Highlighted tests are relevant to this case &nbsp;
+        <span className="catalog-hint-dot generic" /> No relevant finding
+      </div>
+    )
+  }
+  if (difficulty === 'medium') {
+    return (
+      <div className="catalog-hint diff-medium-hint">
+        Categories &amp; subcategories show relevant test counts. Specific tests not highlighted.
+      </div>
+    )
+  }
+  // hard
+  return (
+    <div className="catalog-hint diff-hard-hint">
+      Hard mode — no hints. Every unnecessary test is penalized.
     </div>
   )
 }
@@ -135,6 +178,7 @@ export default function ActionsPanel({
   onCatalogTest,
   onDispose,
   caseId,
+  difficulty = 'medium',
 }) {
   const [activeTab, setActiveTab] = useState('catalog') // 'catalog' | 'case'
   const availableSet = buildAvailableSet(caseId)
@@ -180,10 +224,7 @@ export default function ActionsPanel({
       {/* Test catalog tab */}
       {activeTab === 'catalog' && (
         <div className="catalog-panel">
-          <div className="catalog-hint">
-            <span className="catalog-hint-dot relevant" /> Relevant to this case &nbsp;
-            <span className="catalog-hint-dot generic" /> Generic result
-          </div>
+          <CatalogHint difficulty={difficulty} />
           {TEST_CATALOG.map(cat => (
             <CatalogCategory
               key={cat.category}
@@ -193,6 +234,7 @@ export default function ActionsPanel({
               disposed={disposed}
               onCatalogTest={onCatalogTest}
               availableSet={availableSet}
+              difficulty={difficulty}
             />
           ))}
         </div>

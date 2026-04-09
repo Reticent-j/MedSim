@@ -18,7 +18,28 @@ const SORT_OPTIONS = [
 
 const STATUS_ORDER = { 'in-progress': 0, 'not-started': 1, 'completed': 2 }
 
-export default function SplashScreen({ onStartCase, progress }) {
+const DIFFICULTY_OPTIONS = [
+  {
+    id: 'easy',
+    label: 'Easy',
+    desc: 'Relevant tests highlighted',
+    icon: '🟢',
+  },
+  {
+    id: 'medium',
+    label: 'Medium',
+    desc: 'Category hints only',
+    icon: '🟡',
+  },
+  {
+    id: 'hard',
+    label: 'Hard',
+    desc: 'No hints, full penalties',
+    icon: '🔴',
+  },
+]
+
+export default function SplashScreen({ onStartCase, progress, difficulty, onDifficultyChange }) {
   const [filterSpecialty, setFilterSpecialty] = useState('all')
   const [sortBy, setSortBy] = useState('default')
 
@@ -64,6 +85,25 @@ export default function SplashScreen({ onStartCase, progress }) {
         <div className="splash-title">Med<span>Sim</span></div>
       </div>
       <div className="splash-sub">Primary Care &nbsp;·&nbsp; Clinical Decision Trainer</div>
+
+      {/* Difficulty selector */}
+      <div className="splash-difficulty-wrap">
+        <div className="splash-difficulty-label">Difficulty</div>
+        <div className="splash-difficulty-opts">
+          {DIFFICULTY_OPTIONS.map(opt => (
+            <button
+              key={opt.id}
+              className={`splash-diff-btn ${difficulty === opt.id ? `active diff-${opt.id}` : ''}`}
+              onClick={() => onDifficultyChange(opt.id)}
+              title={opt.desc}
+            >
+              <span className="diff-icon">{opt.icon}</span>
+              <span className="diff-label">{opt.label}</span>
+              <span className="diff-desc">{opt.desc}</span>
+            </button>
+          ))}
+        </div>
+      </div>
 
       {/* Progress summary */}
       <div className="splash-progress-bar-wrap">
