@@ -1687,7 +1687,7 @@ html, body, #root {
 }
 .deterioration-body {
   font-size: .9rem;
-  color: var(--text, #e2e8f0);
+  color: #ffffff;
   line-height: 1.6;
   margin-bottom: .75rem;
 }
