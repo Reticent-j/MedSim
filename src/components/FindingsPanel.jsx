@@ -112,15 +112,17 @@ export default function FindingsPanel({
   onShowResults,
   onAdvanceToStage,
 }) {
-  const bottomRef = useRef(null)
+  const panelRef = useRef(null)
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+    if (panelRef.current) {
+      panelRef.current.scrollTop = panelRef.current.scrollHeight
+    }
   }, [findings.length, outcomeInfo])
 
   if (findings.length === 0 && !outcomeInfo) {
     return (
-      <div className="findings-panel">
+      <div className="findings-panel" ref={panelRef}>
         <div className="findings-empty">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
             <rect x="3" y="3" width="18" height="18" rx="2" />
@@ -133,7 +135,7 @@ export default function FindingsPanel({
   }
 
   return (
-    <div className="findings-panel">
+    <div className="findings-panel" ref={panelRef}>
       {findings.map((f, i) =>
         f.type === 'stage_transition'
           ? <StageTransitionCard key={i} finding={f} />
@@ -148,7 +150,6 @@ export default function FindingsPanel({
           onAdvanceToStage={onAdvanceToStage}
         />
       )}
-      <div ref={bottomRef} />
     </div>
   )
 }
