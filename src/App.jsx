@@ -39,6 +39,19 @@ export default function App() {
     saveProgress(progress)
   }, [progress])
 
+  // Browser back-button / Backspace navigation
+  useEffect(() => {
+    const handlePop = () => {
+      setScreen(prev => {
+        if (prev === 'game') return 'splash'
+        if (prev === 'results') return 'splash'
+        return prev
+      })
+    }
+    window.addEventListener('popstate', handlePop)
+    return () => window.removeEventListener('popstate', handlePop)
+  }, [])
+
   // Derive active stage data (actions/dispositions/patient) from current stage index
   const getActiveStageData = useCallback((c, stageIdx) => {
     if (stageIdx !== null && stageIdx > 0 && c?.stages?.[stageIdx - 1]) {
@@ -81,6 +94,7 @@ export default function App() {
     setLastPenaltyApplied(0)
     setScreen('game')
     setProgress(prev => markInProgress(prev, caseId))
+    window.history.pushState({ screen: 'game' }, '')
   }, [])
 
   const performAction = useCallback((actionId) => {
@@ -238,9 +252,8 @@ export default function App() {
   }, [currentStageIndex])
 
   const goHome = useCallback(() => {
-    if (window.confirm('Return to the main menu? Your current case progress will be lost.')) {
-      setScreen('splash')
-    }
+    setScreen('splash')
+    window.history.back()
   }, [])
 
   const goToNextCase = useCallback((caseId) => {
@@ -249,6 +262,7 @@ export default function App() {
 
   const showResults = useCallback(() => {
     setScreen('results')
+    window.history.pushState({ screen: 'results' }, '')
   }, [])
 
   const restart = useCallback(() => {
@@ -263,7 +277,7 @@ export default function App() {
         onStartCase={startCase}
         progress={progress}
         difficulty={difficulty}
-        onSetDifficulty={setDifficulty}
+        onDifficultyChange={setDifficulty}
       />
     )
   }
