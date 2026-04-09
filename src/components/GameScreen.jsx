@@ -4,9 +4,7 @@ import { Icons } from './icons'
 import PatientPanel from './PatientPanel'
 import FindingsPanel from './FindingsPanel'
 import ActionsPanel from './ActionsPanel'
-
-const DIFFICULTY_LABEL = { easy: 'Easy', medium: 'Medium', hard: 'Hard' }
-const DIFFICULTY_CLS   = { easy: 'diff-easy', medium: 'diff-medium', hard: 'diff-hard' }
+import DeteriorationModal from './DeteriorationModal'
 
 export default function GameScreen({
   currentCase,
@@ -19,17 +17,36 @@ export default function GameScreen({
   patientState,
   patientStateMsg,
   difficulty,
+  activeActions,
+  activeDispositions,
+  activePatient,
+  stageLabel,
+  showDeteriorationPopup,
+  lastPenaltyApplied,
+  wastedTestCount,
   onAction,
   onCatalogTest,
   onDispose,
   onGoHome,
   onNextCase,
   onShowResults,
+  onAdvanceToStage,
+  onDismissDeteriorationPopup,
 }) {
   const nextCase = CASES.find(c => c.id > currentCase.id) ?? null
 
   return (
     <div className="game-screen">
+      {/* Deterioration Modal Overlay */}
+      {showDeteriorationPopup && (
+        <DeteriorationModal
+          wastedTestCount={wastedTestCount}
+          penaltyApplied={lastPenaltyApplied}
+          difficulty={difficulty}
+          onDismiss={onDismissDeteriorationPopup}
+        />
+      )}
+
       {/* Top Bar */}
       <div className="topbar">
         <div className="topbar-brand">
@@ -37,28 +54,21 @@ export default function GameScreen({
           MedSim
         </div>
         <div className="topbar-sep" />
-        <div className="topbar-case">
-          Case <strong>{currentCase.id}</strong> &nbsp;—&nbsp; {currentCase.patient.name}
+        <div className={`topbar-case${stageLabel ? ' topbar-case--stage' : ''}`}>
+          {stageLabel && <span className="topbar-stage-badge">STAGE 2</span>}
+          <strong>{currentCase.id}</strong>
+          &nbsp;—&nbsp;
+          {stageLabel ? stageLabel : currentCase.patient.name}
         </div>
         <div className="topbar-spacer" />
-
-        {/* Cost display */}
         <div className="topbar-cost-wrap">
           <span className="topbar-cost-label">Cost</span>
           <span className="topbar-cost">${totalCost.toLocaleString()}</span>
         </div>
-
-        {/* Score */}
         <div className="topbar-score-wrap">
           <span className="topbar-score-label">Score</span>
           <span className="topbar-score">{score}</span>
         </div>
-
-        {/* Difficulty badge */}
-        <div className={`topbar-diff-badge ${DIFFICULTY_CLS[difficulty] ?? ''}`}>
-          {DIFFICULTY_LABEL[difficulty] ?? difficulty}
-        </div>
-
         <button className="topbar-home-btn" onClick={onGoHome}>
           {Icons.home}
           Home
@@ -68,7 +78,7 @@ export default function GameScreen({
       {/* Three-column body */}
       <div className="game-body">
         <PatientPanel
-          patient={currentCase.patient}
+          patient={activePatient}
           patientState={patientState}
           patientStateMsg={patientStateMsg}
         />
@@ -79,11 +89,12 @@ export default function GameScreen({
           nextCase={nextCase}
           onNextCase={onNextCase}
           onShowResults={onShowResults}
+          onAdvanceToStage={onAdvanceToStage}
         />
 
         <ActionsPanel
-          actions={currentCase.actions}
-          dispositions={currentCase.dispositions}
+          actions={activeActions}
+          dispositions={activeDispositions}
           usedActions={usedActions}
           disposed={disposed}
           onAction={onAction}
@@ -91,6 +102,7 @@ export default function GameScreen({
           onDispose={onDispose}
           caseId={currentCase.id}
           difficulty={difficulty}
+          stageLabel={stageLabel}
         />
       </div>
     </div>

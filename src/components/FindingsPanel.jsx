@@ -46,8 +46,20 @@ function FindingCard({ finding }) {
   )
 }
 
-function OutcomeCard({ outcomeInfo, nextCase, onNextCase, onShowResults }) {
-  const { disp, critBonus, critMissed, delta } = outcomeInfo
+function StageTransitionCard({ finding }) {
+  return (
+    <div className="stage-transition-card">
+      <div className="stage-transition-header">
+        <span className="stage-transition-icon">🔄</span>
+        <span className="stage-transition-label">{finding.stageLabel}</span>
+      </div>
+      <p className="stage-transition-message">{finding.transitionMessage}</p>
+    </div>
+  )
+}
+
+function OutcomeCard({ outcomeInfo, nextCase, onNextCase, onShowResults, onAdvanceToStage }) {
+  const { disp, critBonus, critMissed, delta, hasNextStage, nextStage } = outcomeInfo
   const emoji = { correct: '✅', partial: '⚠️', incorrect: '❌' }[disp.outcome] ?? '❓'
   const deltaSign = delta >= 0 ? '+' : ''
   const deltaClass = delta >= 0 ? 'plus' : 'minus'
@@ -71,7 +83,15 @@ function OutcomeCard({ outcomeInfo, nextCase, onNextCase, onShowResults }) {
           {critMissed.map(id => id.replace(/_/g, ' ')).join(', ')}
         </div>
       )}
-      {nextCase ? (
+
+      {hasNextStage ? (
+        <button
+          className="outcome-next-btn outcome-stage-btn"
+          onClick={() => onAdvanceToStage(nextStage)}
+        >
+          ⚠️ Patient Returns — Continue to {nextStage.stageLabel} →
+        </button>
+      ) : nextCase ? (
         <button className="outcome-next-btn" onClick={() => onNextCase(nextCase.id)}>
           Next Case: {nextCase.patient.name} →
         </button>
@@ -84,7 +104,14 @@ function OutcomeCard({ outcomeInfo, nextCase, onNextCase, onShowResults }) {
   )
 }
 
-export default function FindingsPanel({ findings, outcomeInfo, nextCase, onNextCase, onShowResults }) {
+export default function FindingsPanel({
+  findings,
+  outcomeInfo,
+  nextCase,
+  onNextCase,
+  onShowResults,
+  onAdvanceToStage,
+}) {
   const bottomRef = useRef(null)
 
   useEffect(() => {
@@ -107,15 +134,18 @@ export default function FindingsPanel({ findings, outcomeInfo, nextCase, onNextC
 
   return (
     <div className="findings-panel">
-      {findings.map((f, i) => (
-        <FindingCard key={i} finding={f} />
-      ))}
+      {findings.map((f, i) =>
+        f.type === 'stage_transition'
+          ? <StageTransitionCard key={i} finding={f} />
+          : <FindingCard key={i} finding={f} />
+      )}
       {outcomeInfo && (
         <OutcomeCard
           outcomeInfo={outcomeInfo}
           nextCase={nextCase}
           onNextCase={onNextCase}
           onShowResults={onShowResults}
+          onAdvanceToStage={onAdvanceToStage}
         />
       )}
       <div ref={bottomRef} />

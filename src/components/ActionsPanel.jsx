@@ -179,6 +179,7 @@ export default function ActionsPanel({
   onDispose,
   caseId,
   difficulty = 'medium',
+  stageLabel = null,
 }) {
   const [activeTab, setActiveTab] = useState('catalog') // 'catalog' | 'case'
   const availableSet = buildAvailableSet(caseId)
@@ -200,6 +201,11 @@ export default function ActionsPanel({
 
   return (
     <div className="actions-panel">
+      {stageLabel && (
+        <div className="actions-stage-banner">
+          ⚠️ {stageLabel}
+        </div>
+      )}
       <div className="actions-header">
         {Icons.clipboard}
         Workup &amp; Orders

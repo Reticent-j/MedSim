@@ -1648,3 +1648,172 @@ html, body, #root {
   border-color: rgba(239,68,68,.25);
   color: #b91c1c;
 }
+
+/* ── Deterioration Modal ─────────────────────────────── */
+.deterioration-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .6);
+  z-index: 200;
+  display: grid;
+  place-items: center;
+}
+.deterioration-modal {
+  background: var(--surface, #1e2533);
+  border: 2px solid #f59e0b;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 440px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,.5);
+}
+.deterioration-icon {
+  font-size: 2.5rem;
+  margin-bottom: .5rem;
+}
+.deterioration-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #f59e0b;
+  margin-bottom: .25rem;
+}
+.deterioration-subtitle {
+  font-size: .85rem;
+  color: var(--text-muted, #94a3b8);
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.deterioration-body {
+  font-size: .9rem;
+  color: var(--text, #e2e8f0);
+  line-height: 1.6;
+  margin-bottom: .75rem;
+}
+.deterioration-penalty {
+  background: rgba(239, 68, 68, .12);
+  border: 1px solid rgba(239, 68, 68, .3);
+  border-radius: 6px;
+  padding: .4rem .75rem;
+  font-size: .85rem;
+  font-weight: 600;
+  color: #f87171;
+  margin-bottom: .75rem;
+}
+.deterioration-hint {
+  font-size: .82rem;
+  color: var(--text-muted, #94a3b8);
+  font-style: italic;
+  margin-bottom: 1.25rem;
+}
+.deterioration-dismiss-btn {
+  background: #f59e0b;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  padding: .6rem 1.5rem;
+  font-size: .9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .15s;
+}
+.deterioration-dismiss-btn:hover {
+  background: #fbbf24;
+}
+
+/* ── Stage Transition Card (in FindingsPanel) ────────── */
+.stage-transition-card {
+  background: rgba(245, 158, 11, .08);
+  border: 2px solid rgba(245, 158, 11, .45);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  margin-bottom: .75rem;
+}
+.stage-transition-header {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin-bottom: .5rem;
+}
+.stage-transition-icon {
+  font-size: 1.25rem;
+}
+.stage-transition-label {
+  font-size: .95rem;
+  font-weight: 700;
+  color: #f59e0b;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.stage-transition-message {
+  font-size: .88rem;
+  color: var(--text, #e2e8f0);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── Stage 2 button in OutcomeCard ───────────────────── */
+.outcome-stage-btn {
+  background: linear-gradient(135deg, #b45309, #f59e0b) !important;
+  color: #fff !important;
+  animation: pulse-amber 1.8s ease-in-out infinite;
+}
+@keyframes pulse-amber {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, .4); }
+  50%       { box-shadow: 0 0 0 8px rgba(245, 158, 11, 0); }
+}
+
+/* ── Topbar stage label ──────────────────────────────── */
+.topbar-stage-badge {
+  background: #f59e0b;
+  color: #000;
+  font-size: .65rem;
+  font-weight: 800;
+  letter-spacing: .06em;
+  padding: .15rem .4rem;
+  border-radius: 4px;
+  margin-right: .4rem;
+  vertical-align: middle;
+}
+.topbar-case--stage {
+  color: #f59e0b;
+}
+
+/* ── Topbar cost display ─────────────────────────────── */
+.topbar-cost-wrap {
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+  background: rgba(239,68,68,.08);
+  border: 1px solid rgba(239,68,68,.2);
+  border-radius: 8px;
+  padding: .3rem .65rem;
+  margin-right: .5rem;
+}
+.topbar-cost-label {
+  font-size: .7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--text-muted, #94a3b8);
+}
+.topbar-cost {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #f87171;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── ActionsPanel stage banner ───────────────────────── */
+.actions-stage-banner {
+  background: rgba(245, 158, 11, .1);
+  border: 1px solid rgba(245, 158, 11, .35);
+  border-radius: 6px;
+  padding: .45rem .75rem;
+  font-size: .8rem;
+  font-weight: 700;
+  color: #f59e0b;
+  margin-bottom: .75rem;
+  letter-spacing: .03em;
+}

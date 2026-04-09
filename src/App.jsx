@@ -6,8 +6,8 @@ import SplashScreen from './components/SplashScreen'
 import GameScreen from './components/GameScreen'
 import ResultsScreen from './components/ResultsScreen'
 
-// Score deducted when an irrelevant (generic) catalog test is ordered, by difficulty
-const IRRELEVANT_PENALTY = { easy: 0, medium: -5, hard: -15 }
+const WASTED_THRESHOLD = 3
+const WASTED_PENALTY = { easy: 0, medium: -10, hard: -25 }
 
 export default function App() {
   const [screen, setScreen] = useState('splash')        // 'splash' | 'game' | 'results'
@@ -18,22 +18,49 @@ export default function App() {
   const [disposed, setDisposed] = useState(false)
   const [outcomeInfo, setOutcomeInfo] = useState(null)
   const [caseScores, setCaseScores] = useState([])
+  const [totalCost, setTotalCost] = useState(0)
+  const [patientState, setPatientState] = useState('stable')
+  const [patientStateMsg, setPatientStateMsg] = useState(null)
+  const [difficulty, setDifficulty] = useState('medium')
   const [progress, setProgress] = useState(() => loadProgress())
 
-  // Cost tracking
-  const [totalCost, setTotalCost] = useState(0)
+  // Multi-stage / evolving patient state
+  const [currentStageIndex, setCurrentStageIndex] = useState(null) // null=no stages, 0=root, 1+=follow-up
+  const [stageDeltaAccumulator, setStageDeltaAccumulator] = useState(0)
 
-  // Patient state (consequence feedback)
-  const [patientState, setPatientState] = useState('stable')       // 'stable' | 'worsening' | 'improving'
-  const [patientStateMsg, setPatientStateMsg] = useState(null)     // optional message string
-
-  // Difficulty setting — persists across cases in a session
-  const [difficulty, setDifficulty] = useState('medium')           // 'easy' | 'medium' | 'hard'
+  // Deterioration popup state
+  const [wastedTestCount, setWastedTestCount] = useState(0)
+  const [deteriorationDismissed, setDeteriorationDismissed] = useState(0)
+  const [showDeteriorationPopup, setShowDeteriorationPopup] = useState(false)
+  const [lastPenaltyApplied, setLastPenaltyApplied] = useState(0)
 
   // Persist progress whenever it changes
   useEffect(() => {
     saveProgress(progress)
   }, [progress])
+
+  // Derive active stage data (actions/dispositions/patient) from current stage index
+  const getActiveStageData = useCallback((c, stageIdx) => {
+    if (stageIdx !== null && stageIdx > 0 && c?.stages?.[stageIdx - 1]) {
+      const stage = c.stages[stageIdx - 1]
+      return {
+        activeActions: stage.actions,
+        activeDispositions: stage.dispositions,
+        activeCriticals: stage.criticalActions,
+        activePatient: stage.patientUpdate
+          ? { ...c.patient, ...stage.patientUpdate }
+          : c.patient,
+        stageLabel: stage.stageLabel,
+      }
+    }
+    return {
+      activeActions: c?.actions ?? [],
+      activeDispositions: c?.dispositions ?? [],
+      activeCriticals: c?.criticalActions ?? [],
+      activePatient: c?.patient ?? null,
+      stageLabel: null,
+    }
+  }, [])
 
   const startCase = useCallback((caseId) => {
     const c = CASES.find(x => x.id === caseId)
@@ -46,59 +73,60 @@ export default function App() {
     setTotalCost(0)
     setPatientState('stable')
     setPatientStateMsg(null)
+    setCurrentStageIndex(c.stages ? 0 : null)
+    setStageDeltaAccumulator(0)
+    setWastedTestCount(0)
+    setDeteriorationDismissed(0)
+    setShowDeteriorationPopup(false)
+    setLastPenaltyApplied(0)
     setScreen('game')
-    // Mark in-progress (won't downgrade a completed case)
     setProgress(prev => markInProgress(prev, caseId))
   }, [])
 
   const performAction = useCallback((actionId) => {
     if (!currentCase || disposed) return
+    const { activeActions } = getActiveStageData(currentCase, currentStageIndex)
     let found = null
-    let foundGroup = null
-    for (const group of currentCase.actions) {
+    let foundGroupName = null
+    for (const group of activeActions) {
       for (const item of group.items) {
-        if (item.id === actionId) { found = item; foundGroup = group; break }
+        if (item.id === actionId) { found = item; foundGroupName = group.group; break }
       }
       if (found) break
     }
     if (!found || usedActions.has(actionId)) return
 
-    // Determine cost from group default
-    const cost = DIRECT_ACTION_COST_DEFAULTS[foundGroup?.group] ?? 0
+    const costDollars = DIRECT_ACTION_COST_DEFAULTS[foundGroupName] ?? 0
 
     setUsedActions(prev => new Set([...prev, actionId]))
     setFindings(prev => [...prev, found.finding])
     setScore(prev => prev + found.points)
-    setTotalCost(prev => prev + cost)
+    setTotalCost(prev => prev + costDollars)
 
-    // Handle optional patient state progression
     if (found.stateEffect) {
       setPatientState(found.stateEffect.state)
       setPatientStateMsg(found.stateEffect.message)
     }
-  }, [currentCase, disposed, usedActions])
+  }, [currentCase, disposed, usedActions, currentStageIndex, getActiveStageData])
 
-  // Handle a click on a catalog test (may map to a real action or return generic finding)
   const performCatalogTest = useCallback((catalogTestId, catalogTestLabel) => {
     if (!currentCase || disposed) return
-    // Prevent duplicate ordering (use catalogTestId as the "used" key)
     if (usedActions.has(catalogTestId)) return
 
+    const { activeActions } = getActiveStageData(currentCase, currentStageIndex)
     const { actionId, finding, points, costDollars } = resolveCatalogTest(
       currentCase.id,
       catalogTestId,
       catalogTestLabel,
-      currentCase.actions,
+      activeActions,
     )
 
     if (actionId) {
-      // Delegate to the real action (but guard against already-used real actions)
       if (usedActions.has(actionId)) return
       setUsedActions(prev => new Set([...prev, catalogTestId, actionId]))
-      // Find the actual finding + stateEffect from the case action
       let realFinding = null
       let stateEffect = null
-      for (const group of currentCase.actions) {
+      for (const group of activeActions) {
         for (const item of group.items) {
           if (item.id === actionId) {
             realFinding = item.finding
@@ -118,48 +146,96 @@ export default function App() {
         }
       }
     } else {
-      // Generic (irrelevant) finding — apply difficulty-based penalty
-      const penalty = IRRELEVANT_PENALTY[difficulty] ?? -5
+      // Generic (wasted) test
       setUsedActions(prev => new Set([...prev, catalogTestId]))
       setFindings(prev => [...prev, finding])
-      setScore(prev => Math.max(0, prev + penalty))
       setTotalCost(prev => prev + costDollars)
+
+      const newCount = wastedTestCount + 1
+      setWastedTestCount(newCount)
+
+      const newTrigger = Math.floor(newCount / WASTED_THRESHOLD)
+      if (newTrigger > deteriorationDismissed) {
+        const penalty = WASTED_PENALTY[difficulty] ?? 0
+        setScore(prev => Math.max(0, prev + penalty))
+        setLastPenaltyApplied(penalty)
+        setPatientState('worsening')
+        setPatientStateMsg('Diagnostic delay — unnecessary tests wasting critical time.')
+        setShowDeteriorationPopup(true)
+      }
     }
-  }, [currentCase, disposed, usedActions, difficulty])
+  }, [currentCase, disposed, usedActions, currentStageIndex, getActiveStageData,
+      wastedTestCount, deteriorationDismissed, difficulty])
+
+  const dismissDeteriorationPopup = useCallback(() => {
+    setDeteriorationDismissed(Math.floor(wastedTestCount / WASTED_THRESHOLD))
+    setShowDeteriorationPopup(false)
+  }, [wastedTestCount])
 
   const chooseDisposition = useCallback((dispId) => {
     if (!currentCase || disposed) return
-    const disp = currentCase.dispositions.find(d => d.id === dispId)
+    const { activeDispositions, activeCriticals } = getActiveStageData(currentCase, currentStageIndex)
+    const disp = activeDispositions.find(d => d.id === dispId)
     if (!disp) return
 
-    const critMissed = currentCase.criticalActions.filter(a => !usedActions.has(a))
+    const critMissed = activeCriticals.filter(a => !usedActions.has(a))
     const critBonus = critMissed.length === 0 ? 50 : 0
     const delta = disp.points + critBonus
 
+    // Check if this disposition triggers a follow-up stage
+    const nextStage = currentCase.stages?.find(s => s.triggerOn.includes(dispId)) ?? null
+
     setDisposed(true)
     setScore(prev => Math.max(0, prev + delta))
-    setOutcomeInfo({ disp, critBonus, critMissed, delta, totalCost })
-    setCaseScores(prev => [
-      ...prev,
-      {
-        caseId: currentCase.id,
-        patientName: currentCase.patient.name,
-        score: delta,
-        outcome: disp.outcome,
-        totalCost,
-      },
-    ])
-    // Update patient state based on outcome
-    if (disp.outcome === 'correct') {
-      setPatientState('improving')
-      setPatientStateMsg('Patient responding to treatment. Prognosis improving with correct management.')
-    } else if (disp.outcome === 'incorrect') {
+
+    if (nextStage) {
+      // Stage transition — case continues
+      setStageDeltaAccumulator(prev => prev + delta)
+      setOutcomeInfo({ disp, critBonus, critMissed, delta, totalCost, hasNextStage: true, nextStage })
       setPatientState('worsening')
-      setPatientStateMsg('Patient condition deteriorating — incorrect management decision.')
+      setPatientStateMsg(nextStage.transitionMessage)
+      setProgress(prev => markInProgress(prev, currentCase.id))
+    } else {
+      // Final stage — case ends
+      const finalDelta = stageDeltaAccumulator + delta
+      setOutcomeInfo({ disp, critBonus, critMissed, delta, totalCost, hasNextStage: false })
+      setCaseScores(prev => [
+        ...prev,
+        {
+          caseId: currentCase.id,
+          patientName: currentCase.patient.name,
+          score: finalDelta,
+          outcome: disp.outcome,
+          totalCost,
+        },
+      ])
+      if (disp.outcome === 'correct') {
+        setPatientState('improving')
+        setPatientStateMsg(null)
+      } else {
+        setPatientState('worsening')
+      }
+      setProgress(prev => markCompleted(prev, currentCase.id))
     }
-    // Mark completed regardless of outcome
-    setProgress(prev => markCompleted(prev, currentCase.id))
-  }, [currentCase, disposed, usedActions, totalCost])
+  }, [currentCase, disposed, usedActions, currentStageIndex, getActiveStageData,
+      totalCost, stageDeltaAccumulator])
+
+  const advanceToStage = useCallback((stage) => {
+    const nextIdx = (currentStageIndex ?? 0) + 1
+    const transitionFinding = {
+      type: 'stage_transition',
+      stageLabel: stage.stageLabel,
+      transitionMessage: stage.transitionMessage,
+    }
+    setCurrentStageIndex(nextIdx)
+    setDisposed(false)
+    setOutcomeInfo(null)
+    setUsedActions(new Set())
+    setTotalCost(0)
+    setFindings(prev => [...prev, transitionFinding])
+    setPatientState('worsening')
+    setPatientStateMsg(null)
+  }, [currentStageIndex])
 
   const goHome = useCallback(() => {
     if (window.confirm('Return to the main menu? Your current case progress will be lost.')) {
@@ -187,12 +263,15 @@ export default function App() {
         onStartCase={startCase}
         progress={progress}
         difficulty={difficulty}
-        onDifficultyChange={setDifficulty}
+        onSetDifficulty={setDifficulty}
       />
     )
   }
 
   if (screen === 'game' && currentCase) {
+    const { activeActions, activeDispositions, activePatient, stageLabel } =
+      getActiveStageData(currentCase, currentStageIndex)
+
     return (
       <GameScreen
         currentCase={currentCase}
@@ -205,12 +284,21 @@ export default function App() {
         patientState={patientState}
         patientStateMsg={patientStateMsg}
         difficulty={difficulty}
+        activeActions={activeActions}
+        activeDispositions={activeDispositions}
+        activePatient={activePatient}
+        stageLabel={stageLabel}
+        showDeteriorationPopup={showDeteriorationPopup}
+        lastPenaltyApplied={lastPenaltyApplied}
+        wastedTestCount={wastedTestCount}
         onAction={performAction}
         onCatalogTest={performCatalogTest}
         onDispose={chooseDisposition}
         onGoHome={goHome}
         onNextCase={goToNextCase}
         onShowResults={showResults}
+        onAdvanceToStage={advanceToStage}
+        onDismissDeteriorationPopup={dismissDeteriorationPopup}
       />
     )
   }
