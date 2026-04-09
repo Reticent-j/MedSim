@@ -1667,6 +1667,7 @@ html, body, #root {
   width: 90%;
   text-align: center;
   box-shadow: 0 20px 60px rgba(0,0,0,.5);
+  color: #ffffff;
 }
 .deterioration-icon {
   font-size: 2.5rem;
